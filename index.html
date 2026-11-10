@@ -1,14 +1,446 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f6f7fb" />
-    <meta name="description" content="AppHub — каталог приложений для вашего устройства" />
-    <title>AppHub — открой своё следующее приложение</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Каталог iOS — Установка</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: rgba(28, 28, 30, 0.72);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #8e8e93;
+            --accent-blue: #0a84ff;
+            --btn-bg: rgba(255, 255, 255, 0.1);
+            --btn-active: rgba(255, 255, 255, 0.22);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% -10%, rgba(10, 132, 255, 0.18), transparent 60%),
+                radial-gradient(circle at 90% 90%, rgba(94, 92, 230, 0.1), transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px 16px 48px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Шапка в стиле iOS App Store */
+        header {
+            padding: 16px 4px 20px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--accent-blue);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Поиск с эффектом стекла */
+        .search-wrapper {
+            position: sticky;
+            top: 12px;
+            z-index: 100;
+            margin-bottom: 18px;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(38, 38, 41, 0.78);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 12px 16px 12px 40px;
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-input:focus {
+            border-color: rgba(10, 132, 255, 0.5);
+            background: rgba(44, 44, 46, 0.9);
+        }
+
+        /* Список приложений */
+        .app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .app-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 12px 14px;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .app-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .app-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 19px;
+            color: #ffffff;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            letter-spacing: -0.5px;
+        }
+
+        .app-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .app-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .app-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .file-pill {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-family: "SF Mono", ui-monospace, monospace;
+            font-size: 11px;
+            color: #aeaeb2;
+        }
+
+        /* Кнопки действий */
+        .app-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-install {
+            background: var(--btn-bg);
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            transition: background 0.15s, transform 0.1s;
+            user-select: none;
+        }
+
+        .btn-install:active {
+            background: var(--btn-active);
+            transform: scale(0.95);
+        }
+
+        .btn-ipa {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .btn-ipa:active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        .btn-ipa svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 40px 16px;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        footer {
+            margin-top: 32px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-top">
+            <span class="header-badge">
+                <svg width="13" height="15" viewBox="0 0 170 170" fill="currentColor">
+                    <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.13-1.9-14.34-6.08-3.69-3.03-7.61-7.82-11.77-14.37-5.93-9.28-10.72-20.03-14.37-32.27-3.66-12.24-5.48-23.43-5.48-33.58 0-12.78 3.19-23.23 9.56-31.35 6.38-8.12 14.42-12.31 24.13-12.56 4.92 0 10.35 1.51 16.29 4.53 5.93 3.02 9.75 4.59 11.45 4.7 1.34 0 5.48-1.85 12.42-5.54 6.94-3.69 12.87-5.26 17.79-4.7 13.43 1.08 23.49 6.38 30.2 15.9-11.97 7.27-17.85 17.34-17.62 30.2.22 10.07 3.97 18.43 11.24 25.08 5.04 4.69 11.02 7.49 17.95 8.39-1.46 4.48-3.44 9.12-5.95 13.92zM119.22 31.02c0 7.96-2.9 15.36-8.7 22.19-6.98 8.16-15.42 12.87-24.59 12.11-.19-.96-.29-1.99-.29-3.1 0-7.64 3.19-15.82 9.56-22.95 3.06-3.47 6.95-6.35 11.67-8.64 4.71-2.29 9.17-3.56 13.37-3.81.2 1.44.3 2.84.3 4.2z"/>
+                </svg>
+                iOS OTA Hub
+            </span>
+        </div>
+        <h1>Приложения</h1>
+        <p class="subtitle">Прямая установка на устройство</p>
+    </header>
+
+    <div class="search-wrapper">
+        <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Поиск приложения или файла...">
+        </div>
+    </div>
+
+    <div id="appList" class="app-list"></div>
+    <div id="emptyState" class="empty-state">Приложения не найдены</div>
+
+    <footer>
+        Нажмите «УСТАНОВИТЬ» и подтвердите действие во всплывающем окне iOS.<br>
+        Иконка со стрелкой скачивает исходный .ipa файл.
+    </footer>
+</div>
+
+<script>
+    const GITHUB_USER = 'hlevniy13';
+    const GITHUB_REPO = 'ios';
+
+    // Базовый URL для манифестов на GitHub Pages
+    const PAGES_BASE_URL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}`;
+    // Базовый URL для скачивания .ipa из последнего релиза (или корня)
+    const RELEASE_IPA_BASE = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/latest/download`;
+
+    const apps = [
+        {
+            id: 'sber',
+            name: 'СберБанк Онлайн',
+            size: '532 MB',
+            label: 'СБ',
+            gradient: 'linear-gradient(135deg, #21A038 0%, #087028 100%)'
+        },
+        {
+            id: 'tbank',
+            name: 'Т-Банк',
+            size: '452.2 MB',
+            label: 'Т',
+            gradient: 'linear-gradient(135deg, #FFDD2D 0%, #F5B800 100%)',
+            textColor: '#111111'
+        },
+        {
+            id: 'vtb',
+            name: 'ВТБ Онлайн',
+            size: '397.8 MB',
+            label: 'ВТБ',
+            gradient: 'linear-gradient(135deg, #009FDF 0%, #0A2896 100%)'
+        },
+        {
+            id: 'alfabank',
+            name: 'Альфа-Банк',
+            size: '244.1 MB',
+            label: 'А',
+            gradient: 'linear-gradient(135deg, #EF3124 0%, #B0120A 100%)'
+        },
+        {
+            id: 'tinvest',
+            name: 'Т-Инвестиции',
+            size: '226.6 MB',
+            label: 'ТИ',
+            gradient: 'linear-gradient(135deg, #2C2C2E 0%, #141416 100%)'
+        },
+        {
+            id: 'sberbiznes',
+            name: 'СберБизнес',
+            size: '260 MB',
+            label: 'СББ',
+            gradient: 'linear-gradient(135deg, #107C41 0%, #074724 100%)'
+        },
+        {
+            id: 'vk',
+            name: 'ВКонтакте',
+            size: '437.2 MB',
+            label: 'VK',
+            gradient: 'linear-gradient(135deg, #0077FF 0%, #0047B3 100%)'
+        },
+        {
+            id: 'avito',
+            name: 'Авито',
+            size: '580.1 MB',
+            label: 'AV',
+            gradient: 'linear-gradient(135deg, #00AAFF 0%, #7B61FF 100%)'
+        },
+        {
+            id: 'mailru',
+            name: 'Почта Mail.ru',
+            size: '574.5 MB',
+            label: '@',
+            gradient: 'linear-gradient(135deg, #005FF9 0%, #003799 100%)'
+        },
+        {
+            id: 'max',
+            name: 'MAX',
+            size: '91.2 MB',
+            label: 'MAX',
+            gradient: 'linear-gradient(135deg, #6E56CF 0%, #3E278B 100%)'
+        }
+    ];
+
+    const appListEl = document.getElementById('appList');
+    const emptyStateEl = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+
+    function renderApps(filterText = '') {
+        appListEl.innerHTML = '';
+        const query = filterText.trim().toLowerCase();
+
+        const filtered = apps.filter(app => 
+            app.name.toLowerCase().includes(query) || 
+            app.id.toLowerCase().includes(query)
+        );
+
+        if (filtered.length === 0) {
+            emptyStateEl.style.display = 'block';
+            return;
+        }
+        emptyStateEl.style.display = 'none';
+
+        filtered.forEach(app => {
+            const plistUrl = `${PAGES_BASE_URL}/${app.id}.plist`;
+            const itmsLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistUrl)}`;
+            const ipaDirectLink = `${RELEASE_IPA_BASE}/${app.id}.ipa`;
+            const textColorStyle = app.textColor ? `color: ${app.textColor};` : '';
+            const fontSizeStyle = app.label.length >= 3 ? 'font-size: 14px;' : '';
+
+            const card = document.createElement('div');
+            card.className = 'app-card';
+            card.innerHTML = `
+                <div class="app-left">
+                    <div class="app-icon" style="background: ${app.gradient}; ${textColorStyle} ${fontSizeStyle}">
+                        ${app.label}
+                    </div>
+                    <div class="app-details">
+                        <div class="app-title">${app.name}</div>
+                        <div class="app-meta">
+                            <span>${app.size}</span>
+                            <span class="file-pill">${app.id}.ipa</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <a href="${ipaDirectLink}" class="btn-ipa" title="Скачать ${app.id}.ipa файл">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                    </a>
+                    <a href="${itmsLink}" class="btn-install">УСТАНОВИТЬ</a>
+                </div>
+            `;
+            appListEl.appendChild(card);
+        });
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        renderApps(e.target.value);
+    });
+
+    renderApps();
+</script>
+
+</body>
 </html>
