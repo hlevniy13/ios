@@ -384,19 +384,14 @@
             min-width: 0;
         }
 
+        /* Картинка иконки приложения */
         .app-icon {
             width: 50px;
             height: 50px;
             border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 17px;
-            color: #ffffff;
+            object-fit: cover;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            letter-spacing: -0.4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
         }
 
         .app-details {
@@ -585,18 +580,19 @@
     const GITHUB_USER = 'hlevniy13';
     const GITHUB_REPO = 'ios';
     const PAGES_BASE_URL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}`;
+    const ICONS_BASE_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8`;
 
     const apps = [
-        { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB', label: 'СБ', gradient: 'linear-gradient(135deg, #21A038 0%, #087028 100%)' },
-        { id: 'tbank', name: 'Т-Банк', size: '452.2 MB', label: 'Т', gradient: 'linear-gradient(135deg, #FFDD2D 0%, #F5B800 100%)', textColor: '#111111' },
-        { id: 'vtb', name: 'ВТБ Онлайн', size: '397.8 MB', label: 'ВТБ', gradient: 'linear-gradient(135deg, #009FDF 0%, #0A2896 100%)' },
-        { id: 'alfabank', name: 'Альфа-Банк', size: '244.1 MB', label: 'А', gradient: 'linear-gradient(135deg, #EF3124 0%, #B0120A 100%)' },
-        { id: 'tinvest', name: 'Т-Инвестиции', size: '226.6 MB', label: 'ТИ', gradient: 'linear-gradient(135deg, #2C2C2E 0%, #141416 100%)' },
-        { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB', label: 'СББ', gradient: 'linear-gradient(135deg, #107C41 0%, #074724 100%)' },
-        { id: 'vk', name: 'ВКонтакте', size: '437.2 MB', label: 'VK', gradient: 'linear-gradient(135deg, #0077FF 0%, #0047B3 100%)' },
-        { id: 'avito', name: 'Авито', size: '580.1 MB', label: 'AV', gradient: 'linear-gradient(135deg, #00AAFF 0%, #7B61FF 100%)' },
-        { id: 'mailru', name: 'Почта Mail.ru', size: '574.5 MB', label: '@', gradient: 'linear-gradient(135deg, #005FF9 0%, #003799 100%)' },
-        { id: 'max', name: 'MAX', size: '91.2 MB', label: 'MAX', gradient: 'linear-gradient(135deg, #6E56CF 0%, #3E278B 100%)' }
+        { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB' },
+        { id: 'tbank', name: 'Т-Банк', size: '452.2 MB' },
+        { id: 'vtb', name: 'ВТБ Онлайн', size: '397.8 MB' },
+        { id: 'alfabank', name: 'Альфа-Банк', size: '244.1 MB' },
+        { id: 'tinvest', name: 'Т-Инвестиции', size: '226.6 MB' },
+        { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB' },
+        { id: 'vk', name: 'ВКонтакте', size: '437.2 MB' },
+        { id: 'avito', name: 'Авито', size: '580.1 MB' },
+        { id: 'mailru', name: 'Почта Mail.ru', size: '574.5 MB' },
+        { id: 'max', name: 'MAX', size: '91.2 MB' }
     ];
 
     const homeScreen = document.getElementById('homeScreen');
@@ -641,16 +637,13 @@
         filtered.forEach(app => {
             const plistUrl = `${PAGES_BASE_URL}/${app.id}.plist`;
             const itmsLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistUrl)}`;
-            const textColorStyle = app.textColor ? `color: ${app.textColor};` : '';
-            const fontSizeStyle = app.label.length >= 3 ? 'font-size: 13px;' : '';
+            const iconUrl = `${ICONS_BASE_URL}/${app.id}.png`;
 
             const card = document.createElement('div');
             card.className = 'app-card';
             card.innerHTML = `
                 <div class="app-left">
-                    <div class="app-icon" style="background: ${app.gradient}; ${textColorStyle} ${fontSizeStyle}">
-                        ${app.label}
-                    </div>
+                    <img src="${iconUrl}" alt="${app.name}" class="app-icon" onerror="this.src='https://via.placeholder.com/50/1c1c1e/ffffff?text=${app.id}'">
                     <div class="app-details">
                         <div class="app-title">${app.name}</div>
                         <div class="app-meta">${app.size}</div>
