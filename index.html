@@ -11,7 +11,8 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-primary: #ffffff;
             --text-secondary: rgba(235, 235, 245, 0.6);
-            --accent-blue: #0a84ff;
+            --accent-green: #34c759;
+            --accent-green-hover: #30b153;
             --btn-primary: #ffffff;
             --btn-primary-text: #000000;
         }
@@ -33,12 +34,12 @@
             position: relative;
         }
 
-        /* Фиксированный общий фон на весь экран (корректно работает на iOS Safari) */
+        /* Общий фон */
         .bg-layer {
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.65) 100%),
+                linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%),
                 url('https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/saitfon.png');
             background-size: cover;
             background-position: center;
@@ -55,7 +56,7 @@
             flex-direction: column;
         }
 
-        /* Верхняя панель навигации */
+        /* Верхняя панель */
         .top-bar {
             display: flex;
             align-items: center;
@@ -76,7 +77,6 @@
             border-radius: 999px;
             font-size: 13px;
             font-weight: 600;
-            letter-spacing: -0.1px;
         }
 
         .btn-back {
@@ -123,7 +123,7 @@
             background: var(--glass-bg-hover);
         }
 
-        /* Переключение экранов */
+        /* Экраны */
         .screen {
             display: none;
             flex-direction: column;
@@ -143,13 +143,13 @@
         /* Главный экран */
         .hero {
             text-align: center;
-            margin: 18px 0 28px;
+            margin: 12px 0 24px;
         }
 
         .apple-logo-box {
             width: 64px;
             height: 64px;
-            margin: 0 auto 18px;
+            margin: 0 auto 16px;
             border-radius: 18px;
             background: var(--glass-bg);
             backdrop-filter: blur(30px);
@@ -162,34 +162,63 @@
         }
 
         .hero h1 {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 700;
             letter-spacing: -0.7px;
             line-height: 1.15;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .hero p {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-secondary);
             line-height: 1.45;
-            max-width: 320px;
+            max-width: 310px;
             margin: 0 auto;
         }
 
-        /* Плюсы в стиле карточек iOS */
+        /* Статус безопасности (фишка) */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(52, 199, 89, 0.12);
+            border: 1px solid rgba(52, 199, 89, 0.25);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #4cd964;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background-color: #4cd964;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #4cd964;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
         .features-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
         .feature-card {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 15px 16px;
+            padding: 14px 16px;
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -198,8 +227,8 @@
         }
 
         .feature-icon {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 11px;
             background: rgba(255, 255, 255, 0.08);
             display: flex;
@@ -210,18 +239,17 @@
         }
 
         .feature-text h3 {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             margin-bottom: 2px;
             letter-spacing: -0.2px;
         }
 
         .feature-text p {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
         }
 
-        /* Кнопки главного экрана */
         .home-actions {
             margin-top: auto;
             display: flex;
@@ -253,45 +281,38 @@
             opacity: 0.9;
         }
 
-        .btn-tg-secondary {
-            width: 100%;
-            padding: 14px 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: transform 0.15s ease, background 0.2s ease;
-        }
-
-        .btn-tg-secondary:active {
-            transform: scale(0.98);
-            background: var(--glass-bg-hover);
-        }
-
-        /* Экран каталога */
+        /* Каталог приложений */
         .catalog-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
             margin-bottom: 16px;
         }
 
         .catalog-header h2 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             letter-spacing: -0.6px;
         }
 
         .catalog-header p {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
-            margin-top: 3px;
+            margin-top: 2px;
+        }
+
+        /* Плашка с ценой */
+        .price-badge {
+            background: rgba(52, 199, 89, 0.15);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            color: #4cd964;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
         }
 
         .search-wrapper {
@@ -387,7 +408,7 @@
         }
 
         .app-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text-primary);
             white-space: nowrap;
@@ -396,28 +417,29 @@
         }
 
         .app-meta {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
         }
 
+        /* Зеленая кнопка установки в стиле App Store */
         .btn-install {
-            background: rgba(255, 255, 255, 0.14);
+            background: linear-gradient(135deg, #34c759 0%, #28a745 100%);
             color: #ffffff;
             text-decoration: none;
             font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            padding: 8px 16px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            padding: 9px 18px;
             border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: background 0.15s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.35);
+            transition: transform 0.15s ease, filter 0.15s ease;
             user-select: none;
             flex-shrink: 0;
         }
 
         .btn-install:active {
-            background: rgba(255, 255, 255, 0.26);
-            transform: scale(0.95);
+            transform: scale(0.94);
+            filter: brightness(0.9);
         }
 
         .empty-state {
@@ -434,13 +456,13 @@
 <div class="bg-layer"></div>
 
 <div class="container">
-    <!-- Верхняя панель (общая для обоих экранов) -->
+    <!-- Верхняя панель -->
     <div class="top-bar">
         <div id="brandBadge" class="brand-pill">
             <svg width="13" height="15" viewBox="0 0 170 170" fill="currentColor">
                 <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.13-1.9-14.34-6.08-3.69-3.03-7.61-7.82-11.77-14.37-5.93-9.28-10.72-20.03-14.37-32.27-3.66-12.24-5.48-23.43-5.48-33.58 0-12.78 3.19-23.23 9.56-31.35 6.38-8.12 14.42-12.31 24.13-12.56 4.92 0 10.35 1.51 16.29 4.53 5.93 3.02 9.75 4.59 11.45 4.7 1.34 0 5.48-1.85 12.42-5.54 6.94-3.69 12.87-5.26 17.79-4.7 13.43 1.08 23.49 6.38 30.2 15.9-11.97 7.27-17.85 17.34-17.62 30.2.22 10.07 3.97 18.43 11.24 25.08 5.04 4.69 11.02 7.49 17.95 8.39-1.46 4.48-3.44 9.12-5.95 13.92zM119.22 31.02c0 7.96-2.9 15.36-8.7 22.19-6.98 8.16-15.42 12.87-24.59 12.11-.19-.96-.29-1.99-.29-3.1 0-7.64 3.19-15.82 9.56-22.95 3.06-3.47 6.95-6.35 11.67-8.64 4.71-2.29 9.17-3.56 13.37-3.81.2 1.44.3 2.84.3 4.2z"/>
             </svg>
-            iOS Каталог
+            iOS Hub
         </div>
 
         <button id="backBtn" class="btn-back" onclick="showScreen('home')">
@@ -466,46 +488,52 @@
                     <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.13-1.9-14.34-6.08-3.69-3.03-7.61-7.82-11.77-14.37-5.93-9.28-10.72-20.03-14.37-32.27-3.66-12.24-5.48-23.43-5.48-33.58 0-12.78 3.19-23.23 9.56-31.35 6.38-8.12 14.42-12.31 24.13-12.56 4.92 0 10.35 1.51 16.29 4.53 5.93 3.02 9.75 4.59 11.45 4.7 1.34 0 5.48-1.85 12.42-5.54 6.94-3.69 12.87-5.26 17.79-4.7 13.43 1.08 23.49 6.38 30.2 15.9-11.97 7.27-17.85 17.34-17.62 30.2.22 10.07 3.97 18.43 11.24 25.08 5.04 4.69 11.02 7.49 17.95 8.39-1.46 4.48-3.44 9.12-5.95 13.92zM119.22 31.02c0 7.96-2.9 15.36-8.7 22.19-6.98 8.16-15.42 12.87-24.59 12.11-.19-.96-.29-1.99-.29-3.1 0-7.64 3.19-15.82 9.56-22.95 3.06-3.47 6.95-6.35 11.67-8.64 4.71-2.29 9.17-3.56 13.37-3.81.2 1.44.3 2.84.3 4.2z"/>
                 </svg>
             </div>
-            <h1>Установка iOS приложений</h1>
+            
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                Все сертификаты активны • 100% безопасно
+            </div>
+
+            <h1>Установка приложений</h1>
             <p>Официальные клиенты банков и сервисов напрямую на ваш iPhone</p>
         </div>
 
         <div class="features-list">
             <div class="feature-card">
                 <div class="feature-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
                         <line x1="12" y1="18" x2="12.01" y2="18"></line>
                     </svg>
                 </div>
                 <div class="feature-text">
                     <h3>Без компьютера</h3>
-                    <p>Прямая загрузка сразу через браузер Safari на вашем устройстве</p>
+                    <p>Прямая загрузка через браузер Safari</p>
                 </div>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                     </svg>
                 </div>
                 <div class="feature-text">
                     <h3>Без входа в iCloud</h3>
-                    <p>Вы не выходите из своего личного аккаунта — данные в полной безопасности</p>
+                    <p>Данные аккаунта остаются в полной безопасности</p>
                 </div>
             </div>
 
             <div class="feature-card">
                 <div class="feature-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
                 </div>
                 <div class="feature-text">
-                    <h3>Занимает минимум времени</h3>
-                    <p>Установка запускается в одно нажатие и проходит за пару минут</p>
+                    <h3>Занимает пару минут</h3>
+                    <p>Быстрая установка в одно касание</p>
                 </div>
             </div>
         </div>
@@ -517,21 +545,17 @@
                     <path d="M9 18l6-6-6-6"/>
                 </svg>
             </button>
-
-            <a href="https://t.me/hlevniy" target="_blank" rel="noopener" class="btn-tg-secondary">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                </svg>
-                Написать в поддержку (@hlevniy)
-            </a>
         </div>
     </div>
 
     <!-- ЭКРАН 2: КАТАЛОГ ПРИЛОЖЕНИЙ -->
     <div id="catalogScreen" class="screen">
         <div class="catalog-header">
-            <h2>Приложения</h2>
-            <p>Нажмите «Установить» и подтвердите загрузку</p>
+            <div>
+                <h2>Приложения</h2>
+                <p>Нажмите «Установить» для загрузки</p>
+            </div>
+            <div class="price-badge">250 ₽</div>
         </div>
 
         <div class="search-wrapper">
@@ -545,13 +569,6 @@
 
         <div id="appList" class="app-list"></div>
         <div id="emptyState" class="empty-state">Приложения не найдены</div>
-
-        <a href="https://t.me/hlevniy" target="_blank" rel="noopener" class="btn-tg-secondary" style="margin-top: auto;">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-            </svg>
-            Нужна помощь? Написать @hlevniy
-        </a>
     </div>
 </div>
 
@@ -561,77 +578,16 @@
     const PAGES_BASE_URL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}`;
 
     const apps = [
-        {
-            id: 'sber',
-            name: 'СберБанк Онлайн',
-            size: '532 MB',
-            label: 'СБ',
-            gradient: 'linear-gradient(135deg, #21A038 0%, #087028 100%)'
-        },
-        {
-            id: 'tbank',
-            name: 'Т-Банк',
-            size: '452.2 MB',
-            label: 'Т',
-            gradient: 'linear-gradient(135deg, #FFDD2D 0%, #F5B800 100%)',
-            textColor: '#111111'
-        },
-        {
-            id: 'vtb',
-            name: 'ВТБ Онлайн',
-            size: '397.8 MB',
-            label: 'ВТБ',
-            gradient: 'linear-gradient(135deg, #009FDF 0%, #0A2896 100%)'
-        },
-        {
-            id: 'alfabank',
-            name: 'Альфа-Банк',
-            size: '244.1 MB',
-            label: 'А',
-            gradient: 'linear-gradient(135deg, #EF3124 0%, #B0120A 100%)'
-        },
-        {
-            id: 'tinvest',
-            name: 'Т-Инвестиции',
-            size: '226.6 MB',
-            label: 'ТИ',
-            gradient: 'linear-gradient(135deg, #2C2C2E 0%, #141416 100%)'
-        },
-        {
-            id: 'sberbiznes',
-            name: 'СберБизнес',
-            size: '260 MB',
-            label: 'СББ',
-            gradient: 'linear-gradient(135deg, #107C41 0%, #074724 100%)'
-        },
-        {
-            id: 'vk',
-            name: 'ВКонтакте',
-            size: '437.2 MB',
-            label: 'VK',
-            gradient: 'linear-gradient(135deg, #0077FF 0%, #0047B3 100%)'
-        },
-        {
-            id: 'avito',
-            name: 'Авито',
-            size: '580.1 MB',
-            label: 'AV',
-            gradient: 'linear-gradient(135deg, #00AAFF 0%, #7B61FF 100%)'
-        },
-        {
-            id: 'mailru',
-            name: 'Почта Mail.ru',
-            size: '574.5 MB',
-            label: '@',
-            gradient: 'linear-gradient(135deg, #005FF9 0%, #003799 100%)'
-        },
-        {
-            id: 'max',
-            name: 'MAX',
-            size: '91.2 MB',
-            label: 'MAX',
-            gradient: 'linear-gradient(135deg, #6E56CF 0%, #3E278B 100%)'
-        }
+        { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB', label: 'СБ', gradient: 'linear-gradient(135deg, #21A038 0%, #087028 100%)' },
+        { id: 'tbank', name: 'Т-Банк', size: '452.2 MB', label: 'Т', gradient: 'linear-gradient(135deg, #FFDD2D 0%, #F5B800 100%)', textColor: '#111111' },
+        { id: 'vtb', name: 'ВТБ Онлайн', size: '397.8 MB', label: 'ВТБ', gradient: 'linear-gradient(135deg, #009FDF 0%, #0A2896 100%)' },
+        { id: 'alfabank', name: 'Альфа-Банк', size: '244.1 MB', label: 'А', gradient: 'linear-gradient(135deg, #EF3124 0%, #B0120A 100%)' },
+        { id: 'tinvest', name: 'Т-Инвестиции', size: '226.6 MB', label: 'ТИ', gradient: 'linear-gradient(135deg, #2C2C2E 0%, #141416 100%)' },
+        { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB', label: 'СББ', gradient: 'linear-gradient(135deg, #107C41 0%, #074724 100%)' },
+        { id: 'vk', name: 'ВКонтакте', size: '437.2 MB', label: 'VK', gradient: 'linear-gradient(135deg, #0077FF 0%, #0047B3 100%)' },
+        { id: 'avito', name: 'Авито', size: '580.1 MB', label: 'AV', gradient: 'linear-gradient(135deg, #00AAFF 0%, #7B61FF 100%)' },
+        { id: 'mailru', name: 'Почта Mail.ru', size: '574.5 MB', label: '@', gradient: 'linear-gradient(135deg, #005FF9 0%, #003799 100%)' },
+        { id: 'max', name: 'MAX', size: '91.2 MB', label: 'MAX', gradient: 'linear-gradient(135deg, #6E56CF 0%, #3E278B 100%)' }
     ];
 
     const homeScreen = document.getElementById('homeScreen');
@@ -691,7 +647,7 @@
                         <div class="app-meta">${app.size}</div>
                     </div>
                 </div>
-                <a href="${itmsLink}" class="btn-install">УСТАНОВИТЬ</a>
+                <a href="${itmsLink}" class="btn-install">Установить</a>
             `;
             appListEl.appendChild(card);
         });
