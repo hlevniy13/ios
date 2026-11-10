@@ -11,10 +11,11 @@
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-primary: #ffffff;
             --text-secondary: rgba(235, 235, 245, 0.6);
-            --accent-green: #34c759;
-            --accent-green-hover: #30b153;
             --btn-primary: #ffffff;
             --btn-primary-text: #000000;
+            --burgundy-btn: rgba(110, 25, 40, 0.85);
+            --burgundy-btn-hover: rgba(135, 30, 50, 0.95);
+            --burgundy-border: rgba(220, 60, 80, 0.3);
         }
 
         * {
@@ -177,7 +178,6 @@
             margin: 0 auto;
         }
 
-        /* Статус безопасности (фишка) */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -301,7 +301,6 @@
             margin-top: 2px;
         }
 
-        /* Плашка с ценой */
         .price-badge {
             background: rgba(52, 199, 89, 0.15);
             border: 1px solid rgba(52, 199, 89, 0.3);
@@ -421,25 +420,35 @@
             color: var(--text-secondary);
         }
 
-        /* Зеленая кнопка установки в стиле App Store */
+        /* Круглая бордовая кнопка установки со стрелкой */
         .btn-install {
-            background: linear-gradient(135deg, #34c759 0%, #28a745 100%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--burgundy-btn);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--burgundy-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #ffffff;
             text-decoration: none;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.3px;
-            padding: 9px 18px;
-            border-radius: 999px;
-            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.35);
-            transition: transform 0.15s ease, filter 0.15s ease;
-            user-select: none;
+            box-shadow: 0 4px 14px rgba(110, 25, 40, 0.4);
+            transition: transform 0.15s ease, background 0.2s ease, filter 0.15s ease;
             flex-shrink: 0;
         }
 
         .btn-install:active {
-            transform: scale(0.94);
-            filter: brightness(0.9);
+            transform: scale(0.92);
+            background: var(--burgundy-btn-hover);
+            filter: brightness(0.95);
+        }
+
+        .btn-install svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
         }
 
         .empty-state {
@@ -466,7 +475,7 @@
         </div>
 
         <button id="backBtn" class="btn-back" onclick="showScreen('home')">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15 18l-6-6 6-6"/>
             </svg>
             Главная
@@ -553,7 +562,7 @@
         <div class="catalog-header">
             <div>
                 <h2>Приложения</h2>
-                <p>Нажмите «Установить» для загрузки</p>
+                <p>Нажмите иконку для загрузки</p>
             </div>
             <div class="price-badge">250 ₽</div>
         </div>
@@ -647,7 +656,11 @@
                         <div class="app-meta">${app.size}</div>
                     </div>
                 </div>
-                <a href="${itmsLink}" class="btn-install">Установить</a>
+                <a href="${itmsLink}" class="btn-install" title="Установить">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                </a>
             `;
             appListEl.appendChild(card);
         });
