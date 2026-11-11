@@ -384,7 +384,6 @@
             min-width: 0;
         }
 
-        /* Картинка иконки приложения */
         .app-icon {
             width: 50px;
             height: 50px;
@@ -415,7 +414,7 @@
             color: var(--text-secondary);
         }
 
-        /* Круглая бордовая кнопка установки со стрелкой */
+        /* Бордовая круглая кнопка установки со стрелкой */
         .btn-install {
             width: 42px;
             height: 42px;
@@ -582,6 +581,7 @@
     const PAGES_BASE_URL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}`;
     const ICONS_BASE_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8`;
 
+    // Список всех 10 приложений (включая vtb и tinvest с точными именами id для манифестов и иконок)
     const apps = [
         { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB' },
         { id: 'tbank', name: 'Т-Банк', size: '452.2 MB' },
