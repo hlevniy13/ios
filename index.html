@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>RED iOS — Установка приложений</title>
     <style>
         :root {
@@ -23,20 +23,22 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
+            touch-action: pan-y; /* Разрешаем только вертикальный скролл в нужных блоках, запрещаем pinch-zoom */
         }
 
-        body {
+        html, body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
             background-color: #000000;
             color: var(--text-primary);
-            height: 100vh;
-            height: 100dvh;
-            -webkit-font-smoothing: antialiased;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            position: relative;
+            position: fixed; /* Жесткая фиксация против резинового скролла и зума в iOS */
+            inset: 0;
+            -webkit-font-smoothing: antialiased;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-text-size-adjust: 100%;
         }
 
         /* Общий фон сайта */
@@ -50,6 +52,7 @@
             background-position: center;
             background-repeat: no-repeat;
             z-index: -1;
+            pointer-events: none;
         }
 
         .container {
@@ -90,7 +93,7 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            object-fit: cover;
+            object-fit: contain;
         }
 
         .btn-back {
@@ -162,27 +165,13 @@
             flex-shrink: 0;
         }
 
-        /* Логотип сделан чуть поменьше (было 60px, стало 48px) */
-        .site-logo-box {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 10px;
-            border-radius: 14px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
-        }
-
+        /* Чистый логотип без темного окна, рамок и фона */
         .site-logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 10px;
+            display: block;
+            object-fit: contain;
         }
 
         .hero h1 {
@@ -409,7 +398,7 @@
             border: 1px solid var(--glass-border);
             border-radius: 16px;
             padding: 14px;
-            margin-bottom: 16px;
+            margin-bottom: 4px;
         }
 
         .slider-header {
@@ -441,6 +430,7 @@
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--glass-border);
             margin-bottom: 12px;
+            touch-action: pan-x;
         }
 
         .slider-track {
@@ -463,7 +453,6 @@
             object-fit: contain;
             border-radius: 8px;
             margin-bottom: 10px;
-            background: rgba(0, 0, 0, 0.5);
         }
 
         .slide-text {
@@ -587,9 +576,11 @@
             border-radius: 14px;
             padding: 12px 16px 12px 40px;
             color: var(--text-primary);
-            font-size: 15px;
+            font-size: 16px; /* 16px предотвращает авто-зум iOS при фокусе на инпут */
             outline: none;
             transition: border-color 0.2s;
+            user-select: text;
+            -webkit-user-select: text;
         }
 
         .search-input::placeholder {
@@ -605,6 +596,7 @@
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 20px;
+            overscroll-behavior-y: contain;
         }
 
         .app-list {
@@ -731,9 +723,8 @@
     <!-- ЭКРАН 1: ГЛАВНАЯ -->
     <div id="homeScreen" class="screen active">
         <div class="hero">
-            <div class="site-logo-box">
-                <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="RED iOS Logo" class="site-logo-img" onerror="this.src='https://via.placeholder.com/48/1c1c1e/ffffff?text=RED'">
-            </div>
+            <!-- Чистый логотип без темного окна и рамок -->
+            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="RED iOS Logo" class="site-logo-img" onerror="this.style.display='none'">
             
             <div class="status-badge">
                 <span class="status-dot"></span>
@@ -895,12 +886,41 @@
 </div>
 
 <script>
+    // ЖЕСТКАЯ БЛОКИРОВКА PINCH-TO-ZOOM И DOUBLE-TAP ZOOM НА IOS SAFARI
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('gesturechange', function (e) {
+        e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('gestureend', function (e) {
+        e.preventDefault();
+    }, { passive: false });
+
+    // Блокируем зум двумя пальцами в любом месте страницы (включая каталог)
+    document.addEventListener('touchmove', function (e) {
+        if (e.touches.length > 1 || (e.scale && e.scale !== 1)) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // Блокируем приближение двойным нажатием
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (e) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, { passive: false });
+
     const GITHUB_USER = 'hlevniy13';
     const GITHUB_REPO = 'ios';
     const PAGES_BASE_URL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}`;
     const ICONS_BASE_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8`;
 
-    // Список приложений
     const apps = [
         { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB' },
         { id: 'tbank', name: 'Т-Банк', size: '452.2 MB' },
