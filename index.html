@@ -35,7 +35,7 @@
             position: relative;
         }
 
-        /* Общий фон */
+        /* Общий фон сайта */
         .bg-layer {
             position: fixed;
             inset: 0;
@@ -581,7 +581,7 @@
     const PAGES_BASE_URL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}`;
     const ICONS_BASE_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8`;
 
-    // Список всех 10 приложений (включая vtb и tinvest с точными именами id для манифестов и иконок)
+    // Явный список всех 10 приложений с их уникальными ключами (id) для манифестов и иконок
     const apps = [
         { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB' },
         { id: 'tbank', name: 'Т-Банк', size: '452.2 MB' },
@@ -635,8 +635,11 @@
         emptyStateEl.style.display = 'none';
 
         filtered.forEach(app => {
+            // Формирование персональной ссылки на манифест для каждого ключа
             const plistUrl = `${PAGES_BASE_URL}/${app.id}.plist`;
             const itmsLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistUrl)}`;
+            
+            // Формирование персональной ссылки на иконку для каждого ключа
             const iconUrl = `${ICONS_BASE_URL}/${app.id}.png`;
 
             const card = document.createElement('div');
@@ -649,7 +652,7 @@
                         <div class="app-meta">${app.size}</div>
                     </div>
                 </div>
-                <a href="${itmsLink}" class="btn-install" title="Установить">
+                <a href="${itmsLink}" class="btn-install" title="Установить ${app.name}">
                     <svg viewBox="0 0 24 24">
                         <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
                     </svg>
