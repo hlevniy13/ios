@@ -264,8 +264,8 @@
             color: var(--text-secondary);
         }
 
-        /* Блок инструкции по пунктам */
-        .instruction-section {
+        /* Интерактивный слайдер инструкции с пролистыванием */
+        .slider-section {
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -275,60 +275,114 @@
             margin-bottom: 24px;
         }
 
-        .instruction-title {
+        .slider-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .slider-title {
             font-size: 16px;
             font-weight: 700;
-            margin-bottom: 14px;
             letter-spacing: -0.3px;
         }
 
-        .instruction-steps {
+        .slider-counter {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.08);
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 12px;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slider-slide {
+            min-width: 100%;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
-        }
-
-        .instruction-step {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-
-        .step-number {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.12);
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 700;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            margin-top: 1px;
+            text-align: center;
         }
 
-        .step-content {
-            flex: 1;
+        .slide-img {
+            width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.4);
         }
 
-        .step-content p {
+        .slide-text {
             font-size: 13px;
             color: var(--text-secondary);
             line-height: 1.4;
-            margin-bottom: 8px;
+            min-height: 36px;
         }
 
-        /* Скриншоты инструкции (база для вставки из релизов) */
-        .step-img {
-            width: 100%;
-            max-height: 160px;
-            object-fit: cover;
-            border-radius: 10px;
+        /* Управление слайдером */
+        .slider-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .slider-btn {
+            background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--glass-border);
-            background: rgba(0, 0, 0, 0.3);
-            display: block;
+            color: var(--text-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .slider-btn:active {
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .slider-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .slider-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: background 0.2s, width 0.2s;
+            cursor: pointer;
+        }
+
+        .slider-dot.active {
+            background: #ffffff;
+            width: 16px;
+            border-radius: 3px;
         }
 
         .home-actions {
@@ -618,57 +672,58 @@
             </div>
         </div>
 
-        <!-- ИНСТРУКЦИЯ ПОСЛЕ УСТАНОВКИ (с базами для картинок из релизов) -->
-        <div class="instruction-section">
-            <div class="instruction-title">Инструкция после установки</div>
-            <div class="instruction-steps">
-                
-                <!-- Шаг 1 -->
-                <div class="instruction-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <p>Нажмите кнопку установки выбранного приложения в каталоге и подтвердите загрузку на рабочем столе.</p>
-                        <!-- Замените step1.png на точное имя файла в релизе, если нужно -->
-                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step1.png" alt="Шаг 1" class="step-img" onerror="this.style.display='none'">
-                    </div>
-                </div>
+        <!-- ИНТЕРАКТИВНЫЙ СЛАЙДЕР ИНСТРУКЦИИ -->
+        <div class="slider-section">
+            <div class="slider-header">
+                <div class="slider-title">Инструкция по установке</div>
+                <div class="slider-counter" id="slideCounter">1 из 5</div>
+            </div>
 
-                <!-- Шаг 2 -->
-                <div class="instruction-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <p>Дождитесь окончания загрузки иконки приложения на домашний экран вашего iPhone.</p>
-                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step2.png" alt="Шаг 2" class="step-img" onerror="this.style.display='none'">
+            <div class="slider-container">
+                <div class="slider-track" id="sliderTrack">
+                    
+                    <!-- Слайд 1 -->
+                    <div class="slider-slide">
+                        <!-- Временно используется sitelogo.png, потом заменится на step1.png -->
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="Шаг 1" class="slide-img">
+                        <div class="slide-text">1. Нажмите кнопку установки выбранного приложения и подтвердите загрузку.</div>
                     </div>
-                </div>
 
-                <!-- Шаг 3 -->
-                <div class="instruction-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <p>При первой попытке открытия приложения может появиться уведомление «Ненадежный корпоративный разработчик».</p>
-                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step3.png" alt="Шаг 3" class="step-img" onerror="this.style.display='none'">
+                    <!-- Слайд 2 -->
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="Шаг 2" class="slide-img">
+                        <div class="slide-text">2. Дождитесь появления иконки приложения на рабочем столе iPhone.</div>
                     </div>
-                </div>
 
-                <!-- Шаг 4 -->
-                <div class="instruction-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <p>Перейдите в Настройки → Основные → VPN и управление устройством, выберите нужный профиль и нажмите «Доверять».</p>
-                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step4.png" alt="Шаг 4" class="step-img" onerror="this.style.display='none'">
+                    <!-- Слайд 3 -->
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="Шаг 3" class="slide-img">
+                        <div class="slide-text">3. При открытии появится сообщение о надежном корпоративном разработчике.</div>
                     </div>
-                </div>
 
-                <!-- Шаг 5 -->
-                <div class="instruction-step">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <p>Вернитесь на рабочий стол, запустите приложение, выполните вход в свой аккаунт и наслаждайтесь использованием!</p>
-                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step5.png" alt="Шаг 5" class="step-img" onerror="this.style.display='none'">
+                    <!-- Слайд 4 -->
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="Шаг 4" class="slide-img">
+                        <div class="slide-text">4. Перейдите в Настройки → Основные → Управление устройством и нажмите «Доверять».</div>
                     </div>
-                </div>
 
+                    <!-- Слайд 5 -->
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="Шаг 5" class="slide-img">
+                        <div class="slide-text">5. Готово! Запускайте приложение и авторизуйтесь в своем аккаунте.</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="slider-controls">
+                <button class="slider-btn" onclick="prevSlide()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div class="slider-dots" id="sliderDots"></div>
+                <button class="slider-btn" onclick="nextSlide()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
             </div>
         </div>
 
@@ -804,6 +859,75 @@
     });
 
     renderApps();
+
+    // Логика слайдера инструкции
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slider-slide');
+    const totalSlides = slides.length;
+    const sliderTrack = document.getElementById('sliderTrack');
+    const slideCounter = document.getElementById('slideCounter');
+    const sliderDots = document.getElementById('sliderDots');
+
+    // Создаем точки-индикаторы
+    function initDots() {
+        sliderDots.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = `slider-dot ${i === 0 ? 'active' : ''}`;
+            dot.onclick = () => goToSlide(i);
+            sliderDots.appendChild(dot);
+        }
+    }
+
+    function updateSlider() {
+        sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+        slideCounter.textContent = `${currentSlide + 1} из ${totalSlides}`;
+        
+        const dots = sliderDots.querySelectorAll('.slider-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlider();
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateSlider();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateSlider();
+    }
+
+    // Поддержка свайпов на телефоне (touch events)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const sliderContainer = document.querySelector('.slider-container');
+
+    sliderContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    sliderContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+            nextSlide(); // Свайп влево
+        }
+        if (touchEndX > touchStartX + 50) {
+            prevSlide(); // Свайп вправо
+        }
+    }
+
+    initDots();
 </script>
 
 </body>
