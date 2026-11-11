@@ -70,7 +70,7 @@
             display: inline-flex;
             align-items: center;
             gap: 7px;
-            padding: 7px 13px;
+            padding: 5px 12px 5px 6px;
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
@@ -78,6 +78,13 @@
             border-radius: 999px;
             font-size: 13px;
             font-weight: 600;
+        }
+
+        .brand-logo-img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         .btn-back {
@@ -147,11 +154,11 @@
             margin: 12px 0 24px;
         }
 
-        .apple-logo-box {
-            width: 64px;
-            height: 64px;
+        .site-logo-box {
+            width: 72px;
+            height: 72px;
             margin: 0 auto 16px;
-            border-radius: 18px;
+            border-radius: 20px;
             background: var(--glass-bg);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
@@ -160,6 +167,13 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .site-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .hero h1 {
@@ -211,7 +225,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .feature-card {
@@ -248,6 +262,73 @@
         .feature-text p {
             font-size: 12px;
             color: var(--text-secondary);
+        }
+
+        /* Блок инструкции по пунктам */
+        .instruction-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 18px 16px;
+            margin-bottom: 24px;
+        }
+
+        .instruction-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            letter-spacing: -0.3px;
+        }
+
+        .instruction-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .instruction-step {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        /* Скриншоты инструкции (база для вставки из релизов) */
+        .step-img {
+            width: 100%;
+            max-height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
+            display: block;
         }
 
         .home-actions {
@@ -462,9 +543,7 @@
     <!-- Верхняя панель -->
     <div class="top-bar">
         <div id="brandBadge" class="brand-pill">
-            <svg width="13" height="15" viewBox="0 0 170 170" fill="currentColor">
-                <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.13-1.9-14.34-6.08-3.69-3.03-7.61-7.82-11.77-14.37-5.93-9.28-10.72-20.03-14.37-32.27-3.66-12.24-5.48-23.43-5.48-33.58 0-12.78 3.19-23.23 9.56-31.35 6.38-8.12 14.42-12.31 24.13-12.56 4.92 0 10.35 1.51 16.29 4.53 5.93 3.02 9.75 4.59 11.45 4.7 1.34 0 5.48-1.85 12.42-5.54 6.94-3.69 12.87-5.26 17.79-4.7 13.43 1.08 23.49 6.38 30.2 15.9-11.97 7.27-17.85 17.34-17.62 30.2.22 10.07 3.97 18.43 11.24 25.08 5.04 4.69 11.02 7.49 17.95 8.39-1.46 4.48-3.44 9.12-5.95 13.92zM119.22 31.02c0 7.96-2.9 15.36-8.7 22.19-6.98 8.16-15.42 12.87-24.59 12.11-.19-.96-.29-1.99-.29-3.1 0-7.64 3.19-15.82 9.56-22.95 3.06-3.47 6.95-6.35 11.67-8.64 4.71-2.29 9.17-3.56 13.37-3.81.2 1.44.3 2.84.3 4.2z"/>
-            </svg>
+            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="Logo" class="brand-logo-img" onerror="this.style.display='none'">
             RED iOS
         </div>
 
@@ -486,10 +565,8 @@
     <!-- ЭКРАН 1: ГЛАВНАЯ -->
     <div id="homeScreen" class="screen active">
         <div class="hero">
-            <div class="apple-logo-box">
-                <svg width="28" height="32" viewBox="0 0 170 170" fill="#ffffff">
-                    <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.13-1.9-14.34-6.08-3.69-3.03-7.61-7.82-11.77-14.37-5.93-9.28-10.72-20.03-14.37-32.27-3.66-12.24-5.48-23.43-5.48-33.58 0-12.78 3.19-23.23 9.56-31.35 6.38-8.12 14.42-12.31 24.13-12.56 4.92 0 10.35 1.51 16.29 4.53 5.93 3.02 9.75 4.59 11.45 4.7 1.34 0 5.48-1.85 12.42-5.54 6.94-3.69 12.87-5.26 17.79-4.7 13.43 1.08 23.49 6.38 30.2 15.9-11.97 7.27-17.85 17.34-17.62 30.2.22 10.07 3.97 18.43 11.24 25.08 5.04 4.69 11.02 7.49 17.95 8.39-1.46 4.48-3.44 9.12-5.95 13.92zM119.22 31.02c0 7.96-2.9 15.36-8.7 22.19-6.98 8.16-15.42 12.87-24.59 12.11-.19-.96-.29-1.99-.29-3.1 0-7.64 3.19-15.82 9.56-22.95 3.06-3.47 6.95-6.35 11.67-8.64 4.71-2.29 9.17-3.56 13.37-3.81.2 1.44.3 2.84.3 4.2z"/>
-                </svg>
+            <div class="site-logo-box">
+                <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="RED iOS Logo" class="site-logo-img" onerror="this.src='https://via.placeholder.com/72/1c1c1e/ffffff?text=RED'">
             </div>
             
             <div class="status-badge">
@@ -541,6 +618,60 @@
             </div>
         </div>
 
+        <!-- ИНСТРУКЦИЯ ПОСЛЕ УСТАНОВКИ (с базами для картинок из релизов) -->
+        <div class="instruction-section">
+            <div class="instruction-title">Инструкция после установки</div>
+            <div class="instruction-steps">
+                
+                <!-- Шаг 1 -->
+                <div class="instruction-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <p>Нажмите кнопку установки выбранного приложения в каталоге и подтвердите загрузку на рабочем столе.</p>
+                        <!-- Замените step1.png на точное имя файла в релизе, если нужно -->
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step1.png" alt="Шаг 1" class="step-img" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+                <!-- Шаг 2 -->
+                <div class="instruction-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <p>Дождитесь окончания загрузки иконки приложения на домашний экран вашего iPhone.</p>
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step2.png" alt="Шаг 2" class="step-img" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+                <!-- Шаг 3 -->
+                <div class="instruction-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <p>При первой попытке открытия приложения может появиться уведомление «Ненадежный корпоративный разработчик».</p>
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step3.png" alt="Шаг 3" class="step-img" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+                <!-- Шаг 4 -->
+                <div class="instruction-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <p>Перейдите в Настройки → Основные → VPN и управление устройством, выберите нужный профиль и нажмите «Доверять».</p>
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step4.png" alt="Шаг 4" class="step-img" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+                <!-- Шаг 5 -->
+                <div class="instruction-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <p>Вернитесь на рабочий стол, запустите приложение, выполните вход в свой аккаунт и наслаждайтесь использованием!</p>
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step5.png" alt="Шаг 5" class="step-img" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <div class="home-actions">
             <button class="btn-main" onclick="showScreen('catalog')">
                 Выбрать приложения
@@ -581,7 +712,7 @@
     const PAGES_BASE_URL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}`;
     const ICONS_BASE_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8`;
 
-    // Явный список всех 10 приложений с их уникальными ключами (id) для манифестов и иконок
+    // Список приложений
     const apps = [
         { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB' },
         { id: 'tbank', name: 'Т-Банк', size: '452.2 MB' },
@@ -644,11 +775,8 @@
         emptyStateEl.style.display = 'none';
 
         filtered.forEach(app => {
-            // Формирование персональной ссылки на манифест для каждого ключа
             const plistUrl = `${PAGES_BASE_URL}/${app.id}.plist`;
             const itmsLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistUrl)}`;
-            
-            // Формирование персональной ссылки на иконку для каждого ключа
             const iconUrl = `${ICONS_BASE_URL}/${app.id}.png`;
 
             const card = document.createElement('div');
