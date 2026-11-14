@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>RED iOS — Установка приложений</title>
+    <style>
+        :root {
+            --glass-bg: rgba(24, 24, 27, 0.68);
+            --glass-bg-hover: rgba(36, 36, 40, 0.78);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(235, 235, 245, 0.6);
+            --btn-primary: #ffffff;
+            --btn-primary-text: #000000;
+            --burgundy-btn: rgba(110, 25, 40, 0.85);
+            --burgundy-btn-hover: rgba(135, 30, 50, 0.95);
+            --burgundy-border: rgba(220, 60, 80, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: pan-y; /* Разрешаем только вертикальный скролл в нужных блоках, запрещаем pinch-zoom */
+        }
+
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            background-color: #000000;
+            color: var(--text-primary);
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed; /* Жесткая фиксация против резинового скролла и зума в iOS */
+            inset: 0;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* Общий фон сайта */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%),
+                url('https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/saitfon.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 460px;
+            margin: 0 auto;
+            padding: 16px 16px 24px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Верхняя панель */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            min-height: 38px;
+            flex-shrink: 0;
+        }
+
+        .brand-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 12px 5px 6px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .brand-logo-img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: contain;
+        }
+
+        .btn-back {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 7px 14px 7px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .btn-back:active {
+            transform: scale(0.96);
+            background: var(--glass-bg-hover);
+        }
+
+        .btn-support-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 999px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .btn-support-top:active {
+            transform: scale(0.96);
+            background: var(--glass-bg-hover);
+        }
+
+        /* Экраны */
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+            animation: fadeIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Главный экран */
+        .hero {
+            text-align: center;
+            margin: 6px 0 14px;
+            flex-shrink: 0;
+        }
+
+        /* Чистый логотип без темного окна, рамок и фона */
+        .site-logo-img {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 10px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .hero h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+            line-height: 1.15;
+            margin-bottom: 4px;
+        }
+
+        .hero p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(52, 199, 89, 0.12);
+            border: 1px solid rgba(52, 199, 89, 0.25);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #4cd964;
+            margin-bottom: 12px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #4cd964;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #4cd964;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+            flex-shrink: 0;
+        }
+
+        .feature-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #ffffff;
+        }
+
+        .feature-text h3 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 1px;
+            letter-spacing: -0.2px;
+        }
+
+        .feature-text p {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .home-actions {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .btn-main-burgundy {
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--burgundy-btn);
+            color: var(--text-primary);
+            border: 1px solid var(--burgundy-border);
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 24px rgba(110, 25, 40, 0.35);
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .btn-main-burgundy:active {
+            transform: scale(0.98);
+            background: var(--burgundy-btn-hover);
+        }
+
+        .btn-main-glass {
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+
+        .btn-main-glass:active {
+            transform: scale(0.98);
+            background: var(--glass-bg-hover);
+        }
+
+        /* МОДАЛЬНЫЕ ОКНА */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(28, 28, 32, 0.9);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 22px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            animation: scaleUp 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .modal-close:active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Окно ввода пароля */
+        .pass-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .pass-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 13px 16px;
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 10px;
+            transition: border-color 0.2s;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        .pass-input:focus {
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .pass-error {
+            display: none;
+            font-size: 12px;
+            color: #ff453a;
+            margin-bottom: 10px;
+            padding-left: 2px;
+        }
+
+        .slider-section {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 4px;
+        }
+
+        .slider-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .slider-step-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .slider-counter {
+            font-size: 11px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 12px;
+            touch-action: pan-x;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slider-slide {
+            min-width: 100%;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-img {
+            width: 100%;
+            max-height: 140px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .slide-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            min-height: 38px;
+        }
+
+        .slider-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .slider-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .slider-btn:active {
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .slider-dots {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .slider-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: background 0.2s, width 0.2s;
+            cursor: pointer;
+        }
+
+        .slider-dot.active {
+            background: #ffffff;
+            width: 16px;
+            border-radius: 3px;
+        }
+
+        /* Каталог приложений */
+        .catalog-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .catalog-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+        }
+
+        .catalog-header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .price-badge {
+            background: rgba(52, 199, 89, 0.15);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            color: #4cd964;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            width: 16px;
+            height: 16px;
+            fill: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(28, 28, 32, 0.82);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 12px 16px 12px 40px;
+            color: var(--text-primary);
+            font-size: 16px; /* 16px предотвращает авто-зум iOS при фокусе на инпут */
+            outline: none;
+            transition: border-color 0.2s;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-input:focus {
+            border-color: rgba(255, 255, 255, 0.28);
+        }
+
+        .app-list-container {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 20px;
+            overscroll-behavior-y: contain;
+        }
+
+        .app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .app-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 12px 14px;
+        }
+
+        .app-left {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+        }
+
+        .app-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .app-details {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 0;
+        }
+
+        .app-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .app-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .btn-install {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--burgundy-btn);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--burgundy-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(110, 25, 40, 0.4);
+            transition: transform 0.15s ease, background 0.2s ease, filter 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-install:active {
+            transform: scale(0.92);
+            background: var(--burgundy-btn-hover);
+            filter: brightness(0.95);
+        }
+
+        .btn-install svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 36px 16px;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+
+<div class="container">
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div id="brandBadge" class="brand-pill">
+            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="Logo" class="brand-logo-img" onerror="this.style.display='none'">
+            RED iOS
+        </div>
+
+        <button id="backBtn" class="btn-back" onclick="showScreen('home')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+            Главная
+        </button>
+
+        <a href="https://t.me/hlevniy" target="_blank" rel="noopener" class="btn-support-top">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+            </svg>
+            Поддержка
+        </a>
+    </div>
+
+    <!-- ЭКРАН 1: ГЛАВНАЯ -->
+    <div id="homeScreen" class="screen active">
+        <div class="hero">
+            <!-- Чистый логотип без темного окна и рамок -->
+            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="RED iOS Logo" class="site-logo-img" onerror="this.style.display='none'">
+            
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                Все сертификаты активны • 100% безопасно
+            </div>
+
+            <h1>Установка приложений</h1>
+            <p>Официальные клиенты банков и сервисов напрямую на ваш iPhone</p>
+        </div>
+
+        <div class="home-actions">
+            <button class="btn-main-burgundy" onclick="showScreen('catalog')">
+                Выбрать приложения
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+
+            <button class="btn-main-glass" onclick="openInstructionModal()">
+                Инструкция по установке
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="features-list" style="margin-top: 14px;">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                </div>
+                <div class="feature-text">
+                    <h3>Без компьютера</h3>
+                    <p>Прямая загрузка через браузер Safari</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <div class="feature-text">
+                    <h3>Без входа в iCloud</h3>
+                    <p>Данные аккаунта остаются в полной безопасности</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <div class="feature-text">
+                    <h3>Занимает пару минут</h3>
+                    <p>Быстрая установка в одно касание</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ИНСТРУКЦИИ -->
+    <div id="instructionModal" class="modal-overlay" onclick="handleModalClick(event)">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">Инструкция по установке</div>
+                <button class="modal-close" onclick="closeInstructionModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="slider-section">
+                <div class="slider-header">
+                    <div class="slider-step-title" id="slideStepTitle">Шаг 1 из 7</div>
+                    <div class="slider-counter" id="slideCounter">1 / 7</div>
+                </div>
+
+                <div class="slider-container" id="sliderContainer">
+                    <div class="slider-track" id="sliderTrack">
+                        
+                        <!-- Слайд 1 -->
+                        <div class="slider-slide">
+                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step1.png" alt="Шаг 1" class="slide-img">
+                            <div class="slide-text">1. Заходим в настройки, жмём на свой профиль.</div>
+                        </div>
+
+                        <!-- Слайд 2 -->
+                        <div class="slider-slide">
+                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step2.png" alt="Шаг 2" class="slide-img">
+                            <div class="slide-text">2. Далее жмём на раздел "Контент и покупки".</div>
+                        </div>
+
+                        <!-- Слайд 3 -->
+                        <div class="slider-slide">
+                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step3.png" alt="Шаг 3" class="slide-img">
+                            <div class="slide-text">3. Жмём кнопку "Выйти", таким образом мы выходим только из раздела контента, а не из самого аккаунт iCloud.</div>
+                        </div>
+
+                        <!-- Слайд 4 -->
+                        <div class="slider-slide">
+                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step4.png" alt="Шаг 4" class="slide-img">
+                            <div class="slide-text">4. Подтверждаем выход, повторно нажимая на "Выйти".</div>
+                        </div>
+
+                        <!-- Слайд 5 -->
+                        <div class="slider-slide">
+                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step5.png" alt="Шаг 5" class="slide-img">
+                            <div class="slide-text">5. Вас вовзращает обратно, снова жмём на раздел "Контент и покупки".</div>
+                        </div>
+                        
+                        <!-- Слайд 6 -->
+                        <div class="slider-slide">
+                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step6.png" alt="Шаг 6" class="slide-img">
+                            <div class="slide-text">6. Выбираем кнопку "Не ВАШИ ИМЯ ПРОФИЛЯ ?", для того, чтобы авторизоваться под нужным профилем с уже установленными приложениями.</div>
+                        </div>
+
+                         <!-- Слайд 7 -->
+                        <div class="slider-slide">
+                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step7.png" alt="Шаг 7" class="slide-img">
+                            <div class="slide-text">7. Входим по данным, которые получили от поддержки RED iOS. Позже, Вы обратно вернётесь к своим настройкам.</div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="slider-controls">
+                    <button class="slider-btn" onclick="prevSlide()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <div class="slider-dots" id="sliderDots"></div>
+                    <button class="slider-btn" onclick="nextSlide()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ПАРОЛЯ ДЛЯ УСТАНОВКИ -->
+    <div id="passwordModal" class="modal-overlay" onclick="handlePasswordModalClick(event)">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title" id="passModalTitle">Доступ к загрузке</div>
+                <button class="modal-close" onclick="closePasswordModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="pass-subtitle" id="passModalSubtitle">Введите пароль, полученный от поддержки RED iOS</div>
+            <input type="text" id="appPasswordInput" class="pass-input" placeholder="Введите пароль..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            <div id="passErrorText" class="pass-error">Неверный пароль. Проверьте данные или обратитесь в поддержку.</div>
+            <button id="passSubmitBtn" class="btn-main-burgundy" onclick="submitAppPassword()">
+                Проверить пароль
+            </button>
+            <a id="directInstallLink" href="#" class="btn-main-burgundy" style="display: none;" onclick="setTimeout(closePasswordModal, 400)">
+                Начать установку
+            </a>
+        </div>
+    </div>
+
+    <!-- ЭКРАН 2: КАТАЛОГ ПРИЛОЖЕНИЙ -->
+    <div id="catalogScreen" class="screen">
+        <div class="catalog-header">
+            <div>
+                <h2>Приложения</h2>
+                <p>Нажмите иконку для загрузки</p>
+            </div>
+            <div id="priceBadge" class="price-badge">250 ₽</div>
+        </div>
+
+        <div class="search-wrapper">
+            <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="Поиск приложения...">
+            </div>
+        </div>
+
+        <div class="app-list-container">
+            <div id="appList" class="app-list"></div>
+            <div id="emptyState" class="empty-state">Приложения не найдены</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ЖЕСТКАЯ БЛОКИРОВКА PINCH-TO-ZOOM И DOUBLE-TAP ZOOM НА IOS SAFARI
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('gesturechange', function (e) {
+        e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('gestureend', function (e) {
+        e.preventDefault();
+    }, { passive: false });
+
+    // Блокируем зум двумя пальцами в любом месте страницы (включая каталог)
+    document.addEventListener('touchmove', function (e) {
+        if (e.touches.length > 1 || (e.scale && e.scale !== 1)) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // Блокируем приближение двойным нажатием
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (e) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, { passive: false });
+
+    // ПОДКЛЮЧЕНИЕ К SUPABASE
+    const SUPABASE_URL = 'https://fgptlkhrtawzweklpdws.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_krzJuR1BUgvVktaSmvj6EQ_07tyNyOD';
+
+    async function loadSitePrice() {
+        try {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?id=eq.1&select=price`, {
+                headers: {
+                    'apikey': SUPABASE_KEY
+                }
+            });
+            if (res.ok) {
+                const rows = await res.json();
+                if (rows && rows.length > 0 && rows[0].price) {
+                    document.getElementById('priceBadge').textContent = rows[0].price;
+                }
+            }
+        } catch (err) {
+            console.error('Ошибка загрузки цены:', err);
+        }
+    }
+
+    loadSitePrice();
+
+    const GITHUB_USER = 'hlevniy13';
+    const GITHUB_REPO = 'ios';
+    const PAGES_BASE_URL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}`;
+    const ICONS_BASE_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8`;
+
+    const apps = [
+        { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB' },
+        { id: 'tbank', name: 'Т-Банк', size: '452.2 MB' },
+        { id: 'vtb', name: 'ВТБ Онлайн', size: '397.8 MB' },
+        { id: 'ozon', name: 'OZON Банк', size: '145 MB' },
+        { id: 'alfabank', name: 'Альфа-Банк', size: '244.1 MB' },
+        { id: 'tinvesticii', name: 'Т-Инвестиции', size: '226.6 MB' },
+        { id: 'vtbinvest', name: 'ВТБ Инвестиции', size: '134.9 MB' },
+        { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB' },
+        { id: 'vk', name: 'ВКонтакте', size: '437.2 MB' },
+        { id: 'vkmyz', name: 'ВК Музыка', size: '280 MB' },
+        { id: 'avito', name: 'Авито', size: '580.1 MB' },
+        { id: 'mailru', name: 'Почта Mail.ru', size: '574.5 MB' },
+        { id: 'max', name: 'MAX', size: '91.2 MB' },
+        { id: 'yaqin', name: 'MAX без цифрового ID', size: '67.7 MB' },
+        { id: 'rutube', name: 'RuTube', size: '55.9 MB' },
+        { id: 'premier', name: 'Кинотеатр PREMIER', size: '112.2 MB' },
+        { id: 'happ', name: 'Happ +', size: '305 MB' },
+        { id: 'mydyson', name: 'My Dyson', size: '553 MB' },
+        { id: 'azsgazprom', name: 'АЗС «Газпромнефть»', size: '103 MB' }
+    ];
+
+    const homeScreen = document.getElementById('homeScreen');
+    const catalogScreen = document.getElementById('catalogScreen');
+    const brandBadge = document.getElementById('brandBadge');
+    const backBtn = document.getElementById('backBtn');
+    const appListEl = document.getElementById('appList');
+    const emptyStateEl = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+
+    function showScreen(screenName) {
+        if (screenName === 'catalog') {
+            homeScreen.classList.remove('active');
+            catalogScreen.classList.add('active');
+            brandBadge.style.display = 'none';
+            backBtn.style.display = 'inline-flex';
+            loadSitePrice();
+        } else {
+            catalogScreen.classList.remove('active');
+            homeScreen.classList.add('active');
+            backBtn.style.display = 'none';
+            brandBadge.style.display = 'inline-flex';
+        }
+    }
+
+    function renderApps(filterText = '') {
+        appListEl.innerHTML = '';
+        const query = filterText.trim().toLowerCase();
+
+        const filtered = apps.filter(app => 
+            app.name.toLowerCase().includes(query) || 
+            app.id.toLowerCase().includes(query)
+        );
+
+        if (filtered.length === 0) {
+            emptyStateEl.style.display = 'block';
+            return;
+        }
+        emptyStateEl.style.display = 'none';
+
+        filtered.forEach(app => {
+            const iconUrl = `${ICONS_BASE_URL}/${app.id}.png`;
+
+            const card = document.createElement('div');
+            card.className = 'app-card';
+            card.innerHTML = `
+                <div class="app-left">
+                    <img src="${iconUrl}" alt="${app.name}" class="app-icon" onerror="this.src='https://via.placeholder.com/50/1c1c1e/ffffff?text=${app.id}'">
+                    <div class="app-details">
+                        <div class="app-title">${app.name}</div>
+                        <div class="app-meta">${app.size}</div>
+                    </div>
+                </div>
+                <button type="button" class="btn-install" title="Установить ${app.name}">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                </button>
+            `;
+            card.querySelector('.btn-install').addEventListener('click', () => {
+                openPasswordModal(app);
+            });
+            appListEl.appendChild(card);
+        });
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        renderApps(e.target.value);
+    });
+
+    renderApps();
+
+    // ЛОГИКА ОКНА ВВОДА ПАРОЛЯ
+    const passwordModal = document.getElementById('passwordModal');
+    const passModalTitle = document.getElementById('passModalTitle');
+    const passModalSubtitle = document.getElementById('passModalSubtitle');
+    const appPasswordInput = document.getElementById('appPasswordInput');
+    const passErrorText = document.getElementById('passErrorText');
+    const passSubmitBtn = document.getElementById('passSubmitBtn');
+    const directInstallLink = document.getElementById('directInstallLink');
+    let selectedApp = null;
+
+    function openPasswordModal(app) {
+        selectedApp = app;
+        passModalTitle.textContent = app.name;
+        passModalSubtitle.textContent = 'Введите пароль, полученный от поддержки RED iOS';
+        appPasswordInput.value = '';
+        appPasswordInput.style.display = 'block';
+        passErrorText.style.display = 'none';
+        passSubmitBtn.style.display = 'flex';
+        passSubmitBtn.disabled = false;
+        passSubmitBtn.textContent = 'Проверить пароль';
+        directInstallLink.style.display = 'none';
+        directInstallLink.href = '#';
+        passwordModal.classList.add('active');
+    }
+
+    function closePasswordModal() {
+        passwordModal.classList.remove('active');
+        selectedApp = null;
+    }
+
+    function handlePasswordModalClick(e) {
+        if (e.target === passwordModal) {
+            closePasswordModal();
+        }
+    }
+
+    appPasswordInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            submitAppPassword();
+        }
+    });
+
+    async function submitAppPassword() {
+        if (!selectedApp) return;
+        const enteredPassword = appPasswordInput.value.trim();
+
+        if (!enteredPassword) {
+            passErrorText.textContent = 'Введите пароль для продолжения.';
+            passErrorText.style.display = 'block';
+            return;
+        }
+
+        passSubmitBtn.disabled = true;
+        passSubmitBtn.textContent = 'Проверка...';
+        passErrorText.style.display = 'none';
+
+        try {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/verify_app_password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_KEY
+                },
+                body: JSON.stringify({
+                    p_app_id: selectedApp.id,
+                    p_password: enteredPassword
+                })
+            });
+
+            const isValid = await res.json();
+
+            if (res.ok && isValid === true) {
+                const plistUrl = `${PAGES_BASE_URL}/${selectedApp.id}.plist`;
+                const itmsLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistUrl)}`;
+
+                appPasswordInput.blur();
+                appPasswordInput.style.display = 'none';
+                passSubmitBtn.style.display = 'none';
+                passModalSubtitle.textContent = 'Пароль подтверждён. Нажмите кнопку ниже, чтобы начать загрузку в Safari:';
+
+                directInstallLink.href = itmsLink;
+                directInstallLink.style.display = 'flex';
+            } else {
+                passErrorText.textContent = 'Неверный пароль. Проверьте данные или обратитесь в поддержку.';
+                passErrorText.style.display = 'block';
+            }
+        } catch (err) {
+            passErrorText.textContent = 'Ошибка соединения. Попробуйте ещё раз.';
+            passErrorText.style.display = 'block';
+        } finally {
+            passSubmitBtn.disabled = false;
+            passSubmitBtn.textContent = 'Проверить пароль';
+        }
+    }
+
+    // Логика модального окна инструкции и слайдера
+    const instructionModal = document.getElementById('instructionModal');
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slider-slide');
+    const totalSlides = slides.length;
+    const sliderTrack = document.getElementById('sliderTrack');
+    const slideCounter = document.getElementById('slideCounter');
+    const slideStepTitle = document.getElementById('slideStepTitle');
+    const sliderDots = document.getElementById('sliderDots');
+
+    function openInstructionModal() {
+        instructionModal.classList.add('active');
+        currentSlide = 0;
+        updateSlider();
+    }
+
+    function closeInstructionModal() {
+        instructionModal.classList.remove('active');
+    }
+
+    function handleModalClick(e) {
+        if (e.target === instructionModal) {
+            closeInstructionModal();
+        }
+    }
+
+    function initDots() {
+        sliderDots.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = `slider-dot ${i === 0 ? 'active' : ''}`;
+            dot.onclick = () => goToSlide(i);
+            sliderDots.appendChild(dot);
+        }
+    }
+
+    function updateSlider() {
+        sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+        slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+        slideStepTitle.textContent = `Шаг ${currentSlide + 1} из ${totalSlides}`;
+        
+        const dots = sliderDots.querySelectorAll('.slider-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        updateSlider();
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        updateSlider();
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateSlider();
+    }
+
+    // Поддержка свайпов на слайдере в модалке
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const sliderContainer = document.getElementById('sliderContainer');
+
+    sliderContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    sliderContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 40) {
+            nextSlide();
+        }
+        if (touchEndX > touchStartX + 40) {
+            prevSlide();
+        }
+    }
+
+    initDots();
+</script>
+
+</body>
+</html>
