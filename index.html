@@ -8,14 +8,12 @@
         :root {
             --glass-bg: rgba(24, 24, 27, 0.68);
             --glass-bg-hover: rgba(36, 36, 40, 0.78);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.12);
             --text-primary: #ffffff;
-            --text-secondary: rgba(235, 235, 245, 0.6);
-            --btn-primary: #ffffff;
-            --btn-primary-text: #000000;
-            --burgundy-btn: rgba(110, 25, 40, 0.85);
-            --burgundy-btn-hover: rgba(135, 30, 50, 0.95);
-            --burgundy-border: rgba(220, 60, 80, 0.3);
+            --text-secondary: rgba(235, 235, 245, 0.62);
+            --burgundy-btn: rgba(125, 24, 44, 0.78);
+            --burgundy-btn-hover: rgba(150, 30, 54, 0.92);
+            --burgundy-border: rgba(240, 85, 110, 0.45);
         }
 
         * {
@@ -23,7 +21,7 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
-            touch-action: pan-y; /* Разрешаем только вертикальный скролл в нужных блоках, запрещаем pinch-zoom */
+            touch-action: pan-y;
         }
 
         html, body {
@@ -33,7 +31,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            position: fixed; /* Жесткая фиксация против резинового скролла и зума в iOS */
+            position: fixed;
             inset: 0;
             -webkit-font-smoothing: antialiased;
             user-select: none;
@@ -41,12 +39,11 @@
             -webkit-text-size-adjust: 100%;
         }
 
-        /* Общий фон сайта */
         .bg-layer {
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%),
+                linear-gradient(180deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.75) 100%),
                 url('https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/saitfon.png');
             background-size: cover;
             background-position: center;
@@ -56,9 +53,9 @@
         }
 
         .container {
-            max-width: 460px;
+            max-width: 480px;
             margin: 0 auto;
-            padding: 16px 16px 24px;
+            padding: 14px 12px 18px;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -70,9 +67,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 14px;
-            min-height: 38px;
+            margin-bottom: 12px;
+            min-height: 36px;
             flex-shrink: 0;
+            padding: 0 2px;
         }
 
         .brand-pill {
@@ -161,11 +159,10 @@
         /* Главный экран */
         .hero {
             text-align: center;
-            margin: 6px 0 14px;
+            margin: 4px 0 14px;
             flex-shrink: 0;
         }
 
-        /* Чистый логотип без темного окна, рамок и фона */
         .site-logo-img {
             width: 54px;
             height: 54px;
@@ -294,14 +291,14 @@
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 8px 12px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, rgba(135, 30, 50, 0.5) 0%, rgba(28, 28, 32, 0.82) 100%);
+            padding: 7px 12px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, rgba(135, 30, 50, 0.52) 0%, rgba(28, 28, 32, 0.85) 100%);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(220, 60, 80, 0.32);
             border-radius: 12px;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 600;
             color: #ffffff;
             text-align: center;
@@ -321,7 +318,9 @@
             touch-action: manipulation;
             width: 100%;
             padding: 14px 20px;
-            background: var(--burgundy-btn);
+            background: linear-gradient(180deg, rgba(145, 30, 52, 0.88) 0%, rgba(98, 18, 34, 0.92) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             color: var(--text-primary);
             border: 1px solid var(--burgundy-border);
             border-radius: 16px;
@@ -334,13 +333,20 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 8px 24px rgba(110, 25, 40, 0.35);
-            transition: transform 0.15s ease, background 0.2s ease;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                0 8px 24px rgba(110, 25, 40, 0.38);
+            transition: transform 0.15s ease, filter 0.2s ease;
         }
 
         .btn-main-burgundy:active {
             transform: scale(0.98);
-            background: var(--burgundy-btn-hover);
+            filter: brightness(1.08);
+        }
+
+        .btn-main-burgundy:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .btn-main-glass {
@@ -370,18 +376,321 @@
             background: var(--glass-bg-hover);
         }
 
+        /* Каталог приложений */
+        .catalog-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+            padding: 0 2px;
+        }
+
+        .catalog-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .catalog-header p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 1px;
+        }
+
+        .price-badge {
+            background: rgba(52, 199, 89, 0.15);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            color: #4cd964;
+            padding: 5px 11px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-wrapper {
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            width: 15px;
+            height: 15px;
+            fill: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(28, 28, 32, 0.82);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 13px;
+            padding: 9px 14px 9px 36px;
+            color: var(--text-primary);
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-input:focus {
+            border-color: rgba(255, 255, 255, 0.28);
+        }
+
+        /* ДВЕ КОЛОНКИ (СЛЕВА 10, СПРАВА 9) */
+        .app-list-container {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 86px;
+            overscroll-behavior-y: contain;
+        }
+
+        .app-columns-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            align-items: start;
+        }
+
+        .app-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .app-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 10px;
+            gap: 9px;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .app-card.in-cart {
+            border-color: rgba(240, 85, 110, 0.55);
+            background: rgba(54, 18, 28, 0.72);
+        }
+
+        .app-top {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            min-width: 0;
+        }
+
+        .app-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        .app-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .app-title {
+            font-size: 12.5px;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-primary);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        .app-meta {
+            font-size: 10.5px;
+            color: var(--text-secondary);
+        }
+
+        /* КНОПКА «↓ СКАЧАТЬ» В СТИЛЕ LIQUID GLASS BURGUNDY */
+        .btn-liquid-download {
+            touch-action: manipulation;
+            width: 100%;
+            height: 32px;
+            border-radius: 999px;
+            background: linear-gradient(
+                180deg,
+                rgba(165, 34, 58, 0.72) 0%,
+                rgba(105, 18, 36, 0.84) 55%,
+                rgba(135, 26, 48, 0.78) 100%
+            );
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border: 1px solid rgba(255, 145, 165, 0.38);
+            box-shadow:
+                inset 0 1px 0.5px rgba(255, 255, 255, 0.42),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.35),
+                0 4px 12px rgba(120, 20, 40, 0.4);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: -0.15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: transform 0.14s ease, filter 0.18s ease, background 0.2s ease;
+        }
+
+        .btn-liquid-download:active {
+            transform: scale(0.96);
+            filter: brightness(1.12);
+        }
+
+        .btn-liquid-download.selected {
+            background: linear-gradient(
+                180deg,
+                rgba(48, 185, 82, 0.72) 0%,
+                rgba(28, 128, 54, 0.84) 100%
+            );
+            border-color: rgba(130, 255, 160, 0.45);
+            box-shadow:
+                inset 0 1px 0.5px rgba(255, 255, 255, 0.42),
+                0 4px 12px rgba(40, 160, 70, 0.35);
+        }
+
+        .btn-liquid-download svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            stroke-width: 2.3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        /* ПЛАВАЮЩАЯ ПАНЕЛЬ КОРЗИНЫ ВНИЗУ ЭКРАНА */
+        .cart-dock {
+            position: fixed;
+            left: 50%;
+            bottom: 14px;
+            transform: translateX(-50%) translateY(120%);
+            width: calc(100% - 24px);
+            max-width: 456px;
+            background: rgba(30, 18, 24, 0.88);
+            backdrop-filter: blur(28px) saturate(160%);
+            -webkit-backdrop-filter: blur(28px) saturate(160%);
+            border: 1px solid rgba(255, 130, 155, 0.35);
+            border-radius: 20px;
+            padding: 10px 12px 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                0 12px 32px rgba(0, 0, 0, 0.65);
+            z-index: 60;
+            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .cart-dock.visible {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .cart-dock-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .cart-dock-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .cart-dock-total {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .cart-dock-total .discount-tag {
+            font-size: 11px;
+            color: #4cd964;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .btn-open-cart {
+            touch-action: manipulation;
+            padding: 10px 16px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, rgba(165, 34, 58, 0.92) 0%, rgba(110, 18, 36, 0.96) 100%);
+            border: 1px solid rgba(255, 145, 165, 0.45);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-open-cart:active {
+            transform: scale(0.96);
+        }
+
+        .btn-open-cart:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
         /* МОДАЛЬНЫЕ ОКНА */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(0, 0, 0, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 100;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 14px;
             opacity: 0;
             transition: opacity 0.25s ease;
         }
@@ -394,13 +703,15 @@
         .modal-card {
             width: 100%;
             max-width: 420px;
-            background: rgba(28, 28, 32, 0.9);
+            max-height: 88vh;
+            overflow-y: auto;
+            background: rgba(26, 26, 30, 0.92);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border);
             border-radius: 22px;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            padding: 18px;
+            box-shadow: 0 20px 44px rgba(0, 0, 0, 0.65);
             display: flex;
             flex-direction: column;
             animation: scaleUp 0.25s cubic-bezier(0.22, 1, 0.36, 1);
@@ -415,11 +726,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .modal-title {
-            font-size: 16px;
+            font-size: 16.5px;
             font-weight: 700;
             letter-spacing: -0.3px;
         }
@@ -428,55 +739,227 @@
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.2s;
         }
 
         .modal-close:active {
             background: rgba(255, 255, 255, 0.2);
         }
 
-        /* Окно ввода пароля */
-        .pass-subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 14px;
-            line-height: 1.4;
+        /* Элементы корзины и оплаты */
+        .cart-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 190px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            padding-right: 2px;
         }
 
-        .pass-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.45);
-            border: 1px solid var(--glass-border);
-            border-radius: 14px;
-            padding: 13px 16px;
-            color: var(--text-primary);
-            font-size: 16px;
-            outline: none;
-            margin-bottom: 10px;
-            transition: border-color 0.2s;
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 8px 10px;
+            gap: 10px;
+        }
+
+        .cart-item-left {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            min-width: 0;
+        }
+
+        .cart-item-left img {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .cart-item-name {
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-remove-item {
+            background: rgba(255, 69, 58, 0.15);
+            border: 1px solid rgba(255, 69, 58, 0.3);
+            color: #ff453a;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        .payment-box {
+            background: rgba(0, 0, 0, 0.42);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 13px;
+            margin-bottom: 12px;
+        }
+
+        .order-num-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 9px;
+            margin-bottom: 9px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 13px;
+        }
+
+        .order-num-badge {
+            background: rgba(240, 85, 110, 0.2);
+            border: 1px solid rgba(240, 85, 110, 0.4);
+            color: #ff8ca0;
+            padding: 3px 9px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13.5px;
+        }
+
+        .pay-label {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .pay-requisites-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 11px;
+            padding: 9px 11px;
+            margin-bottom: 9px;
+        }
+
+        .pay-requisites-text {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #ffffff;
             user-select: text;
             -webkit-user-select: text;
+            word-break: break-word;
         }
 
-        .pass-input:focus {
-            border-color: rgba(255, 255, 255, 0.35);
+        .btn-copy-req {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .pass-error {
-            display: none;
-            font-size: 12px;
-            color: #ff453a;
-            margin-bottom: 10px;
-            padding-left: 2px;
+        .pay-hint {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.38;
         }
 
+        .pay-summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding: 0 2px;
+        }
+
+        /* Экран ожидания подтверждения и выдачи установок */
+        .waiting-box {
+            text-align: center;
+            padding: 16px 8px;
+        }
+
+        .spinner-ring {
+            width: 42px;
+            height: 42px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #ff5e7e;
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .waiting-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .waiting-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        .install-ready-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .install-ready-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 10px 12px;
+            gap: 10px;
+        }
+
+        .btn-install-now {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(165, 34, 58, 0.9) 0%, rgba(105, 18, 36, 0.95) 100%);
+            border: 1px solid rgba(255, 145, 165, 0.45);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* Слайдер инструкции */
         .slider-section {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--glass-border);
@@ -564,12 +1047,6 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
-        }
-
-        .slider-btn:active {
-            transform: scale(0.92);
-            background: rgba(255, 255, 255, 0.2);
         }
 
         .slider-dots {
@@ -592,182 +1069,6 @@
             background: #ffffff;
             width: 16px;
             border-radius: 3px;
-        }
-
-        /* Каталог приложений */
-        .catalog-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            flex-shrink: 0;
-        }
-
-        .catalog-header h2 {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.6px;
-        }
-
-        .catalog-header p {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-
-        .price-badge {
-            background: rgba(52, 199, 89, 0.15);
-            border: 1px solid rgba(52, 199, 89, 0.3);
-            color: #4cd964;
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: -0.2px;
-            white-space: nowrap;
-            backdrop-filter: blur(10px);
-        }
-
-        .search-wrapper {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            margin-bottom: 12px;
-            flex-shrink: 0;
-        }
-
-        .search-box {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 14px;
-            width: 16px;
-            height: 16px;
-            fill: var(--text-secondary);
-            pointer-events: none;
-        }
-
-        .search-input {
-            width: 100%;
-            background: rgba(28, 28, 32, 0.82);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--glass-border);
-            border-radius: 14px;
-            padding: 12px 16px 12px 40px;
-            color: var(--text-primary);
-            font-size: 16px; /* 16px предотвращает авто-зум iOS при фокусе на инпут */
-            outline: none;
-            transition: border-color 0.2s;
-            user-select: text;
-            -webkit-user-select: text;
-        }
-
-        .search-input::placeholder {
-            color: var(--text-secondary);
-        }
-
-        .search-input:focus {
-            border-color: rgba(255, 255, 255, 0.28);
-        }
-
-        .app-list-container {
-            flex: 1;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 20px;
-            overscroll-behavior-y: contain;
-        }
-
-        .app-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .app-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 12px 14px;
-        }
-
-        .app-left {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            min-width: 0;
-        }
-
-        .app-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            object-fit: cover;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-        }
-
-        .app-details {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            min-width: 0;
-        }
-
-        .app-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-primary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .app-meta {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .btn-install {
-            touch-action: manipulation;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--burgundy-btn);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--burgundy-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            text-decoration: none;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(110, 25, 40, 0.4);
-            transition: transform 0.15s ease, background 0.2s ease, filter 0.15s ease;
-            flex-shrink: 0;
-        }
-
-        .btn-install:active {
-            transform: scale(0.92);
-            background: var(--burgundy-btn-hover);
-            filter: brightness(0.95);
-        }
-
-        .btn-install svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
         }
 
         .empty-state {
@@ -809,7 +1110,6 @@
     <!-- ЭКРАН 1: ГЛАВНАЯ -->
     <div id="homeScreen" class="screen active">
         <div class="hero">
-            <!-- Чистый логотип без темного окна и рамок -->
             <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/sitelogo.png" alt="RED iOS Logo" class="site-logo-img" onerror="this.style.display='none'">
             
             <div class="status-badge">
@@ -882,110 +1182,12 @@
         </div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ИНСТРУКЦИИ -->
-    <div id="instructionModal" class="modal-overlay" onclick="handleModalClick(event)">
-        <div class="modal-card">
-            <div class="modal-header">
-                <div class="modal-title">Инструкция по установке</div>
-                <button class="modal-close" onclick="closeInstructionModal()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                </button>
-            </div>
-
-            <div class="slider-section">
-                <div class="slider-header">
-                    <div class="slider-step-title" id="slideStepTitle">Шаг 1 из 7</div>
-                    <div class="slider-counter" id="slideCounter">1 / 7</div>
-                </div>
-
-                <div class="slider-container" id="sliderContainer">
-                    <div class="slider-track" id="sliderTrack">
-                        
-                        <!-- Слайд 1 -->
-                        <div class="slider-slide">
-                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step1.png" alt="Шаг 1" class="slide-img">
-                            <div class="slide-text">1. Заходим в настройки, жмём на свой профиль.</div>
-                        </div>
-
-                        <!-- Слайд 2 -->
-                        <div class="slider-slide">
-                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step2.png" alt="Шаг 2" class="slide-img">
-                            <div class="slide-text">2. Далее жмём на раздел "Контент и покупки".</div>
-                        </div>
-
-                        <!-- Слайд 3 -->
-                        <div class="slider-slide">
-                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step3.png" alt="Шаг 3" class="slide-img">
-                            <div class="slide-text">3. Жмём кнопку "Выйти", таким образом мы выходим только из раздела контента, а не из самого аккаунт iCloud.</div>
-                        </div>
-
-                        <!-- Слайд 4 -->
-                        <div class="slider-slide">
-                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step4.png" alt="Шаг 4" class="slide-img">
-                            <div class="slide-text">4. Подтверждаем выход, повторно нажимая на "Выйти".</div>
-                        </div>
-
-                        <!-- Слайд 5 -->
-                        <div class="slider-slide">
-                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step5.png" alt="Шаг 5" class="slide-img">
-                            <div class="slide-text">5. Вас вовзращает обратно, снова жмём на раздел "Контент и покупки".</div>
-                        </div>
-                        
-                        <!-- Слайд 6 -->
-                        <div class="slider-slide">
-                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step6.png" alt="Шаг 6" class="slide-img">
-                            <div class="slide-text">6. Выбираем кнопку "Не ВАШИ ИМЯ ПРОФИЛЯ ?", для того, чтобы авторизоваться под нужным профилем с уже установленными приложениями.</div>
-                        </div>
-
-                         <!-- Слайд 7 -->
-                        <div class="slider-slide">
-                            <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step7.png" alt="Шаг 7" class="slide-img">
-                            <div class="slide-text">7. Входим по данным, которые получили от поддержки RED iOS. Позже, Вы обратно вернётесь к своим настройкам.</div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="slider-controls">
-                    <button class="slider-btn" onclick="prevSlide()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                    </button>
-                    <div class="slider-dots" id="sliderDots"></div>
-                    <button class="slider-btn" onclick="nextSlide()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- МОДАЛЬНОЕ ОКНО ПАРОЛЯ ДЛЯ УСТАНОВКИ -->
-    <div id="passwordModal" class="modal-overlay" onclick="handlePasswordModalClick(event)">
-        <div class="modal-card">
-            <div class="modal-header">
-                <div class="modal-title" id="passModalTitle">Доступ к загрузке</div>
-                <button class="modal-close" onclick="closePasswordModal()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                </button>
-            </div>
-            <div class="pass-subtitle" id="passModalSubtitle">Введите пароль, полученный от поддержки RED iOS</div>
-            <input type="text" id="appPasswordInput" class="pass-input" placeholder="Введите пароль..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-            <div id="passErrorText" class="pass-error">Неверный пароль. Проверьте данные или обратитесь в поддержку.</div>
-            <button id="passSubmitBtn" class="btn-main-burgundy" onclick="submitAppPassword()">
-                Проверить пароль
-            </button>
-            <button type="button" id="directInstallLink" class="btn-main-burgundy" style="display: none; touch-action: manipulation;">
-                Начать установку
-            </button>
-        </div>
-    </div>
-
-    <!-- ЭКРАН 2: КАТАЛОГ ПРИЛОЖЕНИЙ -->
+    <!-- ЭКРАН 2: КАТАЛОГ ПРИЛОЖЕНИЙ (2 КОЛОНКИ: 10 СЛЕВА, 9 СПРАВА) -->
     <div id="catalogScreen" class="screen">
         <div class="catalog-header">
             <div>
                 <h2>Приложения</h2>
-                <p>Нажмите иконку для загрузки</p>
+                <p>Добавьте нужные в корзину</p>
             </div>
             <div id="priceBadge" class="price-badge">250 ₽</div>
         </div>
@@ -1002,36 +1204,175 @@
         </div>
 
         <div class="app-list-container">
-            <div id="appList" class="app-list"></div>
+            <div id="appColumnsGrid" class="app-columns-grid">
+                <div id="leftAppColumn" class="app-column"></div>
+                <div id="rightAppColumn" class="app-column"></div>
+            </div>
             <div id="emptyState" class="empty-state">Приложения не найдены</div>
+        </div>
+    </div>
+</div>
+
+<!-- ПЛАВАЮЩАЯ ПАНЕЛЬ КОРЗИНЫ -->
+<div id="cartDock" class="cart-dock">
+    <div class="cart-dock-info">
+        <div id="cartDockCount" class="cart-dock-count">Выбрано: 1 приложение</div>
+        <div id="cartDockTotal" class="cart-dock-total">250 ₽</div>
+    </div>
+    <button type="button" id="openCartBtn" class="btn-open-cart" onclick="openCheckoutModal()">
+        Корзина и оплата
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18l6-6-6-6"/>
+        </svg>
+    </button>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО КОРЗИНЫ, РЕКВИЗИТОВ И СТАТУСА ЗАКАЗА -->
+<div id="checkoutModal" class="modal-overlay" onclick="handleCheckoutModalClick(event)">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-title" id="checkoutModalTitle">Ваш заказ</div>
+            <button class="modal-close" onclick="closeCheckoutModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <!-- ЭТАП 1: СОСТАВ КОРЗИНЫ И РЕКВИЗИТЫ -->
+        <div id="checkoutStepPay">
+            <div id="cartItemsList" class="cart-items-list"></div>
+
+            <div class="payment-box">
+                <div class="order-num-row">
+                    <span style="color: var(--text-secondary);">Номер вашего заказа:</span>
+                    <span id="orderNumberDisplay" class="order-num-badge">#0001</span>
+                </div>
+                <div class="pay-label">Реквизиты для перевода:</div>
+                <div class="pay-requisites-row">
+                    <span id="paymentDetailsText" class="pay-requisites-text">Загрузка реквизитов...</span>
+                    <button type="button" id="copyReqBtn" class="btn-copy-req" onclick="copyRequisites()">Копировать</button>
+                </div>
+                <div class="pay-hint">
+                    Переведите точную сумму по реквизитам выше (по возможности укажите номер заказа <b id="orderNumberHint">#0001</b> в комментарии) и нажмите «Я оплатил».
+                </div>
+            </div>
+
+            <div class="pay-summary-row">
+                <span>Итого к оплате:</span>
+                <span id="checkoutTotalAmount">250 ₽</span>
+            </div>
+
+            <button type="button" id="confirmPaidBtn" class="btn-main-burgundy" onclick="submitOrderPaid()">
+                Я оплатил
+            </button>
+        </div>
+
+        <!-- ЭТАП 2: ОЖИДАНИЕ ПРОВЕРКИ АДМИНИСТРАТОРОМ -->
+        <div id="checkoutStepWait" class="waiting-box" style="display: none;">
+            <div class="spinner-ring"></div>
+            <div class="waiting-title">Проверяем поступление платежа...</div>
+            <div class="waiting-desc">
+                Заказ <b id="waitingOrderNum">#0001</b> отправлен администратору.<br>
+                Обычно проверка занимает 1–2 минуты. Не закрывайте эту страницу — кнопки установки появятся здесь автоматически.
+            </div>
+        </div>
+
+        <!-- ЭТАП 3: ОПЛАТА ПОДТВЕРЖДЕНА — КНОПКИ УСТАНОВКИ -->
+        <div id="checkoutStepApproved" style="display: none;">
+            <div style="font-size: 13px; color: #4cd964; font-weight: 600; margin-bottom: 6px;">
+                ✅ Оплата подтверждена! Нажмите «Установить» напротив каждого приложения в Safari:
+            </div>
+            <div id="installReadyList" class="install-ready-list"></div>
+        </div>
+
+        <!-- ЭТАП 4: ЗАКАЗ ОТКЛОНЁН -->
+        <div id="checkoutStepRejected" class="waiting-box" style="display: none;">
+            <div style="font-size: 32px; margin-bottom: 8px;">❌</div>
+            <div class="waiting-title">Платёж не подтверждён</div>
+            <div class="waiting-desc" style="margin-bottom: 14px;">
+                Администратор не обнаружил поступление по заказу <b id="rejectedOrderNum">#0001</b>. Если вы уже перевели средства, напишите нам в Telegram.
+            </div>
+            <a href="https://t.me/hlevniy" target="_blank" rel="noopener" class="btn-main-burgundy">
+                Написать в поддержку
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО ИНСТРУКЦИИ -->
+<div id="instructionModal" class="modal-overlay" onclick="handleModalClick(event)">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-title">Инструкция по установке</div>
+            <button class="modal-close" onclick="closeInstructionModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <div class="slider-section">
+            <div class="slider-header">
+                <div class="slider-step-title" id="slideStepTitle">Шаг 1 из 7</div>
+                <div class="slider-counter" id="slideCounter">1 / 7</div>
+            </div>
+
+            <div class="slider-container" id="sliderContainer">
+                <div class="slider-track" id="sliderTrack">
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step1.png" alt="Шаг 1" class="slide-img">
+                        <div class="slide-text">1. Заходим в настройки, жмём на свой профиль.</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step2.png" alt="Шаг 2" class="slide-img">
+                        <div class="slide-text">2. Далее жмём на раздел "Контент и покупки".</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step3.png" alt="Шаг 3" class="slide-img">
+                        <div class="slide-text">3. Жмём кнопку "Выйти", таким образом мы выходим только из раздела контента, а не из самого аккаунт iCloud.</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step4.png" alt="Шаг 4" class="slide-img">
+                        <div class="slide-text">4. Подтверждаем выход, повторно нажимая на "Выйти".</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step5.png" alt="Шаг 5" class="slide-img">
+                        <div class="slide-text">5. Вас вовзращает обратно, снова жмём на раздел "Контент и покупки".</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step6.png" alt="Шаг 6" class="slide-img">
+                        <div class="slide-text">6. Выбираем кнопку "Не ВАШИ ИМЯ ПРОФИЛЯ ?", для того, чтобы авторизоваться под нужным профилем с уже установленными приложениями.</div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://github.com/hlevniy13/ios/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8/step7.png" alt="Шаг 7" class="slide-img">
+                        <div class="slide-text">7. Входим по данным, которые получили от поддержки RED iOS. Позже, Вы обратно вернётесь к своим настройкам.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-controls">
+                <button class="slider-btn" onclick="prevSlide()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div class="slider-dots" id="sliderDots"></div>
+                <button class="slider-btn" onclick="nextSlide()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
     // ЖЕСТКАЯ БЛОКИРОВКА PINCH-TO-ZOOM И DOUBLE-TAP ZOOM НА IOS SAFARI
-    document.addEventListener('gesturestart', function (e) {
-        e.preventDefault();
-    }, { passive: false });
-
-    document.addEventListener('gesturechange', function (e) {
-        e.preventDefault();
-    }, { passive: false });
-
-    document.addEventListener('gestureend', function (e) {
-        e.preventDefault();
-    }, { passive: false });
-
-    // Блокируем зум двумя пальцами в любом месте страницы (включая каталог)
-    document.addEventListener('touchmove', function (e) {
+    document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
+    document.addEventListener('gesturechange', (e) => e.preventDefault(), { passive: false });
+    document.addEventListener('gestureend', (e) => e.preventDefault(), { passive: false });
+    document.addEventListener('touchmove', (e) => {
         if (e.touches.length > 1 || (e.scale && e.scale !== 1)) {
             e.preventDefault();
         }
     }, { passive: false });
 
-    // Блокируем приближение двойным нажатием
     let lastTouchEnd = 0;
-    document.addEventListener('touchend', function (e) {
+    document.addEventListener('touchend', (e) => {
         const now = Date.now();
         if (now - lastTouchEnd <= 300) {
             e.preventDefault();
@@ -1039,16 +1380,22 @@
         lastTouchEnd = now;
     }, { passive: false });
 
-    // ПОДКЛЮЧЕНИЕ К SUPABASE
+    // ПОДКЛЮЧЕНИЕ К SUPABASE И EDGE FUNCTION
     const SUPABASE_URL = 'https://fgptlkhrtawzweklpdws.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_krzJuR1BUgvVktaSmvj6EQ_07tyNyOD';
+    const BOT_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/tg-bot`;
 
-    async function loadSitePrice() {
+    let unitPriceNumber = 250;
+    let currentPaymentDetails = 'СБП +7 (999) 000-00-00 (Т-Банк)';
+
+    function formatOrderNum(num) {
+        return String(num).padStart(4, '0');
+    }
+
+    async function loadSiteSettings() {
         try {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?id=eq.1&select=price,promo_banner`, {
-                headers: {
-                    'apikey': SUPABASE_KEY
-                }
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/site_settings?id=eq.1&select=price,promo_banner,payment_details`, {
+                headers: { 'apikey': SUPABASE_KEY }
             });
             if (res.ok) {
                 const rows = await res.json();
@@ -1056,7 +1403,16 @@
                     const settings = rows[0];
                     if (settings.price) {
                         document.getElementById('priceBadge').textContent = settings.price;
+                        const parsed = parseInt(String(settings.price).replace(/\D/g, ''), 10);
+                        if (!isNaN(parsed) && parsed > 0) {
+                            unitPriceNumber = parsed;
+                        }
                     }
+                    if (settings.payment_details) {
+                        currentPaymentDetails = settings.payment_details;
+                    }
+                    document.getElementById('paymentDetailsText').textContent = currentPaymentDetails;
+
                     const homeBanner = document.getElementById('homePromoBanner');
                     const catalogBanner = document.getElementById('catalogPromoBanner');
                     const promoText = (settings.promo_banner || '').trim();
@@ -1069,6 +1425,7 @@
                         homeBanner.style.display = 'none';
                         catalogBanner.style.display = 'none';
                     }
+                    updateCartUI();
                 }
             }
         } catch (err) {
@@ -1076,13 +1433,14 @@
         }
     }
 
-    loadSitePrice();
+    loadSiteSettings();
 
     const GITHUB_USER = 'hlevniy13';
     const GITHUB_REPO = 'ios';
     const PLIST_BASE_URL = 'https://www.red-ios.ru';
     const ICONS_BASE_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8`;
 
+    // 19 ПРИЛОЖЕНИЙ: ПЕРВЫЕ 10 — В ЛЕВУЮ КОЛОНКУ, ОСТАЛЬНЫЕ 9 — В ПРАВУЮ
     const apps = [
         { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB' },
         { id: 'tbank', name: 'Т-Банк', size: '452.2 MB' },
@@ -1094,6 +1452,7 @@
         { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB' },
         { id: 'vk', name: 'ВКонтакте', size: '437.2 MB' },
         { id: 'vkmyz', name: 'ВК Музыка', size: '280 MB' },
+        // --- Правая колонка (9 приложений) ---
         { id: 'avito', name: 'Авито', size: '580.1 MB' },
         { id: 'mailru', name: 'Почта Mail.ru', size: '574.5 MB' },
         { id: 'max', name: 'MAX', size: '91.2 MB' },
@@ -1109,9 +1468,39 @@
     const catalogScreen = document.getElementById('catalogScreen');
     const brandBadge = document.getElementById('brandBadge');
     const backBtn = document.getElementById('backBtn');
-    const appListEl = document.getElementById('appList');
+    const leftAppColumn = document.getElementById('leftAppColumn');
+    const rightAppColumn = document.getElementById('rightAppColumn');
+    const appColumnsGrid = document.getElementById('appColumnsGrid');
     const emptyStateEl = document.getElementById('emptyState');
     const searchInput = document.getElementById('searchInput');
+
+    // СОСТОЯНИЕ КОРЗИНЫ И ЗАКАЗА
+    let cart = [];
+    let currentOrderNumber = 1;
+    let activeOrderId = null;
+    let isOrderSubmitted = false;
+    let statusPollTimer = null;
+
+    function calculateTotal(count) {
+        if (count <= 0) return { total: 0, discount: 0 };
+        const raw = count * unitPriceNumber;
+        // Пакетная скидка: каждые 5 приложений по 1000 ₽ (экономия 250 ₽ на каждом пакете из 5)
+        const bundlesOfFive = Math.floor(count / 5);
+        const remainder = count % 5;
+        const discounted = bundlesOfFive * (unitPriceNumber * 4) + remainder * unitPriceNumber;
+        return {
+            total: discounted,
+            discount: raw - discounted
+        };
+    }
+
+    function pluralApps(n) {
+        const mod10 = n % 10;
+        const mod100 = n % 100;
+        if (mod10 === 1 && mod100 !== 11) return `${n} приложение`;
+        if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return `${n} приложения`;
+        return `${n} приложений`;
+    }
 
     function showScreen(screenName) {
         if (screenName === 'catalog') {
@@ -1119,54 +1508,107 @@
             catalogScreen.classList.add('active');
             brandBadge.style.display = 'none';
             backBtn.style.display = 'inline-flex';
-            loadSitePrice();
+            loadSiteSettings();
+            updateCartUI();
         } else {
             catalogScreen.classList.remove('active');
             homeScreen.classList.add('active');
             backBtn.style.display = 'none';
             brandBadge.style.display = 'inline-flex';
+            document.getElementById('cartDock').classList.remove('visible');
         }
     }
 
+    function toggleCartItem(app) {
+        const idx = cart.findIndex(item => item.id === app.id);
+        if (idx >= 0) {
+            cart.splice(idx, 1);
+        } else {
+            cart.push(app);
+        }
+        renderApps(searchInput.value);
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const dock = document.getElementById('cartDock');
+        const isCatalogActive = catalogScreen.classList.contains('active');
+
+        if (!isCatalogActive || cart.length === 0) {
+            dock.classList.remove('visible');
+            return;
+        }
+
+        const { total, discount } = calculateTotal(cart.length);
+        document.getElementById('cartDockCount').textContent = `В корзине: ${pluralApps(cart.length)}`;
+        document.getElementById('cartDockTotal').innerHTML = discount > 0
+            ? `${total} ₽ <span class="discount-tag">−${discount} ₽</span>`
+            : `${total} ₽`;
+
+        dock.classList.add('visible');
+    }
+
+    function createAppCardElement(app) {
+        const iconUrl = `${ICONS_BASE_URL}/${app.id}.png`;
+        const isSelected = cart.some(item => item.id === app.id);
+
+        const card = document.createElement('div');
+        card.className = `app-card ${isSelected ? 'in-cart' : ''}`;
+        card.innerHTML = `
+            <div class="app-top">
+                <img src="${iconUrl}" alt="${app.name}" class="app-icon" onerror="this.src='https://via.placeholder.com/40/1c1c1e/ffffff?text=${app.id}'">
+                <div class="app-details">
+                    <div class="app-title">${app.name}</div>
+                    <div class="app-meta">${app.size}</div>
+                </div>
+            </div>
+            <button type="button" class="btn-liquid-download ${isSelected ? 'selected' : ''}">
+                ${isSelected
+                    ? `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> В корзине`
+                    : `<svg viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg> Скачать`
+                }
+            </button>
+        `;
+        card.querySelector('.btn-liquid-download').addEventListener('click', () => {
+            toggleCartItem(app);
+        });
+        return card;
+    }
+
     function renderApps(filterText = '') {
-        appListEl.innerHTML = '';
+        leftAppColumn.innerHTML = '';
+        rightAppColumn.innerHTML = '';
         const query = filterText.trim().toLowerCase();
 
-        const filtered = apps.filter(app => 
-            app.name.toLowerCase().includes(query) || 
+        if (!query) {
+            emptyStateEl.style.display = 'none';
+            appColumnsGrid.style.display = 'grid';
+
+            const leftItems = apps.slice(0, 10);
+            const rightItems = apps.slice(10, 19);
+
+            leftItems.forEach(app => leftAppColumn.appendChild(createAppCardElement(app)));
+            rightItems.forEach(app => rightAppColumn.appendChild(createAppCardElement(app)));
+            return;
+        }
+
+        const filtered = apps.filter(app =>
+            app.name.toLowerCase().includes(query) ||
             app.id.toLowerCase().includes(query)
         );
 
         if (filtered.length === 0) {
+            appColumnsGrid.style.display = 'none';
             emptyStateEl.style.display = 'block';
             return;
         }
+
         emptyStateEl.style.display = 'none';
+        appColumnsGrid.style.display = 'grid';
 
-        filtered.forEach(app => {
-            const iconUrl = `${ICONS_BASE_URL}/${app.id}.png`;
-
-            const card = document.createElement('div');
-            card.className = 'app-card';
-            card.innerHTML = `
-                <div class="app-left">
-                    <img src="${iconUrl}" alt="${app.name}" class="app-icon" onerror="this.src='https://via.placeholder.com/50/1c1c1e/ffffff?text=${app.id}'">
-                    <div class="app-details">
-                        <div class="app-title">${app.name}</div>
-                        <div class="app-meta">${app.size}</div>
-                    </div>
-                </div>
-                <button type="button" class="btn-install" title="Установить ${app.name}">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-                    </svg>
-                </button>
-            `;
-            card.querySelector('.btn-install').addEventListener('click', () => {
-                openPasswordModal(app);
-            });
-            appListEl.appendChild(card);
-        });
+        const splitIdx = Math.ceil(filtered.length / 2);
+        filtered.slice(0, splitIdx).forEach(app => leftAppColumn.appendChild(createAppCardElement(app)));
+        filtered.slice(splitIdx).forEach(app => rightAppColumn.appendChild(createAppCardElement(app)));
     }
 
     searchInput.addEventListener('input', (e) => {
@@ -1175,102 +1617,268 @@
 
     renderApps();
 
-    // ЛОГИКА ОКНА ВВОДА ПАРОЛЯ
-    const passwordModal = document.getElementById('passwordModal');
-    const passModalTitle = document.getElementById('passModalTitle');
-    const passModalSubtitle = document.getElementById('passModalSubtitle');
-    const appPasswordInput = document.getElementById('appPasswordInput');
-    const passErrorText = document.getElementById('passErrorText');
-    const passSubmitBtn = document.getElementById('passSubmitBtn');
-    const directInstallLink = document.getElementById('directInstallLink');
-    let selectedApp = null;
+    // МОДАЛЬНОЕ ОКНО КОРЗИНЫ И ОПЛАТЫ
+    const checkoutModal = document.getElementById('checkoutModal');
 
-    function openPasswordModal(app) {
-        selectedApp = app;
-        passModalTitle.textContent = app.name;
-        passModalSubtitle.textContent = 'Введите пароль, полученный от поддержки RED iOS';
-        appPasswordInput.value = '';
-        appPasswordInput.style.display = 'block';
-        passErrorText.style.display = 'none';
-        passSubmitBtn.style.display = 'flex';
-        passSubmitBtn.disabled = false;
-        passSubmitBtn.textContent = 'Проверить пароль';
-        directInstallLink.style.display = 'none';
-        directInstallLink.onclick = null;
-        passwordModal.classList.add('active');
+    function setCheckoutView(stepName) {
+        document.getElementById('checkoutStepPay').style.display = stepName === 'pay' ? 'block' : 'none';
+        document.getElementById('checkoutStepWait').style.display = stepName === 'wait' ? 'block' : 'none';
+        document.getElementById('checkoutStepApproved').style.display = stepName === 'approved' ? 'block' : 'none';
+        document.getElementById('checkoutStepRejected').style.display = stepName === 'rejected' ? 'block' : 'none';
     }
 
-    function closePasswordModal() {
-        passwordModal.classList.remove('active');
-        selectedApp = null;
-    }
+    async function openCheckoutModal() {
+        if (cart.length === 0) return;
+        loadSiteSettings();
 
-    function handlePasswordModalClick(e) {
-        if (e.target === passwordModal) {
-            closePasswordModal();
-        }
-    }
-
-    appPasswordInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            submitAppPassword();
-        }
-    });
-
-    async function submitAppPassword() {
-        if (!selectedApp) return;
-        const enteredPassword = appPasswordInput.value.trim();
-
-        if (!enteredPassword) {
-            passErrorText.textContent = 'Введите пароль для продолжения.';
-            passErrorText.style.display = 'block';
+        if (isOrderSubmitted && activeOrderId) {
+            checkoutModal.classList.add('active');
             return;
         }
 
-        passSubmitBtn.disabled = true;
-        passSubmitBtn.textContent = 'Проверка...';
-        passErrorText.style.display = 'none';
+        const openBtn = document.getElementById('openCartBtn');
+        openBtn.disabled = true;
 
         try {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/verify_app_password`, {
+            const { total } = calculateTotal(cart.length);
+            const amountStr = `${total} ₽`;
+            const itemsPayload = cart.map(item => ({ id: item.id, name: item.name }));
+
+            if (!activeOrderId) {
+                // Создаём запись в Supabase, чтобы получить сквозной порядковый номер (0001, 0002, 0003...)
+                const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        items: itemsPayload,
+                        amount: amountStr,
+                        status: 'draft'
+                    })
+                });
+
+                if (insertRes.ok) {
+                    const createdRows = await insertRes.json();
+                    if (createdRows && createdRows[0]) {
+                        activeOrderId = createdRows[0].id;
+                        currentOrderNumber = createdRows[0].order_number;
+                    }
+                }
+            }
+
+            setCheckoutView('pay');
+            document.getElementById('checkoutModalTitle').textContent = 'Оформление заказа';
+            renderCheckoutItems();
+            checkoutModal.classList.add('active');
+        } catch (err) {
+            console.error(err);
+            setCheckoutView('pay');
+            renderCheckoutItems();
+            checkoutModal.classList.add('active');
+        } finally {
+            openBtn.disabled = false;
+        }
+    }
+
+    function closeCheckoutModal() {
+        checkoutModal.classList.remove('active');
+    }
+
+    function handleCheckoutModalClick(e) {
+        if (e.target === checkoutModal) {
+            closeCheckoutModal();
+        }
+    }
+
+    function renderCheckoutItems() {
+        const listEl = document.getElementById('cartItemsList');
+        listEl.innerHTML = '';
+
+        cart.forEach(app => {
+            const row = document.createElement('div');
+            row.className = 'cart-item-row';
+            row.innerHTML = `
+                <div class="cart-item-left">
+                    <img src="${ICONS_BASE_URL}/${app.id}.png" alt="${app.name}">
+                    <div class="cart-item-name">${app.name}</div>
+                </div>
+                <button type="button" class="btn-remove-item" title="Удалить">✕</button>
+            `;
+            row.querySelector('.btn-remove-item').addEventListener('click', () => {
+                cart = cart.filter(item => item.id !== app.id);
+                renderApps(searchInput.value);
+                updateCartUI();
+                if (cart.length === 0) {
+                    closeCheckoutModal();
+                } else {
+                    renderCheckoutItems();
+                }
+            });
+            listEl.appendChild(row);
+        });
+
+        const { total, discount } = calculateTotal(cart.length);
+        const formattedNum = formatOrderNum(currentOrderNumber);
+        document.getElementById('orderNumberDisplay').textContent = `#${formattedNum}`;
+        document.getElementById('orderNumberHint').textContent = `#${formattedNum}`;
+        document.getElementById('paymentDetailsText').textContent = currentPaymentDetails;
+        document.getElementById('checkoutTotalAmount').innerHTML = discount > 0
+            ? `${total} ₽ <span style="font-size:12px; color:#4cd964;">(скидка ${discount} ₽)</span>`
+            : `${total} ₽`;
+    }
+
+    function copyRequisites() {
+        const btn = document.getElementById('copyReqBtn');
+        navigator.clipboard?.writeText(currentPaymentDetails).catch(() => {});
+        btn.textContent = 'Скопировано ✓';
+        setTimeout(() => {
+            btn.textContent = 'Копировать';
+        }, 1800);
+    }
+
+    async function submitOrderPaid() {
+        if (cart.length === 0) return;
+
+        const btn = document.getElementById('confirmPaidBtn');
+        btn.disabled = true;
+        btn.textContent = 'Отправка заявки...';
+
+        const { total } = calculateTotal(cart.length);
+        const amountStr = `${total} ₽`;
+        const itemsPayload = cart.map(item => ({ id: item.id, name: item.name }));
+
+        try {
+            if (activeOrderId) {
+                // Обновляем состав корзины, актуальную сумму и переводим в статус pending
+                const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/orders?id=eq.${activeOrderId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY
+                    },
+                    body: JSON.stringify({
+                        items: itemsPayload,
+                        amount: amountStr,
+                        status: 'pending'
+                    })
+                });
+                if (!patchRes.ok) {
+                    throw new Error('Ошибка обновления заказа');
+                }
+            } else {
+                const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify({
+                        items: itemsPayload,
+                        amount: amountStr,
+                        status: 'pending'
+                    })
+                });
+                if (!insertRes.ok) {
+                    throw new Error('Ошибка создания заказа');
+                }
+                const createdRows = await insertRes.json();
+                activeOrderId = createdRows[0].id;
+                currentOrderNumber = createdRows[0].order_number;
+            }
+
+            // Уведомляем Telegram-бота администратора
+            await fetch(BOT_FUNCTION_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'apikey': SUPABASE_KEY
                 },
                 body: JSON.stringify({
-                    p_app_id: selectedApp.id,
-                    p_password: enteredPassword
+                    action: 'new_order',
+                    order_id: activeOrderId
                 })
             });
 
-            const isValid = await res.json();
-
-            if (res.ok && isValid === true) {
-                const plistUrl = `${PLIST_BASE_URL}/${selectedApp.id}.plist`;
-                const itmsLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistUrl)}`;
-
-                appPasswordInput.blur();
-                appPasswordInput.style.display = 'none';
-                passSubmitBtn.style.display = 'none';
-                passModalSubtitle.textContent = 'Пароль подтверждён. Нажмите кнопку ниже, чтобы начать загрузку в Safari:';
-
-                directInstallLink.onclick = function(e) {
-                    e.preventDefault();
-                    window.location.href = itmsLink;
-                };
-                directInstallLink.style.display = 'flex';
-            } else {
-                passErrorText.textContent = 'Неверный пароль. Проверьте данные или обратитесь в поддержку.';
-                passErrorText.style.display = 'block';
-            }
+            isOrderSubmitted = true;
+            const formattedNum = formatOrderNum(currentOrderNumber);
+            document.getElementById('checkoutModalTitle').textContent = `Заказ #${formattedNum}`;
+            document.getElementById('waitingOrderNum').textContent = `#${formattedNum}`;
+            setCheckoutView('wait');
+            startOrderStatusPolling(activeOrderId, itemsPayload);
         } catch (err) {
-            passErrorText.textContent = 'Ошибка соединения. Попробуйте ещё раз.';
-            passErrorText.style.display = 'block';
+            console.error(err);
+            alert('Не удалось отправить заявку. Проверьте интернет и попробуйте ещё раз.');
         } finally {
-            passSubmitBtn.disabled = false;
-            passSubmitBtn.textContent = 'Проверить пароль';
+            btn.disabled = false;
+            btn.textContent = 'Я оплатил';
         }
+    }
+
+    function startOrderStatusPolling(orderId, orderedItems) {
+        if (statusPollTimer) clearInterval(statusPollTimer);
+
+        statusPollTimer = setInterval(async () => {
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?id=eq.${orderId}&select=status`, {
+                    headers: { 'apikey': SUPABASE_KEY }
+                });
+                if (!res.ok) return;
+
+                const rows = await res.json();
+                if (!rows || rows.length === 0) return;
+
+                const status = rows[0].status;
+                if (status === 'approved') {
+                    clearInterval(statusPollTimer);
+                    statusPollTimer = null;
+                    showApprovedInstallScreen(orderedItems);
+                } else if (status === 'rejected') {
+                    clearInterval(statusPollTimer);
+                    statusPollTimer = null;
+                    document.getElementById('rejectedOrderNum').textContent = `#${formatOrderNum(currentOrderNumber)}`;
+                    setCheckoutView('rejected');
+                    activeOrderId = null;
+                    isOrderSubmitted = false;
+                }
+            } catch (e) {
+                console.error('Polling error:', e);
+            }
+        }, 3000);
+    }
+
+    function showApprovedInstallScreen(orderedItems) {
+        const listEl = document.getElementById('installReadyList');
+        listEl.innerHTML = '';
+
+        orderedItems.forEach(item => {
+            const plistUrl = `${PLIST_BASE_URL}/${item.id}.plist`;
+            const itmsLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(plistUrl)}`;
+
+            const row = document.createElement('div');
+            row.className = 'install-ready-item';
+            row.innerHTML = `
+                <div class="cart-item-left">
+                    <img src="${ICONS_BASE_URL}/${item.id}.png" alt="${item.name}">
+                    <div class="cart-item-name">${item.name}</div>
+                </div>
+                <button type="button" class="btn-install-now">Установить</button>
+            `;
+            row.querySelector('.btn-install-now').addEventListener('click', () => {
+                window.location.href = itmsLink;
+            });
+            listEl.appendChild(row);
+        });
+
+        setCheckoutView('approved');
+        cart = [];
+        activeOrderId = null;
+        isOrderSubmitted = false;
+        renderApps(searchInput.value);
+        updateCartUI();
     }
 
     // Логика модального окна инструкции и слайдера
@@ -1335,7 +1943,6 @@
         updateSlider();
     }
 
-    // Поддержка свайпов на слайдере в модалке
     let touchStartX = 0;
     let touchEndX = 0;
     const sliderContainer = document.getElementById('sliderContainer');
@@ -1350,12 +1957,8 @@
     }, {passive: true});
 
     function handleSwipe() {
-        if (touchEndX < touchStartX - 40) {
-            nextSlide();
-        }
-        if (touchEndX > touchStartX + 40) {
-            prevSlide();
-        }
+        if (touchEndX < touchStartX - 40) nextSlide();
+        if (touchEndX > touchStartX + 40) prevSlide();
     }
 
     initDots();
