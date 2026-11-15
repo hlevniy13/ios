@@ -460,7 +460,7 @@
             flex: 1;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 86px;
+            padding-bottom: 124px;
             overscroll-behavior-y: contain;
         }
 
@@ -597,33 +597,87 @@
             flex-shrink: 0;
         }
 
-        /* ПЛАВАЮЩАЯ ПАНЕЛЬ КОРЗИНЫ ВНИЗУ ЭКРАНА */
+        /* ПЛАВАЮЩАЯ ПАНЕЛЬ КОРЗИНЫ С ПРОГРЕСС-БАРОМ ВНИЗУ ЭКРАНА */
         .cart-dock {
             position: fixed;
             left: 50%;
-            bottom: 14px;
-            transform: translateX(-50%) translateY(120%);
+            bottom: 12px;
+            transform: translateX(-50%) translateY(130%);
             width: calc(100% - 24px);
             max-width: 456px;
-            background: rgba(30, 18, 24, 0.88);
-            backdrop-filter: blur(28px) saturate(160%);
-            -webkit-backdrop-filter: blur(28px) saturate(160%);
+            background: rgba(28, 16, 22, 0.9);
+            backdrop-filter: blur(28px) saturate(165%);
+            -webkit-backdrop-filter: blur(28px) saturate(165%);
             border: 1px solid rgba(255, 130, 155, 0.35);
             border-radius: 20px;
-            padding: 10px 12px 10px 16px;
+            padding: 10px 12px 10px 14px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            flex-direction: column;
+            gap: 9px;
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.25),
-                0 12px 32px rgba(0, 0, 0, 0.65);
+                0 12px 32px rgba(0, 0, 0, 0.68);
             z-index: 60;
             transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .cart-dock.visible {
             transform: translateX(-50%) translateY(0);
+        }
+
+        .cart-progress-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 0 2px;
+        }
+
+        .cart-progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: -0.1px;
+        }
+
+        .cart-progress-header.bonus-ready {
+            color: #ff94aa;
+        }
+
+        .cart-progress-header.bonus-active {
+            color: #4cd964;
+        }
+
+        .cart-progress-track {
+            width: 100%;
+            height: 7px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45);
+        }
+
+        .cart-progress-fill {
+            height: 100%;
+            width: 20%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #b82542 0%, #ff4d73 100%);
+            box-shadow: 0 0 10px rgba(255, 77, 115, 0.55);
+            transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .cart-progress-fill.bonus-active {
+            background: linear-gradient(90deg, #28a745 0%, #4cd964 100%);
+            box-shadow: 0 0 10px rgba(76, 217, 100, 0.55);
+        }
+
+        .cart-dock-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         .cart-dock-info {
@@ -867,6 +921,18 @@
             user-select: text;
             -webkit-user-select: text;
             word-break: break-word;
+            cursor: pointer;
+            transition: color 0.18s ease, opacity 0.18s ease;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pay-requisites-text:active {
+            opacity: 0.7;
+        }
+
+        .pay-requisites-text.copied {
+            color: #4cd964;
         }
 
         /* Неактивная плашка/кнопка «ВТБ Банк» */
@@ -1217,18 +1283,29 @@
     </div>
 </div>
 
-<!-- ПЛАВАЮЩАЯ ПАНЕЛЬ КОРЗИНЫ -->
+<!-- ПЛАВАЮЩАЯ ПАНЕЛЬ КОРЗИНЫ С ПРОГРЕСС-БАРОМ -->
 <div id="cartDock" class="cart-dock">
-    <div class="cart-dock-info">
-        <div id="cartDockCount" class="cart-dock-count">Выбрано: 1 приложение</div>
-        <div id="cartDockTotal" class="cart-dock-total">250 ₽</div>
+    <div class="cart-progress-wrap">
+        <div id="cartProgressHeader" class="cart-progress-header">
+            <span id="cartProgressLabel">Добавьте ещё 4 — 5-е будет за 0 ₽</span>
+            <span id="cartProgressPct">20%</span>
+        </div>
+        <div class="cart-progress-track">
+            <div id="cartProgressFill" class="cart-progress-fill"></div>
+        </div>
     </div>
-    <button type="button" id="openCartBtn" class="btn-open-cart" onclick="openCheckoutModal()">
-        Корзина и оплата
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 18l6-6-6-6"/>
-        </svg>
-    </button>
+    <div class="cart-dock-bottom">
+        <div class="cart-dock-info">
+            <div id="cartDockCount" class="cart-dock-count">Выбрано: 1 приложение</div>
+            <div id="cartDockTotal" class="cart-dock-total">250 ₽</div>
+        </div>
+        <button type="button" id="openCartBtn" class="btn-open-cart" onclick="openCheckoutModal()">
+            Корзина и оплата
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+    </div>
 </div>
 
 <!-- МОДАЛЬНОЕ ОКНО КОРЗИНЫ, РЕКВИЗИТОВ И СТАТУСА ЗАКАЗА -->
@@ -1250,9 +1327,9 @@
                     <span style="color: var(--text-secondary);">Номер вашего заказа:</span>
                     <span id="orderNumberDisplay" class="order-num-badge">#0001</span>
                 </div>
-                <div class="pay-label">Реквизиты для перевода:</div>
+                <div class="pay-label">Реквизиты для перевода (нажмите на номер, чтобы скопировать):</div>
                 <div class="pay-requisites-row">
-                    <span id="paymentDetailsText" class="pay-requisites-text">Загрузка реквизитов...</span>
+                    <span id="paymentDetailsText" class="pay-requisites-text" onclick="copyPaymentPhone()">Загрузка реквизитов...</span>
                     <button type="button" class="bank-badge-inactive" disabled>ВТБ Банк</button>
                 </div>
             </div>
@@ -1546,13 +1623,85 @@
             return;
         }
 
-        const { total, discount } = calculateTotal(cart.length);
-        document.getElementById('cartDockCount').textContent = `В корзине: ${pluralApps(cart.length)}`;
+        const count = cart.length;
+        const { total, discount } = calculateTotal(count);
+        document.getElementById('cartDockCount').textContent = `В корзине: ${pluralApps(count)}`;
         document.getElementById('cartDockTotal').innerHTML = discount > 0
             ? `${total} ₽ <span class="discount-tag">−${discount} ₽</span>`
             : `${total} ₽`;
 
+        // Обновление прогресс-бара до бесплатного 5-го приложения
+        const rem = count % 5;
+        const headerEl = document.getElementById('cartProgressHeader');
+        const labelEl = document.getElementById('cartProgressLabel');
+        const pctEl = document.getElementById('cartProgressPct');
+        const fillEl = document.getElementById('cartProgressFill');
+
+        headerEl.classList.remove('bonus-ready', 'bonus-active');
+        fillEl.classList.remove('bonus-active');
+
+        if (rem === 0) {
+            // 5, 10, 15 приложений — бонус активирован
+            headerEl.classList.add('bonus-active');
+            fillEl.classList.add('bonus-active');
+            labelEl.textContent = `🎁 Бонус активен! Выгода ${discount} ₽`;
+            pctEl.textContent = '100%';
+            fillEl.style.width = '100%';
+        } else if (rem === 4) {
+            // 4, 9, 14 приложений — следующее идёт за 0 ₽
+            headerEl.classList.add('bonus-ready');
+            labelEl.textContent = `${count + 1}-е приложение за 0 ₽! Выберите ещё 1 🎁`;
+            pctEl.textContent = '80%';
+            fillEl.style.width = '80%';
+        } else {
+            const left = 5 - rem;
+            const pct = rem * 20;
+            const nextBonusNum = count + left;
+            labelEl.textContent = `Добавьте ещё ${left} — ${nextBonusNum}-е будет за 0 ₽`;
+            pctEl.textContent = `${pct}%`;
+            fillEl.style.width = `${pct}%`;
+        }
+
         dock.classList.add('visible');
+    }
+
+    let copyFeedbackTimer = null;
+    async function copyPaymentPhone() {
+        const textEl = document.getElementById('paymentDetailsText');
+        if (!textEl || textEl.classList.contains('copied')) return;
+
+        // Извлекаем номер телефона (например +79782925732) или копируем весь текст реквизитов, если формат нестандартный
+        const phoneMatch = currentPaymentDetails.match(/(\+?\d[\d\s\-\(\)]{8,}\d)/);
+        const valueToCopy = phoneMatch
+            ? phoneMatch[0].replace(/[^\d+]/g, '')
+            : currentPaymentDetails;
+
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(valueToCopy);
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = valueToCopy;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+
+            textEl.classList.add('copied');
+            textEl.textContent = `✓ Номер ${valueToCopy} скопирован`;
+
+            if (copyFeedbackTimer) clearTimeout(copyFeedbackTimer);
+            copyFeedbackTimer = setTimeout(() => {
+                textEl.classList.remove('copied');
+                textEl.textContent = currentPaymentDetails;
+            }, 1800);
+        } catch (err) {
+            console.error('Copy failed:', err);
+        }
     }
 
     function createAppCardElement(app) {
