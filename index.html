@@ -955,6 +955,12 @@
             font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn-install-now.clicked {
+            background: linear-gradient(180deg, rgba(48, 185, 82, 0.72) 0%, rgba(28, 128, 54, 0.84) 100%);
+            border-color: rgba(130, 255, 160, 0.45);
         }
 
         /* Слайдер инструкции */
@@ -1278,8 +1284,11 @@
             </div>
             <div id="installReadyList" class="install-ready-list"></div>
             <div style="margin-top: 14px; padding: 10px 12px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.45; text-align: center;">
-                После того, как установите все приложения, нужно написать <a href="https://t.me/hlevniy" target="_blank" rel="noopener" style="color: #ff8ca0; font-style: italic; font-weight: 600; text-decoration: underline;">поддержке</a> для получения данных к активации приложений
+                После того, как установите все приложения, нужно написать <a id="supportActivationLink" href="https://t.me/hlevniy" target="_blank" rel="noopener" style="color: #ff8ca0; font-style: italic; font-weight: 600; text-decoration: underline;">поддержке</a> для получения данных к активации приложений
             </div>
+            <button type="button" class="btn-main-glass" style="margin-top: 10px; padding: 11px 16px; font-size: 13.5px;" onclick="finishAndClearOrder()">
+                Готово / Новый заказ
+            </button>
         </div>
 
         <!-- ЭТАП 4: ЗАКАЗ ОТКЛОНЁН -->
@@ -1790,10 +1799,11 @@
 
             isOrderSubmitted = true;
             const formattedNum = formatOrderNum(currentOrderNumber);
+            saveOrderSession(activeOrderId, currentOrderNumber, itemsPayload, 'pending');
             document.getElementById('checkoutModalTitle').textContent = `Заказ #${formattedNum}`;
             document.getElementById('waitingOrderNum').textContent = `#${formattedNum}`;
             setCheckoutView('wait');
-            startOrderStatusPolling(activeOrderId, itemsPayload);
+            startOrderStatusPolling(activeOrderId, itemsPayload, currentOrderNumber);
         } catch (err) {
             console.error(err);
             alert('Не удалось отправить заявку. Проверьте интернет и попробуйте ещё раз.');
@@ -1803,12 +1813,47 @@
         }
     }
 
-    function startOrderStatusPolling(orderId, orderedItems) {
+    const ORDER_STORAGE_KEY = 'red_ios_active_order_v1';
+    const ORDER_TTL_MS = 24 * 60 * 60 * 1000; // 24 часа
+
+    function saveOrderSession(orderId, orderNumber, items, status) {
+        try {
+            localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify({
+                orderId,
+                orderNumber,
+                items,
+                status,
+                savedAt: Date.now()
+            }));
+        } catch (e) {}
+    }
+
+    function clearOrderSession() {
+        try {
+            localStorage.removeItem(ORDER_STORAGE_KEY);
+        } catch (e) {}
+    }
+
+    function finishAndClearOrder() {
+        if (statusPollTimer) {
+            clearInterval(statusPollTimer);
+            statusPollTimer = null;
+        }
+        clearOrderSession();
+        activeOrderId = null;
+        isOrderSubmitted = false;
+        cart = [];
+        renderApps(searchInput.value);
+        updateCartUI();
+        closeCheckoutModal();
+    }
+
+    function startOrderStatusPolling(orderId, orderedItems, orderNum = currentOrderNumber) {
         if (statusPollTimer) clearInterval(statusPollTimer);
 
         statusPollTimer = setInterval(async () => {
             try {
-                const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?id=eq.${orderId}&select=status`, {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?id=eq.${orderId}&select=status,order_number,items`, {
                     headers: { 'apikey': SUPABASE_KEY }
                 });
                 if (!res.ok) return;
@@ -1816,15 +1861,20 @@
                 const rows = await res.json();
                 if (!rows || rows.length === 0) return;
 
-                const status = rows[0].status;
-                if (status === 'approved') {
+                const row = rows[0];
+                const resolvedNum = row.order_number || orderNum;
+                const resolvedItems = (Array.isArray(row.items) && row.items.length > 0) ? row.items : orderedItems;
+
+                if (row.status === 'approved') {
                     clearInterval(statusPollTimer);
                     statusPollTimer = null;
-                    showApprovedInstallScreen(orderedItems);
-                } else if (status === 'rejected') {
+                    saveOrderSession(orderId, resolvedNum, resolvedItems, 'approved');
+                    showApprovedInstallScreen(resolvedItems, resolvedNum);
+                } else if (row.status === 'rejected') {
                     clearInterval(statusPollTimer);
                     statusPollTimer = null;
-                    document.getElementById('rejectedOrderNum').textContent = `#${formatOrderNum(currentOrderNumber)}`;
+                    clearOrderSession();
+                    document.getElementById('rejectedOrderNum').textContent = `#${formatOrderNum(resolvedNum)}`;
                     setCheckoutView('rejected');
                     activeOrderId = null;
                     isOrderSubmitted = false;
@@ -1835,9 +1885,20 @@
         }, 3000);
     }
 
-    function showApprovedInstallScreen(orderedItems) {
+    function showApprovedInstallScreen(orderedItems, orderNum = currentOrderNumber) {
         const listEl = document.getElementById('installReadyList');
         listEl.innerHTML = '';
+        const formattedNum = formatOrderNum(orderNum);
+
+        document.getElementById('checkoutModalTitle').textContent = `Заказ #${formattedNum}`;
+
+        // Предзаполненный текст для перехода в Telegram @hlevniy
+        const appNamesList = orderedItems.map(item => item.name).join(', ');
+        const tgMessage = `Здравствуйте! Оплатил заказ #${formattedNum} (${appNamesList}), приложения установил, нужны данные для активации.`;
+        const supportLink = document.getElementById('supportActivationLink');
+        if (supportLink) {
+            supportLink.href = `https://t.me/hlevniy?text=${encodeURIComponent(tgMessage)}`;
+        }
 
         orderedItems.forEach(item => {
             const plistUrl = `${PLIST_BASE_URL}/${item.id}.plist`;
@@ -1852,7 +1913,10 @@
                 </div>
                 <button type="button" class="btn-install-now">Установить</button>
             `;
-            row.querySelector('.btn-install-now').addEventListener('click', () => {
+            const installBtn = row.querySelector('.btn-install-now');
+            installBtn.addEventListener('click', () => {
+                installBtn.classList.add('clicked');
+                installBtn.textContent = 'Нажато ✓';
                 window.location.href = itmsLink;
             });
             listEl.appendChild(row);
@@ -1865,6 +1929,58 @@
         renderApps(searchInput.value);
         updateCartUI();
     }
+
+    // Восстановление активного заказа при перезагрузке страницы / выгрузке вкладки Safari
+    async function restoreOrderSessionOnLoad() {
+        try {
+            const raw = localStorage.getItem(ORDER_STORAGE_KEY);
+            if (!raw) return;
+
+            const saved = JSON.parse(raw);
+            if (!saved || !saved.orderId || (Date.now() - saved.savedAt > ORDER_TTL_MS)) {
+                clearOrderSession();
+                return;
+            }
+
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?id=eq.${saved.orderId}&select=status,order_number,items`, {
+                headers: { 'apikey': SUPABASE_KEY }
+            });
+            if (!res.ok) return;
+
+            const rows = await res.json();
+            if (!rows || rows.length === 0) {
+                clearOrderSession();
+                return;
+            }
+
+            const row = rows[0];
+            const orderNum = row.order_number || saved.orderNumber || 1;
+            const items = (Array.isArray(row.items) && row.items.length > 0) ? row.items : (saved.items || []);
+            const formattedNum = formatOrderNum(orderNum);
+
+            if (row.status === 'pending') {
+                activeOrderId = saved.orderId;
+                currentOrderNumber = orderNum;
+                isOrderSubmitted = true;
+                document.getElementById('checkoutModalTitle').textContent = `Заказ #${formattedNum}`;
+                document.getElementById('waitingOrderNum').textContent = `#${formattedNum}`;
+                setCheckoutView('wait');
+                checkoutModal.classList.add('active');
+                startOrderStatusPolling(saved.orderId, items, orderNum);
+            } else if (row.status === 'approved') {
+                currentOrderNumber = orderNum;
+                saveOrderSession(saved.orderId, orderNum, items, 'approved');
+                showApprovedInstallScreen(items, orderNum);
+                checkoutModal.classList.add('active');
+            } else {
+                clearOrderSession();
+            }
+        } catch (e) {
+            console.error('Restore order error:', e);
+        }
+    }
+
+    restoreOrderSessionOnLoad();
 
     // Логика модального окна инструкции и слайдера
     const instructionModal = document.getElementById('instructionModal');
