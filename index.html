@@ -1631,7 +1631,7 @@
         { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB' },
         { id: 'vk', name: 'ВКонтакте', size: '437.2 MB' },
         { id: 'vkmyz', name: 'ВК Музыка', size: '280 MB' },
-        { id: 'chatgpt', name: 'Chat PGT', size: '257 MB' },
+        { id: 'chatgpt', name: 'ChatGPT', size: '257 MB' },
         { id: 'claude', name: 'Claude by Anthropic', size: '139 MB' },
         // --- Правая колонка (9 приложений) ---
         { id: 'avito', name: 'Авито', size: '580.1 MB' },
@@ -1654,7 +1654,7 @@
     const backBtn = document.getElementById('backBtn');
     const leftAppColumn = document.getElementById('leftAppColumn');
     const rightAppColumn = document.getElementById('rightAppColumn');
-    const appColumnsGr = document.getElementById('appColumnsGrid');
+    const appColumnsGrid = document.getElementById('appColumnsGrid');
     const emptyStateEl = document.getElementById('emptyState');
     const searchInput = document.getElementById('searchInput');
 
@@ -1685,7 +1685,7 @@
             total: finalTotal,
             discount: raw - finalTotal,
             promoDiscount
-        
+        };
     }
 
     function resetAppliedPromo() {
