@@ -1551,6 +1551,9 @@
 
     let lastTouchEnd = 0;
     document.addEventListener('touchend', (e) => {
+        if (e.target && e.target.closest('button, a, input, select, textarea, [onclick], .pay-requisites-text')) {
+            return;
+        }
         const now = Date.now();
         if (now - lastTouchEnd <= 300) {
             e.preventDefault();
@@ -1994,20 +1997,23 @@
             return;
         }
 
-        const openBtn = document.getElementById('openCartBtn');
-        openBtn.disabled = true;
+        setCheckoutView('pay');
+        document.getElementById('checkoutModalTitle').textContent = 'Оформление заказа';
+        renderCheckoutItems();
+        checkoutModal.classList.add('active');
 
-        try {
-            const { total } = calculateTotal(cart.length);
-            const amountStr = `${total} ₽`;
-            const itemsPayload = cart.map(item => ({ id: item.id, name: item.name }));
+        if (!activeOrderId) {
+            try {
+                const { total } = calculateTotal(cart.length);
+                const amountStr = `${total} ₽`;
+                const itemsPayload = cart.map(item => ({ id: item.id, name: item.name }));
 
-            if (!activeOrderId) {
                 const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
                         'Prefer': 'return=representation'
                     },
                     body: JSON.stringify({
@@ -2022,21 +2028,12 @@
                     if (createdRows && createdRows[0]) {
                         activeOrderId = createdRows[0].id;
                         currentOrderNumber = createdRows[0].order_number;
+                        document.getElementById('orderNumberDisplay').textContent = `#${formatOrderNum(currentOrderNumber)}`;
                     }
                 }
+            } catch (err) {
+                console.error('Draft order creation failed:', err);
             }
-
-            setCheckoutView('pay');
-            document.getElementById('checkoutModalTitle').textContent = 'Оформление заказа';
-            renderCheckoutItems();
-            checkoutModal.classList.add('active');
-        } catch (err) {
-            console.error(err);
-            setCheckoutView('pay');
-            renderCheckoutItems();
-            checkoutModal.classList.add('active');
-        } finally {
-            openBtn.disabled = false;
         }
     }
 
@@ -2098,12 +2095,16 @@
         const itemsPayload = cart.map(item => ({ id: item.id, name: item.name }));
 
         try {
+            let orderSaved = false;
+
             if (activeOrderId) {
                 const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/orders?id=eq.${activeOrderId}`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
-                        'apikey': SUPABASE_KEY
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'Prefer': 'return=representation'
                     },
                     body: JSON.stringify({
                         items: itemsPayload,
@@ -2112,15 +2113,22 @@
                         status: 'pending'
                     })
                 });
-                if (!patchRes.ok) {
-                    throw new Error('Ошибка обновления заказа');
+                if (patchRes.ok) {
+                    const updatedRows = await patchRes.json();
+                    if (Array.isArray(updatedRows) && updatedRows.length > 0) {
+                        orderSaved = true;
+                        currentOrderNumber = updatedRows[0].order_number || currentOrderNumber;
+                    }
                 }
-            } else {
+            }
+
+            if (!orderSaved) {
                 const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
                         'Prefer': 'return=representation'
                     },
                     body: JSON.stringify({
@@ -2131,24 +2139,32 @@
                     })
                 });
                 if (!insertRes.ok) {
-                    throw new Error('Ошибка создания заказа');
+                    const errText = await insertRes.text();
+                    throw new Error(`Ошибка создания заказа (${insertRes.status}): ${errText}`);
                 }
                 const createdRows = await insertRes.json();
+                if (!createdRows || !createdRows[0]) {
+                    throw new Error('База не вернула созданный заказ');
+                }
                 activeOrderId = createdRows[0].id;
                 currentOrderNumber = createdRows[0].order_number;
             }
 
-            await fetch(BOT_FUNCTION_URL, {
+            const botRes = await fetch(BOT_FUNCTION_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'apikey': SUPABASE_KEY
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`
                 },
                 body: JSON.stringify({
                     action: 'new_order',
                     order_id: activeOrderId
                 })
             });
+            if (!botRes.ok) {
+                console.warn('Bot notify warning:', botRes.status);
+            }
 
             isOrderSubmitted = true;
             const formattedNum = formatOrderNum(currentOrderNumber);
