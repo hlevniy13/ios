@@ -1625,11 +1625,14 @@
         { id: 'vtb', name: 'ВТБ Онлайн', size: '397.8 MB' },
         { id: 'ozon', name: 'OZON Банк', size: '145 MB' },
         { id: 'alfabank', name: 'Альфа-Банк', size: '244.1 MB' },
+        { id: 'sberinvest', name: 'Сбер Инвестиции', size: '166 MB' },
         { id: 'tinvesticii', name: 'Т-Инвестиции', size: '226.6 MB' },
         { id: 'vtbinvest', name: 'ВТБ Инвестиции', size: '134.9 MB' },
         { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB' },
         { id: 'vk', name: 'ВКонтакте', size: '437.2 MB' },
         { id: 'vkmyz', name: 'ВК Музыка', size: '280 MB' },
+        { id: 'chatgpt', name: 'Chat PGT', size: '257 MB' },
+        { id: 'claude', name: 'Claude by Anthropic', size: '139 MB' },
         // --- Правая колонка (9 приложений) ---
         { id: 'avito', name: 'Авито', size: '580.1 MB' },
         { id: 'mailru', name: 'Почта Mail.ru', size: '574.5 MB' },
@@ -1638,7 +1641,10 @@
         { id: 'rutube', name: 'RuTube', size: '55.9 MB' },
         { id: 'premier', name: 'Кинотеатр PREMIER', size: '112.2 MB' },
         { id: 'happ', name: 'Happ +', size: '305 MB' },
+        { id: 'incy', name: 'INCY', size: '123 MB' },
         { id: 'mydyson', name: 'My Dyson', size: '553 MB' },
+        { id: 'djifly', name: 'DJI Fly', size: '1100 MB' },
+        { id: 'djimimo', name: 'DJI Mimo', size: '1470 MB' },
         { id: 'azsgazprom', name: 'АЗС «Газпромнефть»', size: '103 MB' }
     ];
 
@@ -1935,8 +1941,9 @@
             emptyStateEl.style.display = 'none';
             appColumnsGrid.style.display = 'grid';
 
-            const leftItems = apps.slice(0, 10);
-            const rightItems = apps.slice(10, 19);
+            const mid = Math.ceil(apps.length / 2);
+            const leftItems = apps.slice(0, mid);
+            const rightItems = apps.slice(mid);
 
             leftItems.forEach(app => leftAppColumn.appendChild(createAppCardElement(app)));
             rightItems.forEach(app => rightAppColumn.appendChild(createAppCardElement(app)));
