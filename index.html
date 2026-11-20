@@ -709,6 +709,11 @@
             background: rgba(54, 18, 28, 0.72);
         }
 
+        .app-card.in-package {
+            border-color: rgba(76, 217, 100, 0.42);
+            background: rgba(22, 42, 30, 0.68);
+        }
+
         .app-top {
             display: flex;
             align-items: center;
@@ -796,6 +801,19 @@
             box-shadow:
                 inset 0 1px 0.5px rgba(255, 255, 255, 0.42),
                 0 4px 12px rgba(40, 160, 70, 0.35);
+        }
+
+        .btn-liquid-download.in-package {
+            background: rgba(52, 199, 89, 0.16);
+            border-color: rgba(76, 217, 100, 0.36);
+            box-shadow: none;
+            color: #4cd964;
+            cursor: default;
+        }
+
+        .btn-liquid-download.in-package:active {
+            transform: none;
+            filter: none;
         }
 
         .btn-liquid-download svg {
@@ -1858,7 +1876,7 @@
         { id: 'vkvid', name: 'ВК Видео', size: '236 MB', category: 'media' },
         { id: 'vkmyz', name: 'ВК Музыка', size: '280 MB', category: 'media' },
         { id: 'ok', name: 'Одноклассники', size: '316 MB', category: 'social' },
-        { id: 'vtbmobile', name: 'ВТБ Мобайл оператор', size: '28,7 MB', category: 'other' },
+        { id: 'vtbmobile', name: 'ВТБ Мобайл оператор', size: '28.7 MB', category: 'other' },
 
         // --- Правая колонка ---
         { id: 'avito', name: 'Авито', size: '580.1 MB', category: 'other' },
@@ -2111,11 +2129,24 @@
         }
     }
 
+    function getContainingPackage(appId) {
+        return cart.find(entry => entry.type === 'package' && Array.isArray(entry.appIds) && entry.appIds.includes(appId)) || null;
+    }
+
     function toggleCartItem(item) {
+        // Защита от двойной оплаты: если приложение уже входит в выбранный пакет, не добавляем его отдельно
+        if (item.type !== 'package' && getContainingPackage(item.id)) {
+            return;
+        }
+
         const idx = cart.findIndex(entry => entry.id === item.id);
         if (idx >= 0) {
             cart.splice(idx, 1);
         } else {
+            // Если пользователь добавляет пакет, автоматически убираем из корзины отдельные дубликаты приложений из этого пакета
+            if (item.type === 'package' && Array.isArray(item.appIds)) {
+                cart = cart.filter(entry => entry.type === 'package' || !item.appIds.includes(entry.id));
+            }
             cart.push(item);
         }
         renderApps(searchInput.value);
@@ -2218,10 +2249,23 @@
 
     function createAppCardElement(app) {
         const iconUrl = `${ICONS_BASE_URL}/${app.id}.png`;
-        const isSelected = cart.some(item => item.id === app.id);
+        const containingPkg = getContainingPackage(app.id);
+        const isInPackage = Boolean(containingPkg);
+        const isSelected = !isInPackage && cart.some(item => item.id === app.id);
 
         const card = document.createElement('div');
-        card.className = `app-card ${isSelected ? 'in-cart' : ''}`;
+        card.className = `app-card ${isInPackage ? 'in-package' : (isSelected ? 'in-cart' : '')}`;
+
+        let btnClass = 'btn-liquid-download';
+        let btnHtml = `<svg viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg> Скачать`;
+        if (isInPackage) {
+            btnClass += ' in-package';
+            btnHtml = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> В пакете`;
+        } else if (isSelected) {
+            btnClass += ' selected';
+            btnHtml = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> В корзине`;
+        }
+
         card.innerHTML = `
             <div class="app-top">
                 <img src="${iconUrl}" alt="${app.name}" class="app-icon" onerror="this.src='https://via.placeholder.com/40/1c1c1e/ffffff?text=${app.id}'">
@@ -2230,16 +2274,15 @@
                     <div class="app-meta">${app.size}</div>
                 </div>
             </div>
-            <button type="button" class="btn-liquid-download ${isSelected ? 'selected' : ''}">
-                ${isSelected
-                    ? `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> В корзине`
-                    : `<svg viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg> Скачать`
-                }
+            <button type="button" class="${btnClass}" ${isInPackage ? 'disabled' : ''}>
+                ${btnHtml}
             </button>
         `;
-        card.querySelector('.btn-liquid-download').addEventListener('click', () => {
-            toggleCartItem(app);
-        });
+        if (!isInPackage) {
+            card.querySelector('.btn-liquid-download').addEventListener('click', () => {
+                toggleCartItem(app);
+            });
+        }
         return card;
     }
 
