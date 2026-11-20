@@ -455,6 +455,218 @@
             border-color: rgba(255, 255, 255, 0.28);
         }
 
+        /* Вкладки категорий */
+        .category-tabs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            margin-bottom: 10px;
+            padding: 1px 2px;
+            flex-shrink: 0;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-tab {
+            touch-action: pan-x manipulation;
+            flex-shrink: 0;
+            padding: 7px 13px;
+            border-radius: 999px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: -0.15px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.14s ease;
+        }
+
+        .category-tab:active {
+            transform: scale(0.96);
+        }
+
+        .category-tab.active {
+            background: linear-gradient(180deg, rgba(165, 34, 58, 0.85) 0%, rgba(105, 18, 36, 0.92) 100%);
+            border-color: rgba(255, 145, 165, 0.45);
+            color: #ffffff;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.32),
+                0 4px 12px rgba(120, 20, 40, 0.35);
+        }
+
+        /* КАРТОЧКИ ПАКЕТОВ (ОТДЕЛЬНЫЕ ОКОШКИ) */
+        .packages-list {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .package-card {
+            background: linear-gradient(145deg, rgba(34, 22, 28, 0.82) 0%, rgba(22, 22, 26, 0.78) 100%);
+            backdrop-filter: blur(26px);
+            -webkit-backdrop-filter: blur(26px);
+            border: 1px solid rgba(255, 130, 155, 0.24);
+            border-radius: 18px;
+            padding: 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.14),
+                0 6px 20px rgba(0, 0, 0, 0.35);
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .package-card.in-cart {
+            border-color: rgba(76, 217, 100, 0.52);
+            background: linear-gradient(145deg, rgba(24, 44, 32, 0.82) 0%, rgba(22, 26, 24, 0.8) 100%);
+        }
+
+        .package-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .package-title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.25px;
+            color: #ffffff;
+        }
+
+        .package-benefit-badge {
+            background: rgba(76, 217, 100, 0.16);
+            border: 1px solid rgba(76, 217, 100, 0.34);
+            color: #4cd964;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 999px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .package-bundle-box {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.34);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 9px 8px;
+        }
+
+        .package-bundle-item {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 5px;
+        }
+
+        .package-bundle-item img {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .package-bundle-item span {
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+            color: rgba(255, 255, 255, 0.92);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        .package-plus-sep {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff8ca0;
+            font-size: 15px;
+            font-weight: 700;
+            padding-bottom: 16px;
+            flex-shrink: 0;
+        }
+
+        .package-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .package-price-block {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            flex-shrink: 0;
+        }
+
+        .package-old-price {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            font-weight: 500;
+        }
+
+        .package-new-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+            line-height: 1.1;
+        }
+
+        .package-footer .btn-liquid-download {
+            flex: 1;
+            height: 36px;
+            font-size: 13px;
+        }
+
+        .cart-item-sub {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            line-height: 1.25;
+        }
+
+        .cart-pkg-icon-stack {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(165, 34, 58, 0.85) 0%, rgba(105, 18, 36, 0.95) 100%);
+            border: 1px solid rgba(255, 145, 165, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
         /* ДВЕ КОЛОНКИ (СЛЕВА 10, СПРАВА 9) */
         .app-list-container {
             flex: 1;
@@ -1359,7 +1571,17 @@
             </div>
         </div>
 
+        <div id="categoryTabs" class="category-tabs" role="tablist">
+            <button type="button" class="category-tab active" data-category="all">Все</button>
+            <button type="button" class="category-tab" data-category="packages">Пакеты 🔥</button>
+            <button type="button" class="category-tab" data-category="banking">Банкинг</button>
+            <button type="button" class="category-tab" data-category="social">Соц.сети</button>
+            <button type="button" class="category-tab" data-category="media">Музыка и видео</button>
+            <button type="button" class="category-tab" data-category="other">Другое</button>
+        </div>
+
         <div class="app-list-container">
+            <div id="packagesList" class="packages-list"></div>
             <div id="appColumnsGrid" class="app-columns-grid">
                 <div id="leftAppColumn" class="app-column"></div>
                 <div id="rightAppColumn" class="app-column"></div>
@@ -1621,40 +1843,74 @@
     const PLIST_BASE_URL = 'https://www.red-ios.ru';
     const ICONS_BASE_URL = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/releases/download/%D0%98%D0%BA%D0%BE%D0%BD%D0%BA%D0%B8`;
 
-    // 27 ПРИЛОЖЕНИЙ: ПЕРВЫЕ 13 — В ЛЕВУЮ КОЛОНКУ, ОСТАЛЬНЫЕ 14 — В ПРАВУЮ
+    // КАТАЛОГ ПРИЛОЖЕНИЙ С РАСПРЕДЕЛЕНИЕМ ПО КАТЕГОРИЯМ
     const apps = [
-        { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB' },
-        { id: 'tbank', name: 'Т-Банк', size: '452.2 MB' },
-        { id: 'vtb', name: 'ВТБ Онлайн', size: '397.8 MB' },
-        { id: 'ozon', name: 'OZON Банк', size: '145 MB' },
-        { id: 'alfabank', name: 'Альфа-Банк', size: '244.1 MB' },
-        { id: 'sberinvest', name: 'Сбер Инвестиции', size: '166 MB' },
-        { id: 'tinvesticii', name: 'Т-Инвестиции', size: '226.6 MB' },
-        { id: 'vtbinvest', name: 'ВТБ Инвестиции', size: '134.9 MB' },
-        { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB' },
-        { id: 'vk', name: 'ВКонтакте', size: '437.2 MB' },
-        { id: 'vkvid', name: 'ВК Видео', size: '236 MB' },
-        { id: 'vkmyz', name: 'ВК Музыка', size: '280 MB' },
-        { id: 'ok', name: 'Одноклассники', size: '316 MB' },
-        { id: 'vtbmobile', name: 'ВТБ Мобайл оператор', size: '28,7 MB' },
-        
-        // --- Правая колонка (14 приложений) ---
-        { id: 'avito', name: 'Авито', size: '580.1 MB' },
-        { id: 'mailru', name: 'Почта Mail.ru', size: '574.5 MB' },
-        { id: 'max', name: 'MAX', size: '91.2 MB' },
-        { id: 'yaqin', name: 'MAX без цифрового ID', size: '67.7 MB' },
-        { id: 'rutube', name: 'RuTube', size: '55.9 MB' },
-        { id: 'premier', name: 'Кинотеатр PREMIER', size: '112.2 MB' },
-        { id: 'okko', name: 'Кинотеатр OKKO', size: '310 MB' },
-        { id: 'happ', name: 'Happ +', size: '305 MB' },
-        { id: 'incy', name: 'INCY', size: '123 MB' },
-        { id: 'mydyson', name: 'My Dyson', size: '553 MB' },
-        { id: 'djifly', name: 'DJI Fly', size: '1100 MB' },
-        { id: 'djimimo', name: 'DJI Mimo', size: '1470 MB' },
-        { id: 'chatgpt', name: 'ChatGPT', size: '257 MB' },
-        { id: 'claude', name: 'Claude by Anthropic', size: '139 MB' },
-        { id: 'azsgazprom', name: 'АЗС «Газпромнефть»', size: '103 MB' }
+        // Банкинг
+        { id: 'sber', name: 'СберБанк Онлайн', size: '532 MB', category: 'banking' },
+        { id: 'tbank', name: 'Т-Банк', size: '452.2 MB', category: 'banking' },
+        { id: 'vtb', name: 'ВТБ Онлайн', size: '397.8 MB', category: 'banking' },
+        { id: 'ozon', name: 'OZON Банк', size: '145 MB', category: 'banking' },
+        { id: 'alfabank', name: 'Альфа-Банк', size: '244.1 MB', category: 'banking' },
+        { id: 'sberinvest', name: 'Сбер Инвестиции', size: '166 MB', category: 'banking' },
+        { id: 'tinvesticii', name: 'Т-Инвестиции', size: '226.6 MB', category: 'banking' },
+        { id: 'vtbinvest', name: 'ВТБ Инвестиции', size: '134.9 MB', category: 'banking' },
+        { id: 'sberbiznes', name: 'СберБизнес', size: '260 MB', category: 'banking' },
+
+        // Соц.сети
+        { id: 'vk', name: 'ВКонтакте', size: '437.2 MB', category: 'social' },
+        { id: 'ok', name: 'Одноклассники', size: '316 MB', category: 'social' },
+        { id: 'mailru', name: 'Почта Mail.ru', size: '574.5 MB', category: 'social' },
+        { id: 'max', name: 'MAX', size: '91.2 MB', category: 'social' },
+        { id: 'yaqin', name: 'MAX без цифрового ID', size: '67.7 MB', category: 'social' },
+
+        // Музыка и видео
+        { id: 'vkmyz', name: 'ВК Музыка', size: '280 MB', category: 'media' },
+        { id: 'vkvid', name: 'ВК Видео', size: '236 MB', category: 'media' },
+        { id: 'rutube', name: 'RuTube', size: '55.9 MB', category: 'media' },
+        { id: 'premier', name: 'Кинотеатр PREMIER', size: '112.2 MB', category: 'media' },
+        { id: 'okko', name: 'Кинотеатр OKKO', size: '310 MB', category: 'media' },
+
+        // Другое
+        { id: 'vtbmobile', name: 'ВТБ Мобайл оператор', size: '28,7 MB', category: 'other' },
+        { id: 'avito', name: 'Авито', size: '580.1 MB', category: 'other' },
+        { id: 'happ', name: 'Happ +', size: '305 MB', category: 'other' },
+        { id: 'incy', name: 'INCY', size: '123 MB', category: 'other' },
+        { id: 'mydyson', name: 'My Dyson', size: '553 MB', category: 'other' },
+        { id: 'djifly', name: 'DJI Fly', size: '1100 MB', category: 'other' },
+        { id: 'djimimo', name: 'DJI Mimo', size: '1470 MB', category: 'other' },
+        { id: 'chatgpt', name: 'ChatGPT', size: '257 MB', category: 'other' },
+        { id: 'claude', name: 'Claude by Anthropic', size: '139 MB', category: 'other' },
+        { id: 'azsgazprom', name: 'АЗС «Газпромнефть»', size: '103 MB', category: 'other' }
     ];
+
+    // ГОТОВЫЕ ПАКЕТЫ ПРИЛОЖЕНИЙ ПО СНИЖЕННОЙ ЦЕНЕ
+    const packages = [
+        {
+            id: 'pkg_social_point',
+            type: 'package',
+            name: 'Соц.сети и точка',
+            price: 600,
+            appIds: ['vk', 'mailru', 'max']
+        },
+        {
+            id: 'pkg_business_partner',
+            type: 'package',
+            name: 'Деловой партнер',
+            price: 600,
+            appIds: ['vtb', 'sber', 'tbank']
+        },
+        {
+            id: 'pkg_vk_services',
+            type: 'package',
+            name: 'Сервисы ВК',
+            price: 600,
+            appIds: ['vk', 'vkmyz', 'vkvid']
+        }
+    ];
+
+    function getAppById(id) {
+        return apps.find(a => a.id === id) || { id, name: id, size: '' };
+    }
 
     const homeScreen = document.getElementById('homeScreen');
     const catalogScreen = document.getElementById('catalogScreen');
@@ -1663,6 +1919,7 @@
     const leftAppColumn = document.getElementById('leftAppColumn');
     const rightAppColumn = document.getElementById('rightAppColumn');
     const appColumnsGrid = document.getElementById('appColumnsGrid');
+    const packagesListEl = document.getElementById('packagesList');
     const emptyStateEl = document.getElementById('emptyState');
     const searchInput = document.getElementById('searchInput');
 
@@ -1674,25 +1931,65 @@
     let isOrderSubmitted = false;
     let statusPollTimer = null;
 
-    function calculateTotal(count) {
-        if (count <= 0) return { total: 0, discount: 0, promoDiscount: 0 };
-        const raw = count * unitPriceNumber;
-        // Пакетная скидка: каждые 5 приложений по 1000 ₽ (экономия 250 ₽ на каждом пакете из 5)
-        const bundlesOfFive = Math.floor(count / 5);
-        const remainder = count % 5;
-        const afterBundle = bundlesOfFive * (unitPriceNumber * 4) + remainder * unitPriceNumber;
+    function expandCartToOrderItems() {
+        const result = [];
+        const seenIds = new Set();
+        cart.forEach(entry => {
+            if (entry.type === 'package' && Array.isArray(entry.appIds)) {
+                entry.appIds.forEach(appId => {
+                    if (!seenIds.has(appId)) {
+                        seenIds.add(appId);
+                        const appObj = getAppById(appId);
+                        result.push({ id: appObj.id, name: appObj.name });
+                    }
+                });
+            } else if (!seenIds.has(entry.id)) {
+                seenIds.add(entry.id);
+                result.push({ id: entry.id, name: entry.name });
+            }
+        });
+        return result;
+    }
 
-        let finalTotal = afterBundle;
+    function calculateTotal() {
+        if (cart.length <= 0) {
+            return { total: 0, discount: 0, promoDiscount: 0, singleCount: 0, packageCount: 0 };
+        }
+
+        const singleItems = cart.filter(item => item.type !== 'package');
+        const packageItems = cart.filter(item => item.type === 'package');
+
+        const singleCount = singleItems.length;
+        const singleRaw = singleCount * unitPriceNumber;
+        // Пакетная скидка на отдельные приложения: каждые 5 штук по цене 4
+        const bundlesOfFive = Math.floor(singleCount / 5);
+        const remainder = singleCount % 5;
+        const singleAfterBundle = bundlesOfFive * (unitPriceNumber * 4) + remainder * unitPriceNumber;
+
+        let packagesRaw = 0;
+        let packagesAfter = 0;
+        packageItems.forEach(pkg => {
+            const fullPrice = (pkg.appIds ? pkg.appIds.length : 3) * unitPriceNumber;
+            packagesRaw += fullPrice;
+            packagesAfter += pkg.price;
+        });
+
+        const rawTotal = singleRaw + packagesRaw;
+        const subtotalAfterBundle = singleAfterBundle + packagesAfter;
+
+        let finalTotal = subtotalAfterBundle;
         let promoDiscount = 0;
         if (appliedPromo && appliedPromo.percent > 0) {
-            promoDiscount = Math.round(afterBundle * (appliedPromo.percent / 100));
-            finalTotal = Math.max(1, afterBundle - promoDiscount);
+            promoDiscount = Math.round(subtotalAfterBundle * (appliedPromo.percent / 100));
+            finalTotal = Math.max(1, subtotalAfterBundle - promoDiscount);
         }
 
         return {
             total: finalTotal,
-            discount: raw - finalTotal,
-            promoDiscount
+            discount: Math.max(0, rawTotal - finalTotal),
+            promoDiscount,
+            singleCount,
+            packageCount: packageItems.length
         };
     }
 
@@ -1787,12 +2084,19 @@
         }
     }
 
-    function pluralApps(n) {
+    function pluralWord(n, one, few, many) {
         const mod10 = n % 10;
         const mod100 = n % 100;
-        if (mod10 === 1 && mod100 !== 11) return `${n} приложение`;
-        if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return `${n} приложения`;
-        return `${n} приложений`;
+        if (mod10 === 1 && mod100 !== 11) return `${n} ${one}`;
+        if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return `${n} ${few}`;
+        return `${n} ${many}`;
+    }
+
+    function formatCartSummaryText(singleCount, packageCount) {
+        const parts = [];
+        if (packageCount > 0) parts.push(pluralWord(packageCount, 'пакет', 'пакета', 'пакетов'));
+        if (singleCount > 0) parts.push(pluralWord(singleCount, 'приложение', 'приложения', 'приложений'));
+        return parts.join(' и ');
     }
 
     function showScreen(screenName) {
@@ -1812,12 +2116,12 @@
         }
     }
 
-    function toggleCartItem(app) {
-        const idx = cart.findIndex(item => item.id === app.id);
+    function toggleCartItem(item) {
+        const idx = cart.findIndex(entry => entry.id === item.id);
         if (idx >= 0) {
             cart.splice(idx, 1);
         } else {
-            cart.push(app);
+            cart.push(item);
         }
         renderApps(searchInput.value);
         updateCartUI();
@@ -1832,15 +2136,12 @@
             return;
         }
 
-        const count = cart.length;
-        const { total, discount } = calculateTotal(count);
-        document.getElementById('cartDockCount').textContent = `В корзине: ${pluralApps(count)}`;
+        const { total, discount, singleCount, packageCount } = calculateTotal();
+        document.getElementById('cartDockCount').textContent = `В корзине: ${formatCartSummaryText(singleCount, packageCount)}`;
         document.getElementById('cartDockTotal').innerHTML = discount > 0
             ? `${total} ₽ <span class="discount-tag">−${discount} ₽</span>`
             : `${total} ₽`;
 
-        // Обновление прогресс-бара до бесплатного 5-го приложения
-        const rem = count % 5;
         const headerEl = document.getElementById('cartProgressHeader');
         const labelEl = document.getElementById('cartProgressLabel');
         const pctEl = document.getElementById('cartProgressPct');
@@ -1849,26 +2150,33 @@
         headerEl.classList.remove('bonus-ready', 'bonus-active');
         fillEl.classList.remove('bonus-active');
 
-        if (rem === 0) {
-            // 5, 10, 15 приложений — бонус активирован
+        if (singleCount === 0 && packageCount > 0) {
             headerEl.classList.add('bonus-active');
             fillEl.classList.add('bonus-active');
-            labelEl.textContent = `🎁 Бонус активен! Выгода ${discount} ₽`;
+            labelEl.textContent = `🔥 Пакетная выгода активна! Экономия ${discount} ₽`;
             pctEl.textContent = '100%';
             fillEl.style.width = '100%';
-        } else if (rem === 4) {
-            // 4, 9, 14 приложений — следующее идёт за 0 ₽
-            headerEl.classList.add('bonus-ready');
-            labelEl.textContent = `${count + 1}-е приложение за 0 ₽! Выберите ещё 1 🎁`;
-            pctEl.textContent = '80%';
-            fillEl.style.width = '80%';
         } else {
-            const left = 5 - rem;
-            const pct = rem * 20;
-            const nextBonusNum = count + left;
-            labelEl.textContent = `Добавьте ещё ${left} — ${nextBonusNum}-е будет за 0 ₽`;
-            pctEl.textContent = `${pct}%`;
-            fillEl.style.width = `${pct}%`;
+            const rem = singleCount % 5;
+            if (rem === 0) {
+                headerEl.classList.add('bonus-active');
+                fillEl.classList.add('bonus-active');
+                labelEl.textContent = `🎁 Бонус активен! Выгода ${discount} ₽`;
+                pctEl.textContent = '100%';
+                fillEl.style.width = '100%';
+            } else if (rem === 4) {
+                headerEl.classList.add('bonus-ready');
+                labelEl.textContent = `${singleCount + 1}-е приложение за 0 ₽! Выберите ещё 1 🎁`;
+                pctEl.textContent = '80%';
+                fillEl.style.width = '80%';
+            } else {
+                const left = 5 - rem;
+                const pct = rem * 20;
+                const nextBonusNum = singleCount + left;
+                labelEl.textContent = `Добавьте ещё ${left} — ${nextBonusNum}-е будет за 0 ₽`;
+                pctEl.textContent = `${pct}%`;
+                fillEl.style.width = `${pct}%`;
+            }
         }
 
         dock.classList.add('visible');
@@ -1940,31 +2248,103 @@
         return card;
     }
 
+    let activeCategory = 'all';
+
+    function createPackageCardElement(pkg) {
+        const isSelected = cart.some(item => item.id === pkg.id);
+        const includedApps = pkg.appIds.map(getAppById);
+        const oldPrice = includedApps.length * unitPriceNumber;
+        const saving = Math.max(0, oldPrice - pkg.price);
+
+        const bundleHtml = includedApps.map((app, index) => {
+            const iconUrl = `${ICONS_BASE_URL}/${app.id}.png`;
+            const itemBlock = `
+                <div class="package-bundle-item">
+                    <img src="${iconUrl}" alt="${app.name}" onerror="this.src='https://via.placeholder.com/38/1c1c1e/ffffff?text=${app.id}'">
+                    <span>${app.name}</span>
+                </div>
+            `;
+            return index < includedApps.length - 1
+                ? itemBlock + `<div class="package-plus-sep">+</div>`
+                : itemBlock;
+        }).join('');
+
+        const card = document.createElement('div');
+        card.className = `package-card ${isSelected ? 'in-cart' : ''}`;
+        card.innerHTML = `
+            <div class="package-header">
+                <div class="package-title">🔥 ${pkg.name}</div>
+                ${saving > 0 ? `<div class="package-benefit-badge">Выгода ${saving} ₽</div>` : ''}
+            </div>
+            <div class="package-bundle-box">
+                ${bundleHtml}
+            </div>
+            <div class="package-footer">
+                <div class="package-price-block">
+                    ${oldPrice > pkg.price ? `<span class="package-old-price">${oldPrice} ₽</span>` : ''}
+                    <span class="package-new-price">${pkg.price} ₽</span>
+                </div>
+                <button type="button" class="btn-liquid-download ${isSelected ? 'selected' : ''}">
+                    ${isSelected
+                        ? `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> В корзине`
+                        : `<svg viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 19h14"/></svg> Взять пакет`
+                    }
+                </button>
+            </div>
+        `;
+
+        card.querySelector('.btn-liquid-download').addEventListener('click', () => {
+            toggleCartItem(pkg);
+        });
+
+        return card;
+    }
+
     function renderApps(filterText = '') {
         leftAppColumn.innerHTML = '';
         rightAppColumn.innerHTML = '';
+        packagesListEl.innerHTML = '';
         const query = filterText.trim().toLowerCase();
 
-        if (!query) {
+        if (activeCategory === 'packages') {
+            appColumnsGrid.style.display = 'none';
+
+            const filteredPackages = !query
+                ? packages
+                : packages.filter(pkg => {
+                    const namesMatch = pkg.appIds.some(id => getAppById(id).name.toLowerCase().includes(query));
+                    return pkg.name.toLowerCase().includes(query) || namesMatch;
+                });
+
+            if (filteredPackages.length === 0) {
+                packagesListEl.style.display = 'none';
+                emptyStateEl.textContent = 'Пакеты не найдены';
+                emptyStateEl.style.display = 'block';
+                return;
+            }
+
             emptyStateEl.style.display = 'none';
-            appColumnsGrid.style.display = 'grid';
-
-            const mid = Math.ceil(apps.length / 2);
-            const leftItems = apps.slice(0, mid);
-            const rightItems = apps.slice(mid);
-
-            leftItems.forEach(app => leftAppColumn.appendChild(createAppCardElement(app)));
-            rightItems.forEach(app => rightAppColumn.appendChild(createAppCardElement(app)));
+            packagesListEl.style.display = 'flex';
+            filteredPackages.forEach(pkg => packagesListEl.appendChild(createPackageCardElement(pkg)));
             return;
         }
 
-        const filtered = apps.filter(app =>
-            app.name.toLowerCase().includes(query) ||
-            app.id.toLowerCase().includes(query)
-        );
+        packagesListEl.style.display = 'none';
+
+        const byCategory = activeCategory === 'all'
+            ? apps
+            : apps.filter(app => app.category === activeCategory);
+
+        const filtered = !query
+            ? byCategory
+            : byCategory.filter(app =>
+                app.name.toLowerCase().includes(query) ||
+                app.id.toLowerCase().includes(query)
+            );
 
         if (filtered.length === 0) {
             appColumnsGrid.style.display = 'none';
+            emptyStateEl.textContent = 'Приложения не найдены';
             emptyStateEl.style.display = 'block';
             return;
         }
@@ -1976,6 +2356,28 @@
         filtered.slice(0, splitIdx).forEach(app => leftAppColumn.appendChild(createAppCardElement(app)));
         filtered.slice(splitIdx).forEach(app => rightAppColumn.appendChild(createAppCardElement(app)));
     }
+
+    const categoryTabsEl = document.getElementById('categoryTabs');
+    const appListContainerEl = document.querySelector('.app-list-container');
+
+    categoryTabsEl.addEventListener('click', (e) => {
+        const tab = e.target.closest('.category-tab');
+        if (!tab) return;
+
+        const nextCategory = tab.dataset.category;
+        if (nextCategory === activeCategory) return;
+
+        activeCategory = nextCategory;
+        categoryTabsEl.querySelectorAll('.category-tab').forEach(btn => {
+            btn.classList.toggle('active', btn === tab);
+        });
+
+        tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        if (appListContainerEl) {
+            appListContainerEl.scrollTop = 0;
+        }
+        renderApps(searchInput.value);
+    });
 
     searchInput.addEventListener('input', (e) => {
         renderApps(e.target.value);
@@ -2009,9 +2411,9 @@
 
         if (!activeOrderId) {
             try {
-                const { total } = calculateTotal(cart.length);
+                const { total } = calculateTotal();
                 const amountStr = `${total} ₽`;
-                const itemsPayload = cart.map(item => ({ id: item.id, name: item.name }));
+                const itemsPayload = expandCartToOrderItems();
 
                 const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
                     method: 'POST',
@@ -2056,18 +2458,34 @@
         const listEl = document.getElementById('cartItemsList');
         listEl.innerHTML = '';
 
-        cart.forEach(app => {
+        cart.forEach(entry => {
             const row = document.createElement('div');
             row.className = 'cart-item-row';
-            row.innerHTML = `
-                <div class="cart-item-left">
-                    <img src="${ICONS_BASE_URL}/${app.id}.png" alt="${app.name}">
-                    <div class="cart-item-name">${app.name}</div>
-                </div>
-                <button type="button" class="btn-remove-item" title="Удалить">✕</button>
-            `;
+
+            if (entry.type === 'package') {
+                const subNames = entry.appIds.map(id => getAppById(id).name).join(' + ');
+                row.innerHTML = `
+                    <div class="cart-item-left" style="min-width:0; flex:1;">
+                        <div class="cart-pkg-icon-stack">🔥</div>
+                        <div style="min-width:0; flex:1;">
+                            <div class="cart-item-name">Пакет «${entry.name}» • ${entry.price} ₽</div>
+                            <div class="cart-item-sub">${subNames}</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-remove-item" title="Удалить">✕</button>
+                `;
+            } else {
+                row.innerHTML = `
+                    <div class="cart-item-left">
+                        <img src="${ICONS_BASE_URL}/${entry.id}.png" alt="${entry.name}">
+                        <div class="cart-item-name">${entry.name}</div>
+                    </div>
+                    <button type="button" class="btn-remove-item" title="Удалить">✕</button>
+                `;
+            }
+
             row.querySelector('.btn-remove-item').addEventListener('click', () => {
-                cart = cart.filter(item => item.id !== app.id);
+                cart = cart.filter(item => item.id !== entry.id);
                 renderApps(searchInput.value);
                 updateCartUI();
                 if (cart.length === 0) {
@@ -2079,7 +2497,7 @@
             listEl.appendChild(row);
         });
 
-        const { total, discount } = calculateTotal(cart.length);
+        const { total, discount } = calculateTotal();
         const formattedNum = formatOrderNum(currentOrderNumber);
         document.getElementById('orderNumberDisplay').textContent = `#${formattedNum}`;
         document.getElementById('paymentDetailsText').textContent = currentPaymentDetails;
@@ -2095,9 +2513,9 @@
         btn.disabled = true;
         btn.textContent = 'Отправка заявки...';
 
-        const { total } = calculateTotal(cart.length);
+        const { total } = calculateTotal();
         const amountStr = `${total} ₽`;
-        const itemsPayload = cart.map(item => ({ id: item.id, name: item.name }));
+        const itemsPayload = expandCartToOrderItems();
 
         try {
             let orderSaved = false;
