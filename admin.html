@@ -6,226 +6,228 @@
 <title>RED iOS — админка</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{
-  --bg:var(--tg-theme-secondary-bg-color,#0f0f10);
-  --card:var(--tg-theme-section-bg-color,var(--tg-theme-bg-color,#1c1c1e));
-  --text:var(--tg-theme-text-color,#fff);
-  --hint:var(--tg-theme-hint-color,#8e8e93);
-  --accent:var(--tg-theme-button-color,#2481cc);
-  --accent-text:var(--tg-theme-button-text-color,#fff);
-  --danger:var(--tg-theme-destructive-text-color,#e5484d);
-  --ok:#30a46c;
-  --line:rgba(128,128,128,.25);
-}
+:root{--bg:#0b0b0d;--card:#161619;--card2:#1f1f24;--line:rgba(255,255,255,.08);--text:#f4f4f6;--hint:#8d8d96;--brand:#b3243f;--brand-t:#ff7a8e;--ok:#34c27a;--warn:#e8a93a;--bad:#ff5d6c}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);padding-bottom:calc(24px + env(safe-area-inset-bottom))}
-.wrap{max-width:520px;margin:0 auto;padding:0 12px}
-.tabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 12px 8px}
-.tabs-in{max-width:520px;margin:0 auto;display:flex;background:var(--card);border-radius:10px;padding:3px}
-.tab{flex:1;border:0;background:none;color:var(--hint);font:inherit;font-size:15px;font-weight:500;padding:8px 4px;border-radius:8px}
-.tab.on{background:var(--accent);color:var(--accent-text)}
+html,body{background:var(--bg)}
+body{font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+.wrap{max-width:520px;margin:0 auto;padding:max(14px,env(safe-area-inset-top)) 14px calc(96px + env(safe-area-inset-bottom))}
+.top{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 14px}
+h1{font-size:28px;font-weight:700;letter-spacing:-.3px}
+.ico{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);display:grid;place-items:center}
+svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .pane{display:none}.pane.on{display:block}
-h2{font-size:13px;font-weight:500;color:var(--hint);margin:18px 6px 6px}
-.card{background:var(--card);border-radius:12px;padding:12px 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.card h3{font-size:15px;font-weight:600;margin-bottom:12px}
 .field+.field{margin-top:12px}
-label{display:block;font-size:13px;color:var(--hint);margin-bottom:4px}
-input,textarea{width:100%;font:inherit;color:var(--text);background:transparent;border:1px solid var(--line);border-radius:8px;padding:9px 10px;outline:none}
-input:focus,textarea:focus{border-color:var(--accent)}
-textarea{resize:vertical;min-height:72px}
-.row{display:flex;gap:8px;margin-top:12px}
-.row>*{flex:1}
-.btn{border:0;border-radius:10px;padding:11px 12px;font:inherit;font-weight:500;background:var(--accent);color:var(--accent-text)}
-.btn.sec{background:transparent;border:1px solid var(--line);color:var(--text)}
-.btn.bad{background:transparent;border:1px solid var(--line);color:var(--danger)}
-.btn:disabled{opacity:.5}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.stat{background:var(--card);border-radius:12px;padding:12px 14px}
-.stat.wide{grid-column:1/-1}
-.stat b{display:block;font-size:22px;font-weight:600}
-.stat span{font-size:13px;color:var(--hint)}
-.item{background:var(--card);border-radius:12px;padding:12px 14px;margin-bottom:8px}
-.item-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-.item-h b{font-weight:600}
-.sub{font-size:13px;color:var(--hint);margin-top:2px}
-.tag{font-size:13px;font-weight:500}
-.tag.ok{color:var(--ok)}.tag.no{color:var(--danger)}.tag.wait{color:var(--accent)}
-.apps{font-size:14px;margin-top:6px;white-space:pre-line}
+label{display:block;font-size:13px;color:var(--hint);margin-bottom:5px}
+input,textarea{width:100%;font:inherit;color:var(--text);background:var(--card2);border:1px solid transparent;border-radius:11px;padding:11px 12px;outline:none}
+input:focus,textarea:focus{border-color:var(--brand)}
+textarea{resize:none;min-height:84px}
+.btn{width:100%;border:0;border-radius:12px;padding:13px;font:inherit;font-weight:600;background:var(--brand);color:#fff}
+.btn:active{opacity:.85}.btn:disabled{background:var(--card2);color:var(--hint)}
+.btn.sec{background:var(--card2);color:var(--text)}
+.btn.bad{background:transparent;color:var(--bad)}
+.btn.sm{padding:10px;font-size:15px}
+.row{display:flex;gap:8px;margin-top:14px}.row>*{flex:1}
+.hero{background:linear-gradient(160deg,#2a0f17,var(--card));border-color:rgba(255,100,125,.22)}
+.hero span{font-size:14px;color:var(--hint)}
+.hero b{display:block;font-size:38px;font-weight:700;letter-spacing:-.8px;margin-top:2px;font-variant-numeric:tabular-nums}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px}
+.tile b{display:block;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.tile span{font-size:12px;color:var(--hint);line-height:1.2;display:block}
+.meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--hint);margin:0 2px 14px}
+.link{border:0;background:none;font:inherit;font-size:13px;color:var(--bad);padding:4px}
+.chips{display:flex;gap:8px;margin-bottom:12px;overflow-x:auto}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--hint);font:inherit;font-size:14px;padding:7px 14px;border-radius:20px;white-space:nowrap}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.item{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px}
+.ih{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ih b{font-size:17px;font-weight:600}
+.pill{font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--card2);white-space:nowrap}
+.pill.ok{color:var(--ok);background:rgba(52,194,122,.12)}.pill.wait{color:var(--warn);background:rgba(232,169,58,.12)}.pill.no{color:var(--bad);background:rgba(255,93,108,.12)}.pill.br{color:var(--brand-t);background:rgba(255,122,142,.12)}
+.sub{font-size:13px;color:var(--hint);margin-top:3px}
+.apps{font-size:14px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);white-space:pre-line}
 .tap{cursor:pointer}
-.empty{text-align:center;color:var(--hint);padding:24px 0;font-size:15px}
-.head{display:flex;justify-content:space-between;align-items:center}
-.link{border:0;background:none;color:var(--accent);font:inherit;font-size:14px;padding:4px 6px}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#2b2b2e;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
-#toast.on{opacity:1}#toast.err{background:var(--danger)}
+.add{width:100%;margin-bottom:12px}
+.empty{text-align:center;color:var(--hint);padding:36px 0}
+nav{position:fixed;left:0;right:0;bottom:0;background:rgba(15,15,18,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:6px;z-index:5}
+.nb{flex:1;max-width:170px;border:0;background:none;color:var(--hint);font:inherit;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;position:relative}
+.nb.on{color:var(--brand-t)}
+.badge{position:absolute;top:0;left:calc(50% + 6px);background:var(--brand);color:#fff;font-size:11px;font-weight:700;border-radius:10px;min-width:18px;padding:1px 5px}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10;display:none}
+.sheet-bg.on{display:block}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--card);border-radius:20px 20px 0 0;padding:18px 14px calc(18px + env(safe-area-inset-bottom))}
+.sheet h3{font-size:18px;margin-bottom:14px}
+#toast{position:fixed;left:50%;top:calc(12px + env(safe-area-inset-top));transform:translate(-50%,-80px);background:#2b2b31;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;transition:transform .25s;z-index:20;max-width:90%;text-align:center}
+#toast.on{transform:translate(-50%,0)}#toast.err{background:#7a1f2b}
 </style>
 </head>
 <body>
-<div class="tabs"><div class="tabs-in">
-  <button class="tab on" data-tab="settings">Настройки</button>
-  <button class="tab" data-tab="promos">Промокоды</button>
-  <button class="tab" data-tab="orders">Заказы</button>
-</div></div>
-
 <div class="wrap">
-  <section class="pane on" id="pane-settings">
-    <h2>Цена и оплата</h2>
-    <div class="card">
+  <div class="top"><h1 id="title">Заказы</h1><button class="ico" id="refresh" aria-label="Обновить"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.5-5.8M20 4v4h-4"/></svg></button></div>
+
+  <section class="pane" id="pane-settings">
+    <div class="card"><h3>Цена и оплата</h3>
       <div class="field"><label for="f-price">Цена на сайте</label><input id="f-price" placeholder="250 ₽"></div>
       <div class="field"><label for="f-pay">Реквизиты для оплаты</label><textarea id="f-pay" placeholder="СБП +7 …"></textarea></div>
-      <div class="row"><button class="btn" id="save-settings">Сохранить</button></div>
+      <div class="row"><button class="btn" id="save-settings" disabled>Сохранить</button></div>
     </div>
-    <h2>Акционный баннер</h2>
-    <div class="card">
-      <div class="field"><label for="f-banner">Текст на сайте (пусто — баннер выключен)</label><textarea id="f-banner"></textarea></div>
-      <div class="row">
-        <button class="btn" id="save-banner">Сохранить</button>
-        <button class="btn bad" id="clear-banner">Убрать</button>
-      </div>
+    <div class="card"><h3>Акционный баннер</h3>
+      <div class="field"><label for="f-banner">Текст на сайте. Пусто — баннер выключен</label><textarea id="f-banner"></textarea></div>
+      <div class="row"><button class="btn" id="save-banner" disabled>Сохранить</button><button class="btn sec" id="clear-banner">Убрать</button></div>
     </div>
   </section>
 
   <section class="pane" id="pane-promos">
-    <h2>Новый промокод</h2>
-    <div class="card">
-      <div class="field"><label for="n-code">Название</label><input id="n-code" placeholder="START20" autocapitalize="characters" maxlength="24"></div>
-      <div class="field"><label for="n-pct">Скидка, %</label><input id="n-pct" type="number" inputmode="numeric" min="1" max="99" placeholder="15"></div>
-      <div class="field"><label for="n-hrs">Срок действия, часов (0 — бессрочно)</label><input id="n-hrs" type="number" inputmode="decimal" min="0" placeholder="24"></div>
-      <div class="row"><button class="btn" id="create-promo">Создать</button></div>
-    </div>
-    <h2 id="promos-title">Действующие промокоды</h2>
+    <button class="btn add" id="open-new">Новый промокод</button>
     <div id="promos"></div>
   </section>
 
-  <section class="pane" id="pane-orders">
-    <div class="head"><h2 id="stats-title">Статистика</h2><button class="link" id="refresh">Обновить</button></div>
-    <div class="stats" id="stats"></div>
-    <h2>Последние заказы</h2>
+  <section class="pane on" id="pane-orders">
+    <div class="card hero"><span id="rev-label">Заработано за месяц</span><b id="rev">0 ₽</b></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="meta"><span id="since"></span><button class="link" id="reset">Сбросить статистику</button></div>
+    <div class="chips" id="chips">
+      <button class="chip on" data-f="all">Все</button><button class="chip" data-f="pending">Ожидают</button><button class="chip" data-f="approved">Подтверждены</button>
+    </div>
     <div id="orders"></div>
   </section>
 </div>
+
+<nav>
+  <button class="nb" data-tab="settings"><svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>Настройки</button>
+  <button class="nb" data-tab="promos"><svg viewBox="0 0 24 24"><path d="M3 4h8l9 9-7 7-9-9z"/><circle cx="7.5" cy="8.5" r="1.2"/></svg>Промокоды</button>
+  <button class="nb on" data-tab="orders"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>Заказы<span class="badge" id="badge" hidden></span></button>
+</nav>
+
+<div class="sheet-bg" id="sheet"><div class="sheet">
+  <h3>Новый промокод</h3>
+  <div class="field"><label for="n-code">Название</label><input id="n-code" placeholder="START20" autocapitalize="characters" maxlength="24"></div>
+  <div class="field"><label for="n-pct">Скидка, %</label><input id="n-pct" type="number" inputmode="numeric" placeholder="15"></div>
+  <div class="field"><label for="n-hrs">Срок действия, часов. 0 — бессрочно</label><input id="n-hrs" type="number" inputmode="decimal" placeholder="24"></div>
+  <div class="row"><button class="btn sec" id="close-new">Отмена</button><button class="btn" id="create-promo">Создать</button></div>
+</div></div>
 <div id="toast"></div>
 
 <script>
 const tg = window.Telegram && window.Telegram.WebApp;
-if (tg) { tg.ready(); tg.expand(); }
+if (tg) { tg.ready(); tg.expand(); try { tg.setHeaderColor('#0b0b0d'); tg.setBackgroundColor('#0b0b0d'); } catch (e) {} }
 const API = 'https://fgptlkhrtawzweklpdws.supabase.co/functions/v1/tg-bot';
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const money = n => Number(n || 0).toLocaleString('ru-RU') + ' ₽';
-const fmtDate = iso => new Intl.DateTimeFormat('ru-RU', {timeZone:'Europe/Moscow', day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}).format(new Date(iso));
-let S = {settings:{}, promos:[], orders:[], stats:{}}, openPromo = null, toastTimer;
+const msk = (iso, o) => new Intl.DateTimeFormat('ru-RU', Object.assign({timeZone:'Europe/Moscow'}, o)).format(new Date(iso));
+const TITLES = {settings:'Настройки', promos:'Промокоды', orders:'Заказы'};
+let S = {settings:{}, promos:[], orders:[], stats:{}}, openPromo = null, flt = 'all', tt;
 
-function toast(msg, bad) {
-  const t = $('toast'); t.textContent = msg; t.className = 'on' + (bad ? ' err' : '');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.className = '', 2600);
+function toast(m, bad) {
+  const t = $('toast'); t.textContent = m; t.className = 'on' + (bad ? ' err' : '');
+  clearTimeout(tt); tt = setTimeout(() => t.className = '', 2400);
   const h = tg && tg.HapticFeedback; if (h) h.notificationOccurred(bad ? 'error' : 'success');
 }
-
 async function api(method, payload = {}) {
-  const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({action:'admin_api', method, payload, initData: (tg && tg.initData) || ''})});
+  const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({action:'admin_api', method, payload, initData:(tg && tg.initData) || ''})});
   const j = await r.json().catch(() => ({ok:false, error:'Нет ответа от сервера'}));
   if (!j.ok) throw new Error(j.error || 'Ошибка');
   return j;
 }
-
-async function run(fn, okMsg) {
-  try { await fn(); if (okMsg) toast(okMsg); }
-  catch (e) { toast(e.message, true); }
-}
+async function run(fn, ok) { try { await fn(); if (ok) toast(ok); } catch (e) { toast(e.message, true); } }
+function ask(m, yes) { if (tg && tg.showConfirm) tg.showConfirm(m, v => v && yes()); else if (confirm(m)) yes(); }
 
 async function load(parts) {
-  const d = await api('get_all');
-  S = d;
+  S = await api('get_all');
   (parts || ['settings','promos','orders']).forEach(p => ({settings:renderSettings, promos:renderPromos, orders:renderOrders}[p])());
 }
 
+function dirty() {
+  const s = S.settings;
+  $('save-settings').disabled = $('f-price').value === s.price && $('f-pay').value === s.payment_details;
+  $('save-banner').disabled = $('f-banner').value === s.promo_banner;
+}
 function renderSettings() {
-  $('f-price').value = S.settings.price;
-  $('f-pay').value = S.settings.payment_details;
-  $('f-banner').value = S.settings.promo_banner;
+  $('f-price').value = S.settings.price; $('f-pay').value = S.settings.payment_details; $('f-banner').value = S.settings.promo_banner; dirty();
 }
 
 function remaining(exp) {
   if (!exp) return 'бессрочный';
   const m = Math.ceil((new Date(exp) - Date.now()) / 60000);
   if (m <= 0) return 'истёк';
-  if (m < 60) return 'осталось ' + m + ' мин.';
-  const h = Math.floor(m / 60), r = m % 60;
-  return 'осталось ' + h + ' ч.' + (r ? ' ' + r + ' мин.' : '');
+  if (m < 60) return m + ' мин.';
+  const h = Math.floor(m / 60);
+  return h < 48 ? h + ' ч.' : Math.floor(h / 24) + ' дн.';
 }
-
 function renderPromos() {
-  $('promos-title').textContent = 'Действующие промокоды (' + S.promos.length + ')';
   if (!S.promos.length) { $('promos').innerHTML = '<div class="empty">Действующих промокодов нет</div>'; return; }
   $('promos').innerHTML = S.promos.map(p => {
     const open = openPromo === p.id;
-    return `<div class="item">
-      <div class="tap" data-pv="${esc(p.id)}">
-        <div class="item-h"><b>${esc(p.code)}</b><span class="tag">−${p.discount_percent}%</span></div>
-        <div class="sub">Активаций: ${Number(p.activations_count || 0)} · ${remaining(p.expires_at)}</div>
-      </div>
-      ${open ? `<div class="field"><label>Новая скидка, %</label><input type="number" inputmode="numeric" id="e-pct" value="${p.discount_percent}"></div>
-      <div class="field"><label>Новый срок, часов от сейчас (0 — бессрочно, пусто — не менять)</label><input type="number" inputmode="decimal" id="e-hrs"></div>
-      <div class="row"><button class="btn" data-ps="${esc(p.id)}">Сохранить</button><button class="btn bad" data-pd="${esc(p.id)}">Удалить</button></div>` : ''}
+    return `<div class="item"><div class="tap" data-pv="${esc(p.id)}">
+      <div class="ih"><b>${esc(p.code)}</b><span class="pill br">−${p.discount_percent}%</span></div>
+      <div class="sub">Активаций: ${Number(p.activations_count || 0)} · осталось: ${remaining(p.expires_at)}</div></div>
+      ${open ? `<div class="field" style="margin-top:14px"><label>Скидка, %</label><input id="e-pct" type="number" inputmode="numeric" value="${p.discount_percent}"></div>
+      <div class="field"><label>Новый срок, часов от сейчас. 0 — бессрочно, пусто — не менять</label><input id="e-hrs" type="number" inputmode="decimal"></div>
+      <div class="row"><button class="btn bad sm" data-pd="${esc(p.id)}">Удалить</button><button class="btn sm" data-ps="${esc(p.id)}">Сохранить</button></div>` : ''}
     </div>`;
   }).join('');
 }
 
-function statusTag(o) {
-  if (o.status === 'approved') return o.is_free ? '<span class="tag ok">Бесплатно</span>' : '<span class="tag ok">Подтверждён</span>';
-  if (o.status === 'rejected') return '<span class="tag no">Отклонён</span>';
-  return '<span class="tag wait">Ожидает оплаты</span>';
-}
-
 function renderOrders() {
   const st = S.stats;
-  const month = new Intl.DateTimeFormat('ru-RU', {timeZone:'Europe/Moscow', month:'long'}).format(new Date());
-  $('stats').innerHTML = `
-    <div class="stat wide"><b>${money(st.monthRevenue)}</b><span>Заработано за ${esc(month)}</span></div>
-    <div class="stat"><b>${st.monthCount}</b><span>Заказов за месяц</span></div>
-    <div class="stat"><b>${st.confirmedTotal}</b><span>Подтверждено всего</span></div>
-    <div class="stat wide"><b>${st.freeTotal}</b><span>Выдано бесплатно (не считается в статистике)</span></div>`;
-  if (!S.orders.length) { $('orders').innerHTML = '<div class="empty">Заказов пока нет</div>'; return; }
-  const orders = [...S.orders].sort((a, b) => (b.status === 'pending') - (a.status === 'pending'));
-  $('orders').innerHTML = orders.map(o => `<div class="item">
-    <div class="item-h"><b>#${esc(o.number)} · ${esc(o.amount)}</b>${statusTag(o)}</div>
-    <div class="sub">${fmtDate(o.created_at)} МСК${o.promo_code ? ' · промокод ' + esc(o.promo_code) : ''}</div>
-    <div class="apps">${o.items.map((n, i) => (i + 1) + '. ' + esc(n)).join('\n')}</div>
-    ${o.status === 'pending' ? `<div class="row"><button class="btn" data-od="ok:${esc(o.id)}">Подтвердить</button><button class="btn sec" data-od="free:${esc(o.id)}">Бесплатно</button></div>
-    <div class="row"><button class="btn bad" data-od="no:${esc(o.id)}">Отклонить</button></div>` : ''}
-  </div>`).join('');
+  const mon = msk(new Date(), {month:'long'});
+  $('rev-label').textContent = 'Заработано за ' + mon;
+  $('rev').textContent = money(st.monthRevenue);
+  $('tiles').innerHTML = [[st.monthCount,'заказов за месяц'],[st.confirmedTotal,'подтверждено всего'],[st.freeTotal,'выдано бесплатно']].map(t => `<div class="tile"><b>${t[0]}</b><span>${t[1]}</span></div>`).join('');
+  $('since').textContent = st.resetAt ? 'Статистика с ' + msk(st.resetAt, {day:'2-digit', month:'2-digit', year:'numeric'}) : 'Статистика за всё время';
+  const pend = S.orders.filter(o => o.status === 'pending').length;
+  $('badge').hidden = !pend; $('badge').textContent = pend;
+  let list = [...S.orders].sort((a, b) => (b.status === 'pending') - (a.status === 'pending'));
+  if (flt !== 'all') list = list.filter(o => o.status === flt);
+  if (!list.length) { $('orders').innerHTML = '<div class="empty">Здесь пока пусто</div>'; return; }
+  $('orders').innerHTML = list.map(o => {
+    const tag = o.status === 'approved' ? (o.is_free ? '<span class="pill ok">Бесплатно</span>' : '<span class="pill ok">Подтверждён</span>')
+      : o.status === 'rejected' ? '<span class="pill no">Отклонён</span>' : '<span class="pill wait">Ждёт оплаты</span>';
+    return `<div class="item"><div class="ih"><b>#${esc(o.number)} · ${esc(o.amount)}</b>${tag}</div>
+      <div class="sub">${msk(o.created_at, {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})} МСК${o.promo_code ? ' · ' + esc(o.promo_code) : ''}</div>
+      <div class="apps">${o.items.map((n, i) => (i + 1) + '. ' + esc(n)).join('\n')}</div>
+      ${o.status === 'pending' ? `<div class="row"><button class="btn sm" data-od="ok:${esc(o.id)}">Подтвердить</button><button class="btn sec sm" data-od="free:${esc(o.id)}">Бесплатно</button></div>
+      <div class="row" style="margin-top:6px"><button class="btn bad sm" data-od="no:${esc(o.id)}">Отклонить</button></div>` : ''}</div>`;
+  }).join('');
 }
 
-function ask(msg, yes) {
-  if (tg && tg.showConfirm) tg.showConfirm(msg, ok => ok && yes()); else if (confirm(msg)) yes();
+function setTab(t) {
+  document.querySelectorAll('.nb').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === 'pane-' + t));
+  $('title').textContent = TITLES[t]; window.scrollTo(0, 0);
 }
+function sheet(on) { $('sheet').classList.toggle('on', on); }
+
+['f-price','f-pay','f-banner'].forEach(i => $(i).addEventListener('input', dirty));
 
 document.addEventListener('click', e => {
   const t = e.target.closest('button,[data-pv]'); if (!t) return;
-  if (t.dataset.tab) {
-    document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b === t));
-    document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === 'pane-' + t.dataset.tab));
-    window.scrollTo(0, 0);
-  } else if (t.id === 'refresh') run(() => load(['orders']), 'Обновлено');
+  if (t.dataset.tab) setTab(t.dataset.tab);
+  else if (t.dataset.f) { flt = t.dataset.f; document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === t)); renderOrders(); }
+  else if (t.id === 'refresh') run(() => load(), 'Обновлено');
   else if (t.id === 'save-settings') run(async () => { await api('save_settings', {price:$('f-price').value, payment_details:$('f-pay').value}); await load(['settings']); }, 'Сохранено');
   else if (t.id === 'save-banner') run(async () => { await api('set_banner', {text:$('f-banner').value}); await load(['settings']); }, 'Баннер обновлён');
   else if (t.id === 'clear-banner') run(async () => { await api('set_banner', {text:''}); await load(['settings']); }, 'Баннер убран');
+  else if (t.id === 'open-new') sheet(true);
+  else if (t.id === 'close-new') sheet(false);
   else if (t.id === 'create-promo') run(async () => {
     await api('promo_create', {code:$('n-code').value, pct:$('n-pct').value, hours:$('n-hrs').value || 0});
-    ['n-code','n-pct','n-hrs'].forEach(i => $(i).value = ''); await load(['promos']);
+    ['n-code','n-pct','n-hrs'].forEach(i => $(i).value = ''); sheet(false); await load(['promos']);
   }, 'Промокод создан');
   else if (t.dataset.pv) { openPromo = openPromo === t.dataset.pv ? null : t.dataset.pv; renderPromos(); }
   else if (t.dataset.ps) run(async () => { await api('promo_update', {id:t.dataset.ps, pct:$('e-pct').value, hours:$('e-hrs').value}); openPromo = null; await load(['promos']); }, 'Сохранено');
   else if (t.dataset.pd) ask('Удалить промокод?', () => run(async () => { await api('promo_delete', {id:t.dataset.pd}); openPromo = null; await load(['promos']); }, 'Промокод удалён'));
+  else if (t.id === 'reset') ask('Сбросить статистику? Счётчики и заработок обнулятся. Заказы в списке останутся.', () => run(async () => { await api('reset_stats'); await load(['orders']); }, 'Статистика сброшена'));
   else if (t.dataset.od) {
     const [d, id] = t.dataset.od.split(':');
-    const go = () => run(async () => { await api('order_decide', {id, decision:d}); await load(['orders','promos']); },
-      d === 'ok' ? 'Оплата подтверждена' : d === 'free' ? 'Выдано бесплатно' : 'Заказ отклонён');
-    if (d === 'ok') go();
-    else ask(d === 'free' ? 'Выдать бесплатно? Заказ не попадёт в статистику и доход.' : 'Отклонить заказ?', go);
+    const go = () => run(async () => { await api('order_decide', {id, decision:d}); await load(['orders','promos']); }, d === 'ok' ? 'Оплата подтверждена' : d === 'free' ? 'Выдано бесплатно' : 'Заказ отклонён');
+    if (d === 'ok') go(); else ask(d === 'free' ? 'Выдать бесплатно? Заказ не попадёт в статистику и доход.' : 'Отклонить заказ?', go);
   }
 });
-
+$('sheet').addEventListener('click', e => { if (e.target.id === 'sheet') sheet(false); });
 run(() => load());
 </script>
 </body>
