@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>RED iOS — админка</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{
+  --bg:var(--tg-theme-secondary-bg-color,#0f0f10);
+  --card:var(--tg-theme-section-bg-color,var(--tg-theme-bg-color,#1c1c1e));
+  --text:var(--tg-theme-text-color,#fff);
+  --hint:var(--tg-theme-hint-color,#8e8e93);
+  --accent:var(--tg-theme-button-color,#2481cc);
+  --accent-text:var(--tg-theme-button-text-color,#fff);
+  --danger:var(--tg-theme-destructive-text-color,#e5484d);
+  --ok:#30a46c;
+  --line:rgba(128,128,128,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+.wrap{max-width:520px;margin:0 auto;padding:0 12px}
+.tabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 12px 8px}
+.tabs-in{max-width:520px;margin:0 auto;display:flex;background:var(--card);border-radius:10px;padding:3px}
+.tab{flex:1;border:0;background:none;color:var(--hint);font:inherit;font-size:15px;font-weight:500;padding:8px 4px;border-radius:8px}
+.tab.on{background:var(--accent);color:var(--accent-text)}
+.pane{display:none}.pane.on{display:block}
+h2{font-size:13px;font-weight:500;color:var(--hint);margin:18px 6px 6px}
+.card{background:var(--card);border-radius:12px;padding:12px 14px}
+.field+.field{margin-top:12px}
+label{display:block;font-size:13px;color:var(--hint);margin-bottom:4px}
+input,textarea{width:100%;font:inherit;color:var(--text);background:transparent;border:1px solid var(--line);border-radius:8px;padding:9px 10px;outline:none}
+input:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:72px}
+.row{display:flex;gap:8px;margin-top:12px}
+.row>*{flex:1}
+.btn{border:0;border-radius:10px;padding:11px 12px;font:inherit;font-weight:500;background:var(--accent);color:var(--accent-text)}
+.btn.sec{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn.bad{background:transparent;border:1px solid var(--line);color:var(--danger)}
+.btn:disabled{opacity:.5}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat{background:var(--card);border-radius:12px;padding:12px 14px}
+.stat.wide{grid-column:1/-1}
+.stat b{display:block;font-size:22px;font-weight:600}
+.stat span{font-size:13px;color:var(--hint)}
+.item{background:var(--card);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.item-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.item-h b{font-weight:600}
+.sub{font-size:13px;color:var(--hint);margin-top:2px}
+.tag{font-size:13px;font-weight:500}
+.tag.ok{color:var(--ok)}.tag.no{color:var(--danger)}.tag.wait{color:var(--accent)}
+.apps{font-size:14px;margin-top:6px;white-space:pre-line}
+.tap{cursor:pointer}
+.empty{text-align:center;color:var(--hint);padding:24px 0;font-size:15px}
+.head{display:flex;justify-content:space-between;align-items:center}
+.link{border:0;background:none;color:var(--accent);font:inherit;font-size:14px;padding:4px 6px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#2b2b2e;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
+#toast.on{opacity:1}#toast.err{background:var(--danger)}
+</style>
+</head>
+<body>
+<div class="tabs"><div class="tabs-in">
+  <button class="tab on" data-tab="settings">Настройки</button>
+  <button class="tab" data-tab="promos">Промокоды</button>
+  <button class="tab" data-tab="orders">Заказы</button>
+</div></div>
+
+<div class="wrap">
+  <section class="pane on" id="pane-settings">
+    <h2>Цена и оплата</h2>
+    <div class="card">
+      <div class="field"><label for="f-price">Цена на сайте</label><input id="f-price" placeholder="250 ₽"></div>
+      <div class="field"><label for="f-pay">Реквизиты для оплаты</label><textarea id="f-pay" placeholder="СБП +7 …"></textarea></div>
+      <div class="row"><button class="btn" id="save-settings">Сохранить</button></div>
+    </div>
+    <h2>Акционный баннер</h2>
+    <div class="card">
+      <div class="field"><label for="f-banner">Текст на сайте (пусто — баннер выключен)</label><textarea id="f-banner"></textarea></div>
+      <div class="row">
+        <button class="btn" id="save-banner">Сохранить</button>
+        <button class="btn bad" id="clear-banner">Убрать</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="pane" id="pane-promos">
+    <h2>Новый промокод</h2>
+    <div class="card">
+      <div class="field"><label for="n-code">Название</label><input id="n-code" placeholder="START20" autocapitalize="characters" maxlength="24"></div>
+      <div class="field"><label for="n-pct">Скидка, %</label><input id="n-pct" type="number" inputmode="numeric" min="1" max="99" placeholder="15"></div>
+      <div class="field"><label for="n-hrs">Срок действия, часов (0 — бессрочно)</label><input id="n-hrs" type="number" inputmode="decimal" min="0" placeholder="24"></div>
+      <div class="row"><button class="btn" id="create-promo">Создать</button></div>
+    </div>
+    <h2 id="promos-title">Действующие промокоды</h2>
+    <div id="promos"></div>
+  </section>
+
+  <section class="pane" id="pane-orders">
+    <div class="head"><h2 id="stats-title">Статистика</h2><button class="link" id="refresh">Обновить</button></div>
+    <div class="stats" id="stats"></div>
+    <h2>Последние заказы</h2>
+    <div id="orders"></div>
+  </section>
+</div>
+<div id="toast"></div>
+
+<script>
+const tg = window.Telegram && window.Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+const API = 'https://fgptlkhrtawzweklpdws.supabase.co/functions/v1/tg-bot';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money = n => Number(n || 0).toLocaleString('ru-RU') + ' ₽';
+const fmtDate = iso => new Intl.DateTimeFormat('ru-RU', {timeZone:'Europe/Moscow', day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}).format(new Date(iso));
+let S = {settings:{}, promos:[], orders:[], stats:{}}, openPromo = null, toastTimer;
+
+function toast(msg, bad) {
+  const t = $('toast'); t.textContent = msg; t.className = 'on' + (bad ? ' err' : '');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.className = '', 2600);
+  const h = tg && tg.HapticFeedback; if (h) h.notificationOccurred(bad ? 'error' : 'success');
+}
+
+async function api(method, payload = {}) {
+  const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({action:'admin_api', method, payload, initData: (tg && tg.initData) || ''})});
+  const j = await r.json().catch(() => ({ok:false, error:'Нет ответа от сервера'}));
+  if (!j.ok) throw new Error(j.error || 'Ошибка');
+  return j;
+}
+
+async function run(fn, okMsg) {
+  try { await fn(); if (okMsg) toast(okMsg); }
+  catch (e) { toast(e.message, true); }
+}
+
+async function load(parts) {
+  const d = await api('get_all');
+  S = d;
+  (parts || ['settings','promos','orders']).forEach(p => ({settings:renderSettings, promos:renderPromos, orders:renderOrders}[p])());
+}
+
+function renderSettings() {
+  $('f-price').value = S.settings.price;
+  $('f-pay').value = S.settings.payment_details;
+  $('f-banner').value = S.settings.promo_banner;
+}
+
+function remaining(exp) {
+  if (!exp) return 'бессрочный';
+  const m = Math.ceil((new Date(exp) - Date.now()) / 60000);
+  if (m <= 0) return 'истёк';
+  if (m < 60) return 'осталось ' + m + ' мин.';
+  const h = Math.floor(m / 60), r = m % 60;
+  return 'осталось ' + h + ' ч.' + (r ? ' ' + r + ' мин.' : '');
+}
+
+function renderPromos() {
+  $('promos-title').textContent = 'Действующие промокоды (' + S.promos.length + ')';
+  if (!S.promos.length) { $('promos').innerHTML = '<div class="empty">Действующих промокодов нет</div>'; return; }
+  $('promos').innerHTML = S.promos.map(p => {
+    const open = openPromo === p.id;
+    return `<div class="item">
+      <div class="tap" data-pv="${esc(p.id)}">
+        <div class="item-h"><b>${esc(p.code)}</b><span class="tag">−${p.discount_percent}%</span></div>
+        <div class="sub">Активаций: ${Number(p.activations_count || 0)} · ${remaining(p.expires_at)}</div>
+      </div>
+      ${open ? `<div class="field"><label>Новая скидка, %</label><input type="number" inputmode="numeric" id="e-pct" value="${p.discount_percent}"></div>
+      <div class="field"><label>Новый срок, часов от сейчас (0 — бессрочно, пусто — не менять)</label><input type="number" inputmode="decimal" id="e-hrs"></div>
+      <div class="row"><button class="btn" data-ps="${esc(p.id)}">Сохранить</button><button class="btn bad" data-pd="${esc(p.id)}">Удалить</button></div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function statusTag(o) {
+  if (o.status === 'approved') return o.is_free ? '<span class="tag ok">Бесплатно</span>' : '<span class="tag ok">Подтверждён</span>';
+  if (o.status === 'rejected') return '<span class="tag no">Отклонён</span>';
+  return '<span class="tag wait">Ожидает оплаты</span>';
+}
+
+function renderOrders() {
+  const st = S.stats;
+  const month = new Intl.DateTimeFormat('ru-RU', {timeZone:'Europe/Moscow', month:'long'}).format(new Date());
+  $('stats').innerHTML = `
+    <div class="stat wide"><b>${money(st.monthRevenue)}</b><span>Заработано за ${esc(month)}</span></div>
+    <div class="stat"><b>${st.monthCount}</b><span>Заказов за месяц</span></div>
+    <div class="stat"><b>${st.confirmedTotal}</b><span>Подтверждено всего</span></div>
+    <div class="stat wide"><b>${st.freeTotal}</b><span>Выдано бесплатно (не считается в статистике)</span></div>`;
+  if (!S.orders.length) { $('orders').innerHTML = '<div class="empty">Заказов пока нет</div>'; return; }
+  const orders = [...S.orders].sort((a, b) => (b.status === 'pending') - (a.status === 'pending'));
+  $('orders').innerHTML = orders.map(o => `<div class="item">
+    <div class="item-h"><b>#${esc(o.number)} · ${esc(o.amount)}</b>${statusTag(o)}</div>
+    <div class="sub">${fmtDate(o.created_at)} МСК${o.promo_code ? ' · промокод ' + esc(o.promo_code) : ''}</div>
+    <div class="apps">${o.items.map((n, i) => (i + 1) + '. ' + esc(n)).join('\n')}</div>
+    ${o.status === 'pending' ? `<div class="row"><button class="btn" data-od="ok:${esc(o.id)}">Подтвердить</button><button class="btn sec" data-od="free:${esc(o.id)}">Бесплатно</button></div>
+    <div class="row"><button class="btn bad" data-od="no:${esc(o.id)}">Отклонить</button></div>` : ''}
+  </div>`).join('');
+}
+
+function ask(msg, yes) {
+  if (tg && tg.showConfirm) tg.showConfirm(msg, ok => ok && yes()); else if (confirm(msg)) yes();
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('button,[data-pv]'); if (!t) return;
+  if (t.dataset.tab) {
+    document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b === t));
+    document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === 'pane-' + t.dataset.tab));
+    window.scrollTo(0, 0);
+  } else if (t.id === 'refresh') run(() => load(['orders']), 'Обновлено');
+  else if (t.id === 'save-settings') run(async () => { await api('save_settings', {price:$('f-price').value, payment_details:$('f-pay').value}); await load(['settings']); }, 'Сохранено');
+  else if (t.id === 'save-banner') run(async () => { await api('set_banner', {text:$('f-banner').value}); await load(['settings']); }, 'Баннер обновлён');
+  else if (t.id === 'clear-banner') run(async () => { await api('set_banner', {text:''}); await load(['settings']); }, 'Баннер убран');
+  else if (t.id === 'create-promo') run(async () => {
+    await api('promo_create', {code:$('n-code').value, pct:$('n-pct').value, hours:$('n-hrs').value || 0});
+    ['n-code','n-pct','n-hrs'].forEach(i => $(i).value = ''); await load(['promos']);
+  }, 'Промокод создан');
+  else if (t.dataset.pv) { openPromo = openPromo === t.dataset.pv ? null : t.dataset.pv; renderPromos(); }
+  else if (t.dataset.ps) run(async () => { await api('promo_update', {id:t.dataset.ps, pct:$('e-pct').value, hours:$('e-hrs').value}); openPromo = null; await load(['promos']); }, 'Сохранено');
+  else if (t.dataset.pd) ask('Удалить промокод?', () => run(async () => { await api('promo_delete', {id:t.dataset.pd}); openPromo = null; await load(['promos']); }, 'Промокод удалён'));
+  else if (t.dataset.od) {
+    const [d, id] = t.dataset.od.split(':');
+    const go = () => run(async () => { await api('order_decide', {id, decision:d}); await load(['orders','promos']); },
+      d === 'ok' ? 'Оплата подтверждена' : d === 'free' ? 'Выдано бесплатно' : 'Заказ отклонён');
+    if (d === 'ok') go();
+    else ask(d === 'free' ? 'Выдать бесплатно? Заказ не попадёт в статистику и доход.' : 'Отклонить заказ?', go);
+  }
+});
+
+run(() => load());
+</script>
+</body>
+</html>
